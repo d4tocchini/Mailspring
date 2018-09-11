@@ -1,5 +1,107 @@
 # Mailspring Changelog
 
+### 1.4.2 (8/15/2018)
+
+Fixes:
+
+* Mailspring no longer attempts CRAM-MD5 SMTP auth instead of PLAIN or LOGIN when both are supported.
+  CRAM-MD5 and DIGEST-MD5 require you've exchanged a shared secret with the SMTP server which is almost
+  never the case. #620
+
+* Mark as Spam now appears in the right-click dropdown menu for threads.
+
+* The IMAP/SMTP port dropdowns no longer "stick" the first time you change them during setup.
+
+* Mailspring now lets you know if your SMTP server refused to relay a test message during setup.
+
+* Mailspring now correctly supports SMTP accounts that do not require a username or password. #469
+
+* Open and link tracking now work correctly for accounts using Courier IMAP, (where sent messages
+  do not appear until re-selecting the folder via IMAP.)
+
+Debugging:
+
+* Mailspring now prints descriptive SMTP error strings instead of SMTP error codes in logs.
+
+### 1.4.1 (8/10/2018)
+
+Fixes:
+
+* Shift-I and Shift-U no longer trigger when typing in the composoer and mark as read / unread the
+  current email thread when the Gmail keyboard shortcut set is active.
+
+### 1.4.0 (8/5/2018)
+
+Mailspring 1.4 adds macOS Touch Bar support and expands the `Thread` and `View` menus to include a
+wider range of functionality previously tied to keybindings but missing from the apps menus.
+
+Mailspring 1.4 also brings a revised welcome screen that separates Office 365 and Outlook and
+adds presets for Yandex and GMX. The new welcome screens display tips specific to each provider,
+ensuring that you follow any required steps (like creating an App Password or enabling IMAP.)
+
+Fixes:
+
+* Mailspring now connects to SMTP servers that only support GSSAPI or Kerberos and PLAIN using the PLAIN method rather than trying to use Kerberos and failing. #341
+
+* The "undo send" toast in Mailspring now has a countdown timer, and the undo button has been visually differentiated from the background. #872
+
+* Emails no longer get "stuck" when using undo send in some scenarios. #336
+
+* Undoing a send of an inline reply during the undo-send time window no longer leaves the composer "locked" or re-sends the original draft. #596, #390
+
+* Mailspring no longer throws an exception when parsing quoted text for some emails.
+
+* Removing the last account from Mailspring no longer causes it to return to the "Connect an Account" screen with errors that prevent you from moving forward without restarting the app.
+
+* The print window now warns you if one or more messages were omitted because they were collapsed, and renders properly in the dark theme.
+
+* The default SMTP port for Outlook is now the STARTTLS default and not port 25. #725
+
+### 1.3.0 (7/14/2018)
+
+* Mailspring 1.3 brings an overhauled search bar with powerful autocomplete that makes it easier to create advanced search queries.
+
+  * In addition to searching for freeform text and using the Gmail query language (`subject:`, `in:`, `is:`, `from:`, `to:`), Mailspring now allows you to search by date using natural language terms like `since: "last week"` and `before: "february 5th"`. Try combining them with other terms to search a specific time window!
+
+  * You can now right-click a thread to search for other threads from that sender or with that subject.
+
+  * You can now focus the search bar and conduct searches entirely with keyboard shortcuts (use Escape to exit the search bar!) #960
+
+* Mailspring now uses Electron 2.0.2, which delibers some [great bug fixes and new features](https://github.com/electron/electron/releases/tag/v2.0.0):
+
+  * Chrome 61, Node 8.9.3, V8 6.1.534.41 with improved performance and lower memory footprints
+  * Better GTK+ theme support, including support for menu styling
+  * Better support for Linux desktop notifications
+  * The app will no longer cancel restart or shutdown
+
+Fixes:
+
+* Mailspring no longer clips some messages containing images incorrectly. #569
+
+* The Reply-To header is now shown when you expand the message headers. #973
+
+* Dropping images onto the composer now reliably inserts them as inline attachments. #822
+
+* Mailspring now correctly opens attachments with filenames containing emoji on Windows.
+
+* You can now drag and attachment out of Mailspring by it's quicklook preview as well as it's title.
+
+* Using Mailspring on Windows in a user account containing accent characters or other special characters no longer prevents attachments from being cached. #810
+
+* Mailspring no longer throws an exception when trying to display a message with attachments but no downloaded body. #804
+
+* The "hamburger" icon in the top right of the main window no longer appears gray-on-gray in the "Ubuntu" theme. #801
+
+* Auto-hiding of the menu bar now works correctly on Linux. #938
+
+* Clicking on the open/link tracking "detail dot" now shows individual tracking events correctly. #945
+
+* The Print window no longer contains an incorrect menu bar on Windows. #958
+
+* Signatures with Facebook and Twitter profiles now display the service favicons reliably when viewed in Gmail and Outlook. #968
+
+* Invalid themes no longer "brick" the app - Mailspring will present an alert with the error and offer to revert to the basic theme. (Mailspring-Theme-Starter/issues/1)
+
 ### 1.2.2 (5/30/2018)
 
 Fixes:

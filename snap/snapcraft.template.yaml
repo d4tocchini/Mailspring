@@ -15,9 +15,10 @@ parts:
     prepare: |
       sed -i 's|Icon=mailspring|Icon=/usr/share/pixmaps/mailspring\.png|' usr/share/applications/mailspring.desktop
     after:
-      - desktop-gtk2
+      - desktop-gtk3
     stage-packages:
       - gir1.2-gnomekeyring-1.0
+      - libcanberra-gtk-module
       - libasound2
       - libcurl3
       - libgconf2-4
@@ -27,6 +28,7 @@ parts:
       - libnspr4
       - libnss3
       - libpulse0
+      - libpcre3
       - libxkbfile1
       - libxss1
       - libxtst6
@@ -50,8 +52,10 @@ apps:
      - browser-support
      - cups-control
      - gsettings
+     - opengl
      - home
      - desktop
+     - desktop-legacy
      - mount-observe
      - network
      - network-bind

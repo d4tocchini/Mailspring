@@ -2,7 +2,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import rimraf from 'rimraf';
-import path from 'path';
 
 import ConfigSchemaItem from './config-schema-item';
 import WorkspaceSection from './workspace-section';
@@ -34,15 +33,8 @@ class PreferencesGeneral extends React.Component {
   };
 
   _onResetEmailCache = () => {
-    rimraf(path.join(AppEnv.getConfigDirPath(), 'edgehill.*'), err => {
-      if (err) {
-        return AppEnv.showErrorDialog({
-          title: `Could not delete the mail database.`,
-          message: `Please quit Mailspring and delete the "edgehill.db" file in ${AppEnv.getConfigDirPath()} manually.\n\n${err.toString()}`,
-        });
-      }
-      this._onReboot();
-    });
+    const ipc = require('electron').ipcRenderer;
+    ipc.send('command', 'application:reset-database', {});
   };
 
   render() {
