@@ -1,10 +1,10 @@
-import MailspringStore from 'mailspring-store';
-import { remote } from 'electron';
-import url from 'url';
-import Utils from '../models/utils';
-import Actions from '../actions';
-import KeyManager from '../../key-manager';
-import MailspringAPIRequest from '../mailspring-api-request';
+const MailspringStore = require('mailspring-store')
+const { remote } = require('electron')
+const url = require('url')
+const Utils = require('../models/utils')
+const Actions = require('../actions')
+const KeyManager = require('../../key-manager')
+const MailspringAPIRequest = require('../mailspring-api-request')
 const { makeRequest, rootURLForServer } = MailspringAPIRequest
 
 // Note this key name is used when migrating to Nylas Pro accounts from old N1.
@@ -51,15 +51,15 @@ class IdentityStore extends MailspringStore {
   }
 
   hasProFeatures() {
-    return true
+    // return true
     // $
-    // return this._identity && this._identity.stripePlanEffective !== 'Basic';
+    return this._identity && this._identity.stripePlanEffective !== 'Basic';
   }
 
   _fetchAndPollRemoteIdentity() {
     if (!AppEnv.isMainWindow()) return;
     // D4 // $
-    const EXTRA_WAIT_SCALE = 100
+    const EXTRA_WAIT_SCALE = 1
     setTimeout(() => {
       this.fetchIdentity();
     }, 1000 * EXTRA_WAIT_SCALE);
@@ -131,13 +131,13 @@ class IdentityStore extends MailspringStore {
     const qs = { utm_medium: 'N1' };
     if (source) {
       // $
-      // qs.utm_source = source;
+      qs.utm_source = source;
     }
     if (campaign) {
-      // qs.utm_campaign = campaign;
+      qs.utm_campaign = campaign;
     }
     if (content) {
-      // qs.utm_content = content;
+      qs.utm_content = content;
     }
 
     let pathWithUtm = url.parse(path, true);

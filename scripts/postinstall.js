@@ -106,8 +106,8 @@ function downloadMailsync() {
 // For speed, we cache app/node_modules. However, we need to
 // be sure to do a full rebuild of native node modules when the
 // Electron version changes. To do this we check a marker file.
-const appModulesPath = path.resolve(__dirname, '..', 'app', 'node_modules');
-const cacheVersionPath = path.join(appModulesPath, '.postinstall-target-version');
+const appModulesPath = path.resolve(__dirname, '..', 'app');
+const cacheVersionPath = path.join(appModulesPath, 'mailsync.postinstall-version');
 // const cacheElectronTarget =
 //   fs.existsSync(cacheVersionPath) && fs.readFileSync(cacheVersionPath).toString();
 

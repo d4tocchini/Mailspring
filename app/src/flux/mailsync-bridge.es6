@@ -4,21 +4,20 @@ const { ipcRenderer, remote } = require('electron');
 const _ = require('underscore');
 
 const Task = require('./tasks/task');
-import TaskQueue from './stores/task-queue';
-import IdentityStore from './stores/identity-store';
+const TaskQueue= require('./stores/task-queue')
+const IdentityStore= require('./stores/identity-store')
 
 const Account = require('./models/account');
 const Utils = require('./models/utils');
 
-import AccountStore from './stores/account-store';
-import DatabaseStore from './stores/database-store';
-import OnlineStatusStore from './stores/online-status-store';
-import DatabaseChangeRecord from './stores/database-change-record';
-const DatabaseObjectRegistry = require('../registries/database-object-registry');
-import MailsyncProcess from '../mailsync-process';
-import KeyManager from '../key-manager';
-import Actions from './actions';
-
+const AccountStore = require('./stores/account-store')
+const DatabaseStore = require('./stores/database-store')
+const OnlineStatusStore = require('./stores/online-status-store')
+const DatabaseChangeRecord = require('./stores/database-change-record')
+const DatabaseObjectRegistry  = require('../registries/database-object-registry');
+const MailsyncProcess = require('../mailsync-process')
+const KeyManager = require('../key-manager')
+const Actions = require('./actions')
 
 const MAX_CRASH_HISTORY = 15;
 

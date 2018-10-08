@@ -1,5 +1,5 @@
 /* eslint global-require: 0 */
-import { APIError } from './errors';
+const { APIError } = require('./errors');
 
 // A 0 code is when an error returns without a status code, like "ESOCKETTIMEDOUT"
 const TimeoutErrorCodes = [
@@ -43,8 +43,8 @@ function rootURLForServer(server) {
     // D4
     // $
     return {
-      development:  'https://id.getmailspring.com',// 'http://localhost:5101',
-      staging:  'https://id.getmailspring.com',//'https://id-staging.getmailspring.com',
+      development: 'http://localhost:5101',// 'https://id.getmailspring.com',//
+      staging: 'https://id-staging.getmailspring.com',// 'https://id.getmailspring.com',//
       production: 'https://id.getmailspring.com',
     }[env];
   }
@@ -92,7 +92,7 @@ async function makeRequest(options) {
   if (!options.auth && options.auth !== false) {
     if (options.server === 'identity') {
       IdentityStore = IdentityStore || require('./stores/identity-store');
-      const username = IdentityStore.identity().token;
+      const username = IdentityStore.identity().token;      
       options.headers.set('Authorization', `Basic ${btoa(`${username}:`)}`);
     }
   }

@@ -239,11 +239,15 @@ describe('Model', function modelSpecs() {
 
     it('should return a JSON object and call attribute toJSON functions to map values', () => {
       spyOn(Model.attributes.accountId, 'toJSON').andCallFake(() => 'inflated value!');
-
+      console.log(111)
       const json = this.model.toJSON();
+      console.log(222)
       expect(json instanceof Object).toBe(true);
+      console.log(333)
       expect(json.id).toBe('1234');
+      console.log(444)
       expect(json.aid).toBe('inflated value!');
+      console.log(555)
     });
 
     it('should surface any exception one of the attribute toJSON functions raises', () => {
