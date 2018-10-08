@@ -9,7 +9,7 @@ export function activate(state = {}) {
   this.preferencesTab = new PreferencesUIStore.TabItem({
     tabId: 'Templates',
     displayName: 'Templates',
-    componentClassFn: () => require('./preferences-templates').default,
+    componentClassFn: () => require('./preferences-templates'),
   });
   ComponentRegistry.register(TemplatePicker, { role: 'Composer:ActionButton' });
   ComponentRegistry.register(TemplateStatusBar, { role: 'Composer:Footer' });

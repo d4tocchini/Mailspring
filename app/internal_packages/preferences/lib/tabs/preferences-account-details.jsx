@@ -253,4 +253,4 @@ class PreferencesAccountDetails extends Component {
   }
 }
 
-export default PreferencesAccountDetails;
+module.exports = PreferencesAccountDetails;

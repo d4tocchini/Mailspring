@@ -9,7 +9,7 @@ import {
   FocusedPerspectiveStore,
 } from 'mailspring-exports';
 
-export default class ThreadListContextMenu {
+module.exports = class ThreadListContextMenu {
   constructor({ threadIds = [], accountIds = [] }) {
     this.threadIds = threadIds;
     this.accountIds = accountIds;

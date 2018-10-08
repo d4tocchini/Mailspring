@@ -8,7 +8,7 @@ import Utils from './flux/models/utils';
 
 import MenuHelpers from './menu-helpers';
 
-export default class MenuManager {
+module.exports = class MenuManager {
   constructor({ resourcePath }) {
     this.resourcePath = resourcePath;
     this.template = [];

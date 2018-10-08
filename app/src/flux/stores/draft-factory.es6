@@ -4,12 +4,12 @@ import DatabaseStore from './database-store';
 import AccountStore from './account-store';
 import ContactStore from './contact-store';
 import MessageStore from './message-store';
-import FocusedPerspectiveStore from './focused-perspective-store';
+const FocusedPerspectiveStore = require('./focused-perspective-store');
 
-import Contact from '../models/contact';
-import Message from '../models/message';
-import MessageUtils from '../models/message-utils';
-import Utils from '../models/utils';
+const Contact = require('../models/contact');
+const Message = require('../models/message');
+const MessageUtils = require('../models/message-utils');
+const Utils = require('../models/utils');
 import InlineStyleTransformer from '../../services/inline-style-transformer';
 import SanitizeTransformer from '../../services/sanitize-transformer';
 import DOMUtils from '../../dom-utils';
@@ -261,7 +261,7 @@ class DraftFactory {
       return candidateDrafts.pop();
     }
     if (behavior === 'prefer-existing-if-pristine') {
-      DraftStore = DraftStore || require('./draft-store').default;
+      DraftStore = DraftStore || require('./draft-store');
       const sessions = await Promise.all(
         candidateDrafts.map(candidateDraft =>
           DraftStore.sessionForClientId(candidateDraft.headerMessageId)
@@ -360,4 +360,4 @@ class DraftFactory {
   }
 }
 
-export default new DraftFactory();
+module.exports = new DraftFactory();

@@ -1,5 +1,5 @@
-const Thread = require('../../src/flux/models/thread').default;
-const FocusedContentStore = require('../../src/flux/stores/focused-content-store').default;
+const Thread = require('../../src/flux/models/thread');
+const FocusedContentStore = require('../../src/flux/stores/focused-content-store');
 
 const testThread = new Thread({ id: '123', accountId: TEST_ACCOUNT_ID });
 

@@ -1,6 +1,7 @@
-import QuerySubscription from './query-subscription';
+const QuerySubscription = require('./query-subscription');
 
 class MutableQuerySubscription extends QuerySubscription {
+
   replaceQuery(nextQuery) {
     if (this._query && this._query.sql() === nextQuery.sql()) {
       return;
@@ -43,4 +44,4 @@ class MutableQuerySubscription extends QuerySubscription {
   };
 }
 
-export default MutableQuerySubscription;
+module.exports = MutableQuerySubscription;

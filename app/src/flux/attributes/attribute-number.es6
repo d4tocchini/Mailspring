@@ -1,12 +1,12 @@
-import Attribute from './attribute';
-import Matcher from './matcher';
+const Attribute = require('./attribute');
+const Matcher = require('./matcher');
 
 /*
 Public: The value of this attribute is always a number, or null.
 
 Section: Database
 */
-export default class AttributeNumber extends Attribute {
+class AttributeNumber extends Attribute {
   toJSON(val) {
     return val;
   }
@@ -48,3 +48,6 @@ export default class AttributeNumber extends Attribute {
   gte = AttributeNumber.prototype.greaterThanOrEqualTo;
   lte = AttributeNumber.prototype.lessThanOrEqualTo;
 }
+
+
+module.exports = AttributeNumber

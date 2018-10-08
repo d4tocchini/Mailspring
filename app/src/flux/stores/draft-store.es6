@@ -480,4 +480,4 @@ class DraftStore extends MailspringStore {
   };
 }
 
-export default new DraftStore();
+module.exports = new DraftStore();

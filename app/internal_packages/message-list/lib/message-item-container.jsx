@@ -3,7 +3,7 @@ import { React, PropTypes, Utils, DraftStore, ComponentRegistry } from 'mailspri
 
 import MessageItem from './message-item';
 
-export default class MessageItemContainer extends React.Component {
+module.exports = class MessageItemContainer extends React.Component {
   static displayName = 'MessageItemContainer';
 
   static propTypes = {

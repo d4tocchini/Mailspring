@@ -92,4 +92,4 @@ class AutoloadImagesStore extends MailspringStore {
   };
 }
 
-export default new AutoloadImagesStore();
+module.exports = new AutoloadImagesStore();

@@ -150,4 +150,4 @@ class RetinaImg extends React.Component {
   }
 }
 
-export default RetinaImg;
+module.exports = RetinaImg;

@@ -1,6 +1,6 @@
 import { Utils } from 'mailspring-exports';
 import React, { Component } from 'react';
-import { CSSTransitionGroup } from 'react-transition-group';
+import CSSTransitionGroup from './CSSTransitionGroup';
 import PropTypes from 'prop-types';
 
 /*
@@ -68,4 +68,4 @@ class MultiselectToolbar extends Component {
   }
 }
 
-export default MultiselectToolbar;
+module.exports = MultiselectToolbar;

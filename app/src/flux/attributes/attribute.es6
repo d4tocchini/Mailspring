@@ -1,5 +1,5 @@
-import Matcher from './matcher';
-import SortOrder from './sort-order';
+const Matcher = require('./matcher');
+const SortOrder = require('./sort-order');
 
 /*
 Public: The Attribute class represents a single model attribute, like 'account_id'.
@@ -9,8 +9,10 @@ The Attribute class also exposes convenience methods for generating {Matcher} ob
 
 Section: Database
 */
-export default class Attribute {
-  constructor({ modelKey, queryable, jsonKey, loadFromColumn }) {
+class Attribute {
+
+  constructor(data) {
+    const { modelKey, queryable, jsonKey, loadFromColumn } = data
     this.modelKey = modelKey;
     this.tableColumn = modelKey;
     this.jsonKey = jsonKey || modelKey;
@@ -96,3 +98,5 @@ export default class Attribute {
     return this.queryable && this.columnSQL && this.jsonKey !== 'id';
   }
 }
+
+module.exports = Attribute

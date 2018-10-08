@@ -4,7 +4,7 @@ import { Actions } from 'mailspring-exports';
 import { RetinaImg } from 'mailspring-component-kit';
 import Fields from './fields';
 
-export default class ComposerHeaderActions extends React.Component {
+module.exports = class ComposerHeaderActions extends React.Component {
   static displayName = 'ComposerHeaderActions';
 
   static propTypes = {

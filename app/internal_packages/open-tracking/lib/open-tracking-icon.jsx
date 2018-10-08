@@ -3,7 +3,7 @@ import { RetinaImg } from 'mailspring-component-kit';
 import OpenTrackingMessagePopover from './open-tracking-message-popover';
 import { PLUGIN_ID } from './open-tracking-constants';
 
-export default class OpenTrackingIcon extends React.Component {
+module.exports = class OpenTrackingIcon extends React.Component {
   static displayName = 'OpenTrackingIcon';
 
   static propTypes = {

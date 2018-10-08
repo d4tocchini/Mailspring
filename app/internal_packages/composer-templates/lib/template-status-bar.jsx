@@ -34,4 +34,4 @@ TemplateStatusBar.containerStyles = {
   margin: 'auto',
 };
 
-export default TemplateStatusBar;
+module.exports = TemplateStatusBar;

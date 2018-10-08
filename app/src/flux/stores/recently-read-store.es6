@@ -47,4 +47,4 @@ class RecentlyReadStore extends MailspringStore {
 }
 
 const store = new RecentlyReadStore();
-export default store;
+module.exports = store;

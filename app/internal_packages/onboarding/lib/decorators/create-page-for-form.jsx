@@ -309,4 +309,4 @@ const CreatePageForForm = FormComponent => {
   };
 };
 
-export default CreatePageForForm;
+module.exports = CreatePageForForm;

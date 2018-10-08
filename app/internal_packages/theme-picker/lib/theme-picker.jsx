@@ -57,6 +57,13 @@ class ThemePicker extends React.Component {
       'ui-darkside',
       'ui-dark',
       'ui-light',
+      'ui-80s-baby-',
+      'ui-adapta-',
+      'ui-arc-dark-',
+      'ui-arc-light-',
+      'ui-material-adapted-',
+      'ui-n1-ido-',
+      'ui-stripe-'
     ];
     const sortedThemes = [].concat(this.state.themes);
     sortedThemes.sort((a, b) => {
@@ -103,4 +110,4 @@ class ThemePicker extends React.Component {
   }
 }
 
-export default ThemePicker;
+module.exports = ThemePicker;

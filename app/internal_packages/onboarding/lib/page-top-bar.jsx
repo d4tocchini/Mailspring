@@ -56,4 +56,4 @@ PageTopBar.propTypes = {
   allowMoveBack: PropTypes.bool,
 };
 
-export default PageTopBar;
+module.exports = PageTopBar;

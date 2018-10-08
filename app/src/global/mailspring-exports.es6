@@ -1,6 +1,6 @@
 /* eslint global-require: 0 */
 /* eslint import/no-dynamic-require: 0 */
-import DatabaseObjectRegistry from '../registries/database-object-registry';
+const DatabaseObjectRegistry = require('../registries/database-object-registry');
 
 // This module exports an empty object, with a ton of defined properties that
 // `require` files the first time they're called.
@@ -12,7 +12,6 @@ const resolveExport = requireValue => {
 
 const lazyLoadWithGetter = (prop, getter) => {
   const key = `${prop}`;
-
   if (exports[key]) {
     throw new Error(`Fatal error: Duplicate entry in mailspring-exports: ${key}`);
   }
@@ -22,6 +21,7 @@ const lazyLoadWithGetter = (prop, getter) => {
     get: () => {
       const value = getter();
       Object.defineProperty(exports, prop, { enumerable: true, value });
+      if (value === undefined) throw new Error('?????????')
       return value;
     },
   });

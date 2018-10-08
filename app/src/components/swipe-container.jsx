@@ -44,7 +44,7 @@ if (process.platform === 'darwin') {
   // vertical, not horizontal, behavior.
 }
 
-export default class SwipeContainer extends React.Component {
+module.exports = class SwipeContainer extends React.Component {
   static displayName = 'SwipeContainer';
 
   static propTypes = {
@@ -79,8 +79,8 @@ export default class SwipeContainer extends React.Component {
 
   componentDidMount() {
     this.mounted = true;
-    window.addEventListener('scroll-touch-begin', this._onScrollTouchBegin);
-    window.addEventListener('scroll-touch-end', this._onScrollTouchEnd);
+    window.addEventListener('scroll-touch-begin', this._onScrollTouchBegin, {passive: true});
+    window.addEventListener('scroll-touch-end', this._onScrollTouchEnd, {passive: true});
   }
 
   componentWillReceiveProps() {
@@ -114,7 +114,12 @@ export default class SwipeContainer extends React.Component {
   };
 
   _onWheel = e => {
-    let velocity = e.deltaX / 3;
+    // D4
+    const dy = e.deltaY
+    const dx = e.deltaX
+    if (Math.abs(dy) / (Math.abs(dx) || 1) > 0.2) return
+
+    let velocity = dx / 3;
     if (SwipeInverted) {
       velocity = -velocity;
     }
@@ -227,7 +232,8 @@ export default class SwipeContainer extends React.Component {
       // if the direction of the swipe is more than ~15º off the horizontal axis.
       const dx = Math.abs(trackingTouch.clientX - this.trackingStartX);
       const dy = Math.abs(trackingTouch.clientY - this.trackingStartY);
-      if (this.phase !== Phase.GestureConfirmed && dy / (dx || 1) > 0.3) {
+      // D4                                     &&
+      if (this.phase !== Phase.GestureConfirmed || dy / (dx || 1) > 0.3) {
         return;
       }
 

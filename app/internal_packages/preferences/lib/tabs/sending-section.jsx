@@ -47,7 +47,7 @@ SendingSection.propTypes = {
   sendingConfigSchema: PropTypes.object,
 };
 
-export default ListensToFluxStore(SendingSection, {
+module.exports = ListensToFluxStore(SendingSection, {
   stores: [AccountStore, SendActionsStore],
   getStateFromStores(props) {
     const { configSchema } = props;

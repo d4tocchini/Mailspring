@@ -39,4 +39,4 @@ class PackageSet extends React.Component {
   }
 }
 
-export default PackageSet;
+module.exports = PackageSet;

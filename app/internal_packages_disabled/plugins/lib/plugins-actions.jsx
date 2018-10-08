@@ -23,4 +23,4 @@ for (const key of Object.keys(Actions)) {
   Actions[key].sync = true;
 }
 
-export default Actions;
+module.exports = Actions;

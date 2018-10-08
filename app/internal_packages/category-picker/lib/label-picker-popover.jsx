@@ -12,7 +12,7 @@ import {
 } from 'mailspring-exports';
 import { Categories } from 'mailspring-observables';
 
-export default class LabelPickerPopover extends Component {
+module.exports = class LabelPickerPopover extends Component {
   static propTypes = {
     threads: PropTypes.array.isRequired,
     account: PropTypes.object.isRequired,

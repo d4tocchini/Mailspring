@@ -1,5 +1,5 @@
-import Attribute from './attribute';
-import Matcher from './matcher';
+const Attribute = require('./attribute');
+const Matcher = require('./matcher');
 
 /*
 Public: The value of this attribute is always a string or `null`.
@@ -9,7 +9,7 @@ String attributes can be queries using `equal`, `not`, and `startsWith`. Matchin
 
 Section: Database
 */
-export default class AttributeString extends Attribute {
+class AttributeString extends Attribute {
   toJSON(val) {
     return val;
   }
@@ -52,3 +52,5 @@ export default class AttributeString extends Attribute {
     return new Matcher(this, '>=', val);
   }
 }
+
+module.exports = AttributeString

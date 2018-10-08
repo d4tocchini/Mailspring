@@ -136,4 +136,4 @@ class MasterBeforeEach {
     spyOn(clipboard, 'readText').andCallFake(() => clipboardContent);
   }
 }
-export default new MasterBeforeEach();
+module.exports = new MasterBeforeEach();

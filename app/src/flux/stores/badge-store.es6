@@ -1,6 +1,6 @@
 /* eslint global-require:0 */
 import MailspringStore from 'mailspring-store';
-import FocusedPerspectiveStore from './focused-perspective-store';
+const FocusedPerspectiveStore = require('./focused-perspective-store');
 import ThreadCountsStore from './thread-counts-store';
 import CategoryStore from './category-store';
 
@@ -75,4 +75,4 @@ class BadgeStore extends MailspringStore {
 }
 
 const badgeStore = new BadgeStore();
-export default badgeStore;
+module.exports = badgeStore;

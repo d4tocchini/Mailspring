@@ -1,5 +1,5 @@
-import Attribute from './attribute';
-import Matcher from './matcher';
+const Attribute = require('./attribute');
+const Matcher = require('./matcher');
 /*
 Public: The value of this attribute is always a boolean. Null values are coerced to false.
 
@@ -8,7 +8,7 @@ String attributes can be queries using `equal` and `not`. Matching on
 
 Section: Database
 */
-export default class AttributeBoolean extends Attribute {
+class AttributeBoolean extends Attribute {
   toJSON(val) {
     return val;
   }
@@ -31,3 +31,5 @@ export default class AttributeBoolean extends Attribute {
     return new Matcher(this, val ? '!=' : '=', 0);
   }
 }
+
+module.exports = AttributeBoolean

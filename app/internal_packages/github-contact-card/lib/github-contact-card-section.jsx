@@ -48,7 +48,7 @@ GithubProfile.propTypes = {
   profile: PropTypes.object.isRequired,
 };
 
-export default class GithubContactCardSection extends React.Component {
+module.exports = class GithubContactCardSection extends React.Component {
   static displayName = 'GithubContactCardSection';
 
   static containerStyles = {

@@ -3,7 +3,7 @@ import https from 'https';
 import { shell } from 'electron';
 import url from 'url';
 
-export default class AutoupdateImplBase extends EventEmitter {
+module.exports = class AutoupdateImplBase extends EventEmitter {
   supportsUpdates() {
     // If we're packaged into a Snapcraft distribution, we don't need
     // autoupdates within the app because they're handled transparently.

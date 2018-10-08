@@ -2,7 +2,7 @@ const originalLog = console.log;
 const originalWarn = console.warn;
 const originalError = console.error;
 
-export default class ConsoleReporter {
+module.exports = class ConsoleReporter {
   reportSpecStarting(spec) {
     const withContext = log => {
       return (...args) => {

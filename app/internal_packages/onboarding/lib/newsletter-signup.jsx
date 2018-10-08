@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { RetinaImg, Flexbox } from 'mailspring-component-kit';
 import { MailspringAPIRequest } from 'mailspring-exports';
 
-export default class NewsletterSignup extends React.Component {
+module.exports = class NewsletterSignup extends React.Component {
   static displayName = 'NewsletterSignup';
   static propTypes = {
     name: PropTypes.string,

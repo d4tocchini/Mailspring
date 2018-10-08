@@ -1,6 +1,6 @@
 import { Disposable } from 'event-kit';
 
-export default class StyleManager {
+module.exports = class StyleManager {
   constructor() {
     this.styleElementsBySourcePath = {};
 

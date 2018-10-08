@@ -1,6 +1,6 @@
 import { React, UndoRedoStore, SyncbackMetadataTask } from 'mailspring-exports';
 import { RetinaImg } from 'mailspring-component-kit';
-import { CSSTransitionGroup } from 'react-transition-group';
+import CSSTransitionGroup from '../../../src/components/CSSTransitionGroup';
 
 function isUndoSend(block) {
   return (
@@ -90,7 +90,7 @@ const BasicContent = ({ block, onMouseEnter, onMouseLeave }) => {
   );
 };
 
-export default class UndoRedoToast extends React.Component {
+module.exports = class UndoRedoToast extends React.Component {
   static displayName = 'UndoRedoToast';
   static containerRequired = false;
 

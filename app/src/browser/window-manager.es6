@@ -6,7 +6,7 @@ const MAIN_WINDOW = 'default';
 const SPEC_WINDOW = 'spec';
 const ONBOARDING_WINDOW = 'onboarding';
 
-export default class WindowManager {
+class WindowManager {
   constructor({
     devMode,
     safeMode,
@@ -143,6 +143,10 @@ export default class WindowManager {
   ensureWindow(windowKey, extraOpts) {
     const win = this._windows[windowKey];
 
+    // D4
+    // console.log('ensureWindow windowKey,extraOpts',windowKey, extraOpts)
+    // console.log('win?',!!win)
+
     if (!win) {
       this.newWindow(this._coreWindowOpts(windowKey, extraOpts));
       return;
@@ -222,6 +226,7 @@ export default class WindowManager {
 
   _coreWindowOpts(windowKey, extraOpts = {}) {
     const coreWinOpts = {};
+
     coreWinOpts[WindowManager.MAIN_WINDOW] = {
       windowKey: WindowManager.MAIN_WINDOW,
       windowType: WindowManager.MAIN_WINDOW,
@@ -261,10 +266,12 @@ export default class WindowManager {
 
     const defaultOptions = coreWinOpts[windowKey] || {};
 
-    return Object.assign({}, defaultOptions, extraOpts);
+    const opts = Object.assign({}, defaultOptions, extraOpts);
+    // console.log('_coreWindowOpts', opts)
+    return opts
   }
 }
-
+module.exports = WindowManager
 WindowManager.MAIN_WINDOW = MAIN_WINDOW;
 WindowManager.SPEC_WINDOW = SPEC_WINDOW;
 WindowManager.ONBOARDING_WINDOW = ONBOARDING_WINDOW;

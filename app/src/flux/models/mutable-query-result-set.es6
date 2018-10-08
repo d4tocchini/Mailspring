@@ -1,8 +1,14 @@
-import QueryResultSet from './query-result-set';
-import AttributeJoinedData from '../attributes/attribute-joined-data';
+const QueryResultSet = require('./query-result-set');
+
+let AttributeJoinedData
+function instanceof_AttributeJoinedData(x) {
+  AttributeJoinedData || (AttributeJoinedData = require('../attributes/attribute-joined-data'))
+  return x instanceof AttributeJoinedData
+}
 
 // TODO: Make mutator methods QueryResultSet.join(), QueryResultSet.clip...
-export default class MutableQueryResultSet extends QueryResultSet {
+module.exports = class MutableQueryResultSet extends QueryResultSet {
+
   immutableClone() {
     const set = new QueryResultSet({
       _ids: [].concat(this._ids),
@@ -87,10 +93,14 @@ export default class MutableQueryResultSet extends QueryResultSet {
     // Make sure we never drop joined data by pulling it over.
     const existing = this._modelsHash[item.id];
     if (existing) {
-      const attrs = existing.constructor.attributes;
-      for (const key of Object.keys(attrs)) {
+      const attrs = existing.attributesList()
+      const keys = existing.attributeKeys()      
+      for (const key of keys) {
         const attr = attrs[key];
-        if (attr instanceof AttributeJoinedData && item[attr.modelKey] === undefined) {
+        if (
+          item[attr.modelKey] === undefined &&
+          instanceof_AttributeJoinedData(attr)
+          ) {
           item[attr.modelKey] = existing[attr.modelKey];
         }
       }

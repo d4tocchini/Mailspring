@@ -7,7 +7,7 @@ export function activate() {
   this.preferencesTab = new PreferencesUIStore.TabItem({
     tabId: 'Signatures',
     displayName: 'Signatures',
-    componentClassFn: () => require('./preferences-signatures').default, // eslint-disable-line
+    componentClassFn: () => require('./preferences-signatures'), // eslint-disable-line
   });
 
   ExtensionRegistry.Composer.register(SignatureComposerExtension);

@@ -488,4 +488,4 @@ class EditableList extends Component {
   }
 }
 
-export default EditableList;
+module.exports = EditableList;

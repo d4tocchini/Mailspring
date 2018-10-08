@@ -3,7 +3,7 @@ import {
   FocusedContactsStore,
 } from 'mailspring-exports';
 
-export default class MyMessageSidebar extends React.Component {
+module.exports = class MyMessageSidebar extends React.Component {
   static displayName = 'MyMessageSidebar';
 
   // This sidebar component listens to the FocusedContactStore,

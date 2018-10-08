@@ -179,4 +179,4 @@ class MessageBodyProcessor {
 }
 
 const store = new MessageBodyProcessor();
-export default store;
+module.exports = store;

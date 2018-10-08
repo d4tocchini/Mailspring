@@ -38,4 +38,4 @@ FormField.propTypes = {
   account: PropTypes.object,
 };
 
-export default FormField;
+module.exports = FormField;

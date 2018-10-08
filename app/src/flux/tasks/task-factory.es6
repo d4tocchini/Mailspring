@@ -1,10 +1,10 @@
-import ChangeFolderTask from './change-folder-task';
-import ChangeLabelsTask from './change-labels-task';
-import ChangeUnreadTask from './change-unread-task';
-import ChangeStarredTask from './change-starred-task';
-import CategoryStore from '../stores/category-store';
-import Thread from '../models/thread';
-import Label from '../models/label';
+const ChangeFolderTask = require('./change-folder-task');
+const ChangeLabelsTask = require('./change-labels-task');
+const ChangeUnreadTask = require('./change-unread-task');
+const ChangeStarredTask = require('./change-starred-task');
+const CategoryStore = require('../stores/category-store');
+const Thread = require('../models/thread');
+const Label = require('../models/label');
 
 const TaskFactory = {
   tasksForThreadsByAccountId(threads, callback) {
@@ -23,10 +23,12 @@ const TaskFactory = {
     const tasks = [];
     Object.values(byAccount).forEach(({ accountThreads, accountId }) => {
       const taskOrTasks = callback(accountThreads, accountId);
-      if (taskOrTasks && taskOrTasks instanceof Array) {
-        tasks.push(...taskOrTasks);
-      } else if (taskOrTasks) {
-        tasks.push(taskOrTasks);
+      if (taskOrTasks) {
+        if (taskOrTasks instanceof Array) {
+          tasks.push.apply(tasks, taskOrTasks);
+        } else {
+          tasks.push(taskOrTasks);
+        }
       }
     });
     return tasks;
@@ -104,4 +106,4 @@ const TaskFactory = {
   },
 };
 
-export default TaskFactory;
+module.exports = TaskFactory;

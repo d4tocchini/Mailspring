@@ -52,7 +52,7 @@ function toggleBlockTypeWithBreakout(value, change, type) {
   return change;
 }
 
-export const BLOCK_CONFIG = {
+const BLOCK_CONFIG = {
   div: {
     type: 'div',
     tagNames: ['div', 'br', 'p'],
@@ -224,7 +224,7 @@ const rules = [
 
 // support functions
 
-export function hasBlockquote(value) {
+function hasBlockquote(value) {
   const nodeHasBlockquote = node => {
     if (!node.nodes) return false;
     for (const childNode of node.nodes.toArray()) {
@@ -236,7 +236,7 @@ export function hasBlockquote(value) {
   return nodeHasBlockquote(value.document);
 }
 
-export function hasNonTrailingBlockquote(value) {
+function hasNonTrailingBlockquote(value) {
   const nodeHasNonTrailingBlockquote = node => {
     if (!node.nodes) return false;
     let found = false;
@@ -253,7 +253,8 @@ export function hasNonTrailingBlockquote(value) {
   return nodeHasNonTrailingBlockquote(value.document);
 }
 
-export function allNodesInBFSOrder(value) {
+
+function allNodesInBFSOrder(value) {
   const all = [];
   const collect = node => {
     if (!node.nodes) return;
@@ -264,14 +265,14 @@ export function allNodesInBFSOrder(value) {
   return all;
 }
 
-export function isQuoteNode(n) {
+function isQuoteNode(n) {
   return (
     n.type === 'blockquote' ||
     (n.data && n.data.get('className') && n.data.get('className').includes('gmail_quote'))
   );
 }
 
-export function lastUnquotedNode(value) {
+function lastUnquotedNode(value) {
   const all = allNodesInBFSOrder(value);
   for (let idx = 0; idx < all.length; idx++) {
     const n = all[idx];
@@ -282,7 +283,7 @@ export function lastUnquotedNode(value) {
   return all[0];
 }
 
-export function removeQuotedText(value) {
+function removeQuotedText(value) {
   const change = value.change();
   let quoteBlock = null;
   while ((quoteBlock = allNodesInBFSOrder(change.value).find(isQuoteNode))) {
@@ -291,7 +292,7 @@ export function removeQuotedText(value) {
   return change;
 }
 
-export function hideQuotedTextByDefault(draft) {
+function hideQuotedTextByDefault(draft) {
   if (draft.isForwarded()) {
     return false;
   }
@@ -303,7 +304,7 @@ export function hideQuotedTextByDefault(draft) {
 
 // plugins
 
-export default [
+module.exports = [
   // Base implementation of BLOCK_CONFIG block types,
   // the "block" toolbar section, and serialization
   {
@@ -399,3 +400,12 @@ export default [
     },
   }),
 ];
+
+module.exports.BLOCK_CONFIG = BLOCK_CONFIG
+module.exports.hasBlockquote = hasBlockquote
+module.exports.hasNonTrailingBlockquote = hasNonTrailingBlockquote
+module.exports.allNodesInBFSOrder = allNodesInBFSOrder
+module.exports.isQuoteNode = isQuoteNode
+module.exports.lastUnquotedNode = lastUnquotedNode
+module.exports.removeQuotedText = removeQuotedText
+module.exports.hideQuotedTextByDefault = hideQuotedTextByDefault

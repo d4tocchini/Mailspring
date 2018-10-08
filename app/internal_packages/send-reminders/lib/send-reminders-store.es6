@@ -102,4 +102,4 @@ class SendRemindersStore extends MailspringStore {
   };
 }
 
-export default new SendRemindersStore();
+module.exports = new SendRemindersStore();

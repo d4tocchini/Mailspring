@@ -95,4 +95,4 @@ const AccountProviders = [
   },
 ];
 
-export default AccountProviders;
+module.exports = AccountProviders;

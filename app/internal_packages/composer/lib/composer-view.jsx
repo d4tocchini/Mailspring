@@ -36,7 +36,7 @@ const {
 // The ComposerView is a unique React component because it (currently) is a
 // singleton. Normally, the React way to do things would be to re-render the
 // Composer with new props.
-export default class ComposerView extends React.Component {
+module.exports = class ComposerView extends React.Component {
   static displayName = 'ComposerView';
 
   static propTypes = {

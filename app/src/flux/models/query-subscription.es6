@@ -1,8 +1,10 @@
-import DatabaseStore from '../stores/database-store';
-import QueryRange from './query-range';
-import MutableQueryResultSet from './mutable-query-result-set';
+const DatabaseStore = require('../stores/database-store');
+const QueryRange = require('./query-range');
+const MutableQueryResultSet = require('./mutable-query-result-set');
 
-export default class QuerySubscription {
+const QuerySubscription =
+  module.exports = class {
+
   constructor(query, options = {}) {
     this._query = query;
     this._options = options;

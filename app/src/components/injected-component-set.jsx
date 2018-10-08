@@ -29,7 +29,7 @@ If no matching components is found, the InjectedComponent renders an empty span.
 
 Section: Component Kit
  */
-export default class InjectedComponentSet extends React.Component {
+module.exports = class InjectedComponentSet extends React.Component {
   static displayName = 'InjectedComponentSet';
 
   /*

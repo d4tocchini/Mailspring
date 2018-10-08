@@ -8,7 +8,7 @@ import MessageItemBody from './message-item-body';
 import MessageTimestamp from './message-timestamp';
 import MessageControls from './message-controls';
 
-export default class MessageItem extends React.Component {
+module.exports = class MessageItem extends React.Component {
   static displayName = 'MessageItem';
 
   static propTypes = {

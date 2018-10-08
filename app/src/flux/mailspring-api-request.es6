@@ -2,7 +2,7 @@
 import { APIError } from './errors';
 
 // A 0 code is when an error returns without a status code, like "ESOCKETTIMEDOUT"
-export const TimeoutErrorCodes = [
+const TimeoutErrorCodes = [
   0,
   408,
   'ETIMEDOUT',
@@ -11,7 +11,7 @@ export const TimeoutErrorCodes = [
   'ENETDOWN',
   'ENETUNREACH',
 ];
-export const PermanentErrorCodes = [
+const PermanentErrorCodes = [
   400,
   401,
   402,
@@ -25,14 +25,14 @@ export const PermanentErrorCodes = [
   'EHOSTDOWN',
   'EHOSTUNREACH',
 ];
-export const CanceledErrorCodes = [-123, 'ECONNABORTED'];
-export const SampleTemporaryErrorCode = 504;
+const CanceledErrorCodes = [-123, 'ECONNABORTED'];
+const SampleTemporaryErrorCode = 504;
 
 let IdentityStore = null;
 
 // server option
 
-export function rootURLForServer(server) {
+function rootURLForServer(server) {
   const env = AppEnv.config.get('env');
 
   if (!['development', 'staging', 'production'].includes(env)) {
@@ -40,16 +40,18 @@ export function rootURLForServer(server) {
   }
 
   if (server === 'identity') {
+    // D4
+    // $
     return {
-      development: 'http://localhost:5101',
-      staging: 'https://id-staging.getmailspring.com',
+      development:  'https://id.getmailspring.com',// 'http://localhost:5101',
+      staging:  'https://id.getmailspring.com',//'https://id-staging.getmailspring.com',
       production: 'https://id.getmailspring.com',
     }[env];
   }
   throw new Error('rootURLForServer: You must provide a valid `server` value');
 }
 
-export async function postStaticAsset({ filename, blob }) {
+async function postStaticAsset({ filename, blob }) {
   const body = new FormData();
   body.set('filename', filename);
   if (typeof blob === 'string') {
@@ -66,7 +68,7 @@ export async function postStaticAsset({ filename, blob }) {
   return resp.link;
 }
 
-export async function postStaticPage({ html, key }) {
+async function postStaticPage({ html, key }) {
   const json = await makeRequest({
     server: 'identity',
     method: 'POST',
@@ -78,7 +80,7 @@ export async function postStaticPage({ html, key }) {
   return json.link;
 }
 
-export async function makeRequest(options) {
+async function makeRequest(options) {
   // for some reason when `fetch` completes, the stack trace has been lost.
   // In case the request failsm capture the stack now.
   const root = rootURLForServer(options.server);
@@ -89,7 +91,7 @@ export async function makeRequest(options) {
 
   if (!options.auth && options.auth !== false) {
     if (options.server === 'identity') {
-      IdentityStore = IdentityStore || require('./stores/identity-store').default;
+      IdentityStore = IdentityStore || require('./stores/identity-store');
       const username = IdentityStore.identity().token;
       options.headers.set('Authorization', `Basic ${btoa(`${username}:`)}`);
     }
@@ -121,7 +123,7 @@ export async function makeRequest(options) {
   return resp.json();
 }
 
-export default {
+module.exports = {
   TimeoutErrorCodes,
   PermanentErrorCodes,
   CanceledErrorCodes,

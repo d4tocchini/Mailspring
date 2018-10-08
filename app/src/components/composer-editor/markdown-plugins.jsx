@@ -3,7 +3,7 @@ import AutoReplace from 'slate-auto-replace';
 import { BLOCK_CONFIG } from './base-block-plugins';
 import { MARK_CONFIG } from './base-mark-plugins';
 
-export default [
+module.exports = [
   // **abd* + *
   AutoReplace({
     ignoreIn: BLOCK_CONFIG.code.type,

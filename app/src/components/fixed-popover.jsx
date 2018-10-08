@@ -346,4 +346,4 @@ class FixedPopover extends Component {
   }
 }
 
-export default compose(FixedPopover, AutoFocuses);
+module.exports = compose(FixedPopover, AutoFocuses);

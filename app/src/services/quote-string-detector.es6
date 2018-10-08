@@ -13,7 +13,7 @@ import DOMWalkers from '../dom-walkers';
  *
  * See email_19 as a test case for this.
  */
-export default function quoteStringDetector(doc) {
+module.exports = function quoteStringDetector(doc) {
   const quoteNodesToRemove = [];
   let seenInitialQuoteEnd = false;
 

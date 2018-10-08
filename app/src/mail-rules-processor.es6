@@ -1,10 +1,10 @@
 import _ from 'underscore';
 
-import Task from './flux/tasks/task';
 import Actions from './flux/actions';
-import Thread from './flux/models/thread';
-import Folder from './flux/models/folder';
-import Label from './flux/models/label';
+const Task = require('./flux/tasks/task');
+const Thread = require('./flux/models/thread');
+const Folder = require('./flux/models/folder');
+const Label = require('./flux/models/label');
 import CategoryStore from './flux/stores/category-store';
 import DatabaseStore from './flux/stores/database-store';
 import TaskQueue from './flux/stores/task-queue';
@@ -135,7 +135,7 @@ const MailRulesActions = {
 
 class MailRulesProcessor {
   async processMessages(messages) {
-    MailRulesStore = MailRulesStore || require('./flux/stores/mail-rules-store').default; //eslint-disable-line
+    MailRulesStore = MailRulesStore || require('./flux/stores/mail-rules-store'); //eslint-disable-line
     if (messages.length === 0) {
       return;
     }
@@ -209,4 +209,4 @@ class MailRulesProcessor {
   }
 }
 
-export default new MailRulesProcessor();
+module.exports = new MailRulesProcessor();

@@ -43,4 +43,4 @@ class PluginsView extends React.Component {
   }
 }
 
-export default PluginsView;
+module.exports = PluginsView;

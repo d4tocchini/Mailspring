@@ -7,4 +7,4 @@ ActionNames.forEach(name => {
   Actions[name].sync = true;
 });
 
-export default Actions;
+module.exports = Actions;

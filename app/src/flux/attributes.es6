@@ -8,7 +8,7 @@ import AttributeDateTime from './attributes/attribute-datetime';
 import AttributeCollection from './attributes/attribute-collection';
 import AttributeJoinedData from './attributes/attribute-joined-data';
 
-export default {
+module.exports = {
   Matcher: Matcher,
   SortOrder: SortOrder,
 

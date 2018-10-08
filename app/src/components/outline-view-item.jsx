@@ -389,4 +389,4 @@ class OutlineViewItem extends Component {
   }
 }
 
-export default OutlineViewItem;
+module.exports = OutlineViewItem;

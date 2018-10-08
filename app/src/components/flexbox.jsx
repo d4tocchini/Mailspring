@@ -6,7 +6,7 @@ Any additional props you set on the Flexbox are rendered.
 
 Section: Component Kit
 */
-export default class Flexbox extends React.Component {
+module.exports = class Flexbox extends React.Component {
   static displayName = 'Flexbox';
 
   /*

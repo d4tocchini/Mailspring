@@ -3,7 +3,7 @@ const React = require('react');
 const ReactDOM = require('react-dom');
 const PropTypes = require('prop-types');
 const classNames = require('classnames');
-const RetinaImg = require('./retina-img').default;
+const RetinaImg = require('./retina-img');
 const { FolderSyncProgressStore, FocusedPerspectiveStore } = require('mailspring-exports');
 const { SyncingListState } = require('mailspring-component-kit');
 

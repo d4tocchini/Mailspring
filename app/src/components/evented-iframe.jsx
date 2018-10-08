@@ -13,7 +13,7 @@ const {
   MailspringAPIRequest,
   SearchableComponentStore,
 } = require('mailspring-exports');
-const IFrameSearcher = require('../searchable-components/iframe-searcher').default;
+const IFrameSearcher = require('../searchable-components/iframe-searcher');
 const url = require('url');
 const _ = require('underscore');
 
@@ -360,7 +360,7 @@ class EventedIFrame extends React.Component {
               oReq.open('GET', src, true);
               oReq.responseType = 'arraybuffer';
               oReq.onload = function() {
-                const buffer = new Buffer(new Uint8Array(oReq.response));
+                const buffer = Buffer.allocUnsafe(new Uint8Array(oReq.response));
                 fs.writeFile(path, buffer, err => shell.showItemInFolder(path));
               };
               oReq.send();

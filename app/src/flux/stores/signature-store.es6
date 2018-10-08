@@ -119,4 +119,4 @@ class SignatureStore extends MailspringStore {
   };
 }
 
-export default new SignatureStore();
+module.exports = new SignatureStore();

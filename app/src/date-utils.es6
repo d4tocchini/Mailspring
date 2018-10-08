@@ -392,4 +392,4 @@ const DateUtils = {
   },
 };
 
-export default DateUtils;
+module.exports = DateUtils;

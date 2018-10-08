@@ -1,6 +1,6 @@
-import { Event } from 'mailspring-exports';
+const { Event } = require('mailspring-exports');
 
-export default class SyncbackEventTask {
+class SyncbackEventTask {
   constructor() {
     // id
     throw new Error('Unimplemented!');
@@ -20,3 +20,5 @@ export default class SyncbackEventTask {
     return data;
   }
 }
+
+module.exports = SyncbackEventTask

@@ -1,16 +1,19 @@
-import os from 'os';
-import fs from 'fs';
-import path from 'path';
-import { exec } from 'child_process';
-import { remote, shell } from 'electron';
-import mkdirp from 'mkdirp';
-import MailspringStore from 'mailspring-store';
-import DraftStore from './draft-store';
-import Actions from '../actions';
-import File from '../models/file';
-import Utils from '../models/utils';
+const os = require('os');
+const _fs = require('fs');
+const path = require('path');
+const mkdirp = require('mkdirp');
+const MailspringStore = require('mailspring-store');
+const DraftStore = require('./draft-store');
+const Actions = require('../actions');
+const File = require('../models/file');
+const Utils = require('../models/utils');
+const { exec } = require('child_process');
+const { remote, shell } = require('electron');
 
-Promise.promisifyAll(fs);
+const fs = _fs.promises
+
+// D4
+// Promise.promisifyAll(fs);
 
 const mkdirpAsync = Promise.promisify(mkdirp);
 
@@ -371,7 +374,7 @@ class AttachmentStore extends MailspringStore {
 
   _getFileStats(filepath) {
     return fs
-      .statAsync(filepath)
+      .stat(filepath)
       .catch(() =>
         Promise.reject(
           new Error(`${filepath} could not be found, or has invalid file permissions.`)
@@ -486,4 +489,4 @@ class AttachmentStore extends MailspringStore {
   };
 }
 
-export default new AttachmentStore();
+module.exports = new AttachmentStore();

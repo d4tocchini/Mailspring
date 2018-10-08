@@ -107,4 +107,4 @@ class SystemTrayManager {
   }
 }
 
-export default SystemTrayManager;
+module.exports = SystemTrayManager;

@@ -110,4 +110,4 @@ class GithubUserStore extends MailspringStore {
   }
 }
 
-export default new GithubUserStore();
+module.exports = new GithubUserStore();

@@ -1,14 +1,14 @@
-import Task from './task';
-import Attributes from '../attributes';
+const Task = require('./task');
 
-export default class DestroyDraftTask extends Task {
-  static attributes = Object.assign({}, Task.attributes, {
-    messageIds: Attributes.Collection({
-      modelKey: 'messageIds',
-    }),
-  });
+  class DestroyDraftTask extends Task {
 
-  label() {
-    return 'Deleting draft';
+    static defineAttributes(Attribute) {
+      Attribute('Collection', { modelKey: 'messageIds',})
+    }
+
+    label() {
+      return 'Deleting draft';
+    }
   }
-}
+
+  module.exports = Task.setup(DestroyDraftTask)

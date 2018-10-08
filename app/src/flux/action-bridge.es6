@@ -1,5 +1,5 @@
-import Actions from './actions';
-import Utils from './models/utils';
+const Actions = require('./actions');
+const Utils = require('./models/utils');
 
 const Role = {
   MAIN: 'default',
@@ -123,4 +123,4 @@ class ActionBridge {
   }
 }
 
-export default ActionBridge;
+module.exports = ActionBridge;

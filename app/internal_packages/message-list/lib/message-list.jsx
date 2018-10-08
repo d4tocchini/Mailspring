@@ -500,4 +500,4 @@ class MessageList extends React.Component {
   }
 }
 
-export default SearchableComponentMaker.extend(MessageList);
+module.exports = SearchableComponentMaker.extend(MessageList);

@@ -1,4 +1,4 @@
-import Reflux from 'reflux';
+const Reflux = require('reflux');
 
 const ActionScopeWindow = 'window';
 const ActionScopeGlobal = 'global';
@@ -534,4 +534,4 @@ Actions.windowActions = scopes.window;
 Actions.mainWindowActions = scopes.main;
 Actions.globalActions = scopes.global;
 
-export default Actions;
+module.exports = Actions;

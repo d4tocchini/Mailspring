@@ -191,4 +191,4 @@ class FocusedContactsStore extends MailspringStore {
   }
 }
 
-export default new FocusedContactsStore();
+module.exports = new FocusedContactsStore();

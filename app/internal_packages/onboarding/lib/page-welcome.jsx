@@ -2,7 +2,7 @@ import React from 'react';
 import { RetinaImg } from 'mailspring-component-kit';
 import OnboardingActions from './onboarding-actions';
 
-export default class WelcomePage extends React.Component {
+module.exports = class WelcomePage extends React.Component {
   static displayName = 'WelcomePage';
 
   _onContinue = () => {

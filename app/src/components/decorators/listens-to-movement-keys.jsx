@@ -86,4 +86,4 @@ function ListensToMovementKeys(ComposedComponent) {
   };
 }
 
-export default ListensToMovementKeys;
+module.exports = ListensToMovementKeys;

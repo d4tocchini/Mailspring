@@ -102,7 +102,7 @@ class PreferencesRoot extends React.Component {
   }
 }
 
-export default ListensToFluxStore(PreferencesRoot, {
+module.exports = ListensToFluxStore(PreferencesRoot, {
   stores: [PreferencesUIStore],
   getStateFromStores() {
     const tabs = PreferencesUIStore.tabs();

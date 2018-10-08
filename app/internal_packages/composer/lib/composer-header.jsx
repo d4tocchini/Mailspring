@@ -19,7 +19,7 @@ const ScopedFromField = ListensToFluxStore(AccountContactField, {
   },
 });
 
-export default class ComposerHeader extends React.Component {
+module.exports = class ComposerHeader extends React.Component {
   static displayName = 'ComposerHeader';
 
   static propTypes = {

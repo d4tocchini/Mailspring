@@ -1,4 +1,4 @@
-const RetinaImg = require('./retina-img').default;
+const RetinaImg = require('./retina-img');
 const { React, ReactDOM, PropTypes } = require('mailspring-exports');
 const classnames = require('classnames');
 

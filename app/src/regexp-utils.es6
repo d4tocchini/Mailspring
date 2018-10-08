@@ -1,4 +1,8 @@
-const _ = require('underscore');
+let _
+function _difference(a,b) {
+  _ || (_ = require('underscore'))
+  return _.difference(a,b)
+}
 
 let EmojiData = null;
 
@@ -253,7 +257,7 @@ const RegExpUtils = {
       '\\]',
       '+',
     ];
-    punctuation = _.difference(punctuation, exclude).join('');
+    punctuation = _difference(punctuation, exclude).join('');
     return new RegExp(`[${punctuation}]`, 'g');
   },
 

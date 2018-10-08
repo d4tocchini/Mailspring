@@ -32,7 +32,7 @@ OfflineNotification.propTypes = {
   retryingInSeconds: PropTypes.number,
 };
 
-export default ListensToFluxStore(OfflineNotification, {
+module.exports = ListensToFluxStore(OfflineNotification, {
   stores: [OnlineStatusStore],
   getStateFromStores() {
     return {

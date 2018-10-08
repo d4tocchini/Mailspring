@@ -51,4 +51,4 @@ FormErrorMessage.propTypes = {
   message: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
 };
 
-export default FormErrorMessage;
+module.exports = FormErrorMessage;

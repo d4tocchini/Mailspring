@@ -41,4 +41,4 @@ class LinkTrackingMessagePopover extends React.Component {
   }
 }
 
-export default LinkTrackingMessagePopover;
+module.exports = LinkTrackingMessagePopover;

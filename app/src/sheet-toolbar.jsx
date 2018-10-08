@@ -54,9 +54,9 @@ class ToolbarBack extends React.Component {
   // This is because loading these stores has database side effects.
   constructor(props) {
     super(props);
-    Category = Category || require('./flux/models/category').default;
+    Category = Category || require('./flux/models/category')
     FocusedPerspectiveStore =
-      FocusedPerspectiveStore || require('./flux/stores/focused-perspective-store').default;
+      FocusedPerspectiveStore || require('./flux/stores/focused-perspective-store');
     this.state = {
       categoryName: FocusedPerspectiveStore.current().name,
     };
@@ -188,7 +188,7 @@ ComponentRegistry.register(ToolbarMenuControl, {
   location: WorkspaceStore.Sheet.Global.Toolbar.Right,
 });
 
-export default class Toolbar extends React.Component {
+module.exports = class Toolbar extends React.Component {
   static displayName = 'Toolbar';
 
   static propTypes = {

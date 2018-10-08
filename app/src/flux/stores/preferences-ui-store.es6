@@ -2,7 +2,7 @@ import { ipcRenderer } from 'electron';
 import _ from 'underscore';
 import MailspringStore from 'mailspring-store';
 import WorkspaceStore from './workspace-store';
-import FocusedPerspectiveStore from './focused-perspective-store';
+const FocusedPerspectiveStore = require('./focused-perspective-store');
 import Actions from '../actions';
 
 const MAIN_TAB_ITEM_ID = 'General';
@@ -99,4 +99,4 @@ class PreferencesUIStore extends MailspringStore {
   };
 }
 
-export default new PreferencesUIStore();
+module.exports = new PreferencesUIStore();

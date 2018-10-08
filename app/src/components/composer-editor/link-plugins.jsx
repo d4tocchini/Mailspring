@@ -6,7 +6,7 @@ import { RegExpUtils } from 'mailspring-exports';
 
 import { BuildMarkButtonWithValuePicker, getMarkOfType } from './toolbar-component-factories';
 
-export const LINK_TYPE = 'link';
+const LINK_TYPE = 'link';
 
 function onPaste(event, change, editor) {
   const html = event.clipboardData.getData('text/html');
@@ -90,7 +90,7 @@ const TriggerKeyValues = {
   Return: '\n',
 };
 
-export default [
+module.exports = [
   {
     toolbarComponents: [
       BuildMarkButtonWithValuePicker({
@@ -148,3 +148,5 @@ export default [
     transform: buildAutoReplaceHandler(),
   }),
 ];
+
+module.exports.LINK_TYPE = LINK_TYPE

@@ -15,7 +15,7 @@ const UnsupportedState = 'unsupported';
 const ErrorState = 'error';
 const preferredChannel = 'stable';
 
-export default class AutoUpdateManager extends EventEmitter {
+module.exports = class AutoUpdateManager extends EventEmitter {
   constructor(version, config, specMode) {
     super();
 
@@ -54,11 +54,13 @@ export default class AutoUpdateManager extends EventEmitter {
   };
 
   setupAutoUpdater() {
+    // D4
+    return
     if (process.platform === 'win32') {
-      const Impl = require('./autoupdate-impl-win32').default;
+      const Impl = require('./autoupdate-impl-win32');
       autoUpdater = new Impl();
     } else if (process.platform === 'linux') {
-      const Impl = require('./autoupdate-impl-base').default;
+      const Impl = require('./autoupdate-impl-base');
       autoUpdater = new Impl();
     } else {
       autoUpdater = require('electron').autoUpdater;

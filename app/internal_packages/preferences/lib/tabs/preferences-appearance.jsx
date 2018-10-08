@@ -227,4 +227,4 @@ class PreferencesAppearance extends React.Component {
   }
 }
 
-export default PreferencesAppearance;
+module.exports = PreferencesAppearance;

@@ -1,12 +1,11 @@
 /* eslint global-require: 0 */
 
-import _ from 'underscore';
-
-import MailspringStore from 'mailspring-store';
-import KeyManager from '../../key-manager';
-import Actions from '../actions';
-import Account from '../models/account';
-import Utils from '../models/utils';
+const _ = require('underscore');
+const KeyManager = require('../../key-manager');
+const Actions = require('../actions');
+const MailspringStore = require('mailspring-store');
+const Account = require('../models/account');
+const Utils = require('../models/utils');
 
 const configAccountsKey = 'accounts';
 const configVersionKey = 'accountsVersion';
@@ -42,7 +41,7 @@ class AccountStore extends MailspringStore {
         Actions.focusDefaultMailboxPerspectiveForAccounts([newId], {
           sidebarAccountIds: accountIds,
         });
-        const FolderSyncProgressStore = require('./folder-sync-progress-store').default;
+        const FolderSyncProgressStore = require('./folder-sync-progress-store');
         await FolderSyncProgressStore.whenCategoryListSynced(newId);
         Actions.focusDefaultMailboxPerspectiveForAccounts([newId], {
           sidebarAccountIds: accountIds,
@@ -326,4 +325,4 @@ class AccountStore extends MailspringStore {
   }
 }
 
-export default new AccountStore();
+module.exports = new AccountStore();

@@ -6,7 +6,7 @@ import { RetinaImg } from 'mailspring-component-kit';
 import SendRemindersPopover from './send-reminders-popover';
 import { updateReminderMetadata, reminderDateFor } from './send-reminders-utils';
 
-export default class SendRemindersPopoverButton extends Component {
+module.exports = class SendRemindersPopoverButton extends Component {
   static displayName = 'SendRemindersPopoverButton';
 
   static propTypes = {

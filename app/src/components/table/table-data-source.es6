@@ -8,7 +8,7 @@
  *
  * @class TableDataSource
  */
-export default class TableDataSource {
+module.exports = class TableDataSource {
   /**
    * Takes an Object of the form:
    *

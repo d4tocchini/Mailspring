@@ -1,8 +1,10 @@
-import MutableQuerySubscription from './mutable-query-subscription';
-import DatabaseStore from '../stores/database-store';
-import RecentlyReadStore from '../stores/recently-read-store';
-import Matcher from '../attributes/matcher';
-import Thread from '../models/thread';
+const MutableQuerySubscription = require('./mutable-query-subscription');
+const Thread = require('./thread');
+const DatabaseStore = require('../stores/database-store')
+const RecentlyReadStore = require('../stores/recently-read-store')
+const Matcher = require('../attributes/matcher')
+
+// import Thread from '../models/thread';
 
 const buildQuery = categoryIds => {
   const unreadMatchers = new Matcher.And([
@@ -26,7 +28,9 @@ const buildQuery = categoryIds => {
   return query;
 };
 
-export default class UnreadQuerySubscription extends MutableQuerySubscription {
+const UnreadQuerySubscription =
+  module.exports = class extends MutableQuerySubscription {
+
   constructor(categoryIds) {
     super(buildQuery(categoryIds), { emitResultSet: true });
     this._categoryIds = categoryIds;

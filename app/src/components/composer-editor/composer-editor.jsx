@@ -8,7 +8,7 @@ import { plugins, convertFromHTML, convertToHTML } from './conversion';
 import { lastUnquotedNode } from './base-block-plugins';
 import { changes as InlineAttachmentChanges } from './inline-attachment-plugins';
 
-export default class ComposerEditor extends React.Component {
+module.exports = class ComposerEditor extends React.Component {
   // Public API
 
   constructor(props) {
@@ -129,7 +129,7 @@ export default class ComposerEditor extends React.Component {
 
       const reader = new FileReader();
       reader.addEventListener('loadend', () => {
-        const buffer = new Buffer(new Uint8Array(reader.result));
+        const buffer = Buffer.allocUnsafe(new Uint8Array(reader.result));
         const tmpFolder = temp.path('-nylas-attachment');
         const tmpPath = path.join(tmpFolder, `Pasted File${ext}`);
         fs.mkdir(tmpFolder, () => {

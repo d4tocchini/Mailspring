@@ -3,7 +3,7 @@ import { React, PropTypes, Message } from 'mailspring-exports';
 import AutoloadImagesStore from './autoload-images-store';
 import Actions from './autoload-images-actions';
 
-export default class AutoloadImagesHeader extends React.Component {
+module.exports = class AutoloadImagesHeader extends React.Component {
   static displayName = 'AutoloadImagesHeader';
 
   static propTypes = {

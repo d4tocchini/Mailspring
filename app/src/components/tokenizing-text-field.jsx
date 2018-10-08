@@ -221,7 +221,7 @@ See documentation on the propTypes for usage info.
 
 Section: Component Kit
 */
-export default class TokenizingTextField extends React.Component {
+module.exports = class TokenizingTextField extends React.Component {
   static displayName = 'TokenizingTextField';
 
   static containerRequired = false;

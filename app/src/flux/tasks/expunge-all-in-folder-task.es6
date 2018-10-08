@@ -1,16 +1,16 @@
-import Task from './task';
-import Folder from '../models/folder';
-import Attributes from '../attributes';
+const Task = require('./task');
+const Folder = require('../models/folder');
 
-export default class ExpungeAllInFolderTask extends Task {
-  static attributes = Object.assign({}, Task.attributes, {
-    folder: Attributes.Object({
-      modelKey: 'folder',
-      itemClass: Folder,
-    }),
-  });
+  class ExpungeAllInFolderTask extends Task {
 
-  label() {
-    return `Deleting all messages in ${this.folder ? this.folder.displayName : 'unknown'}`;
+    static defineAttributes(Attribute) {
+      Attribute('Object', { modelKey: 'folder',
+        itemClass: Folder,
+      })
+    }
+
+    label() {
+      return `Deleting all messages in ${this.folder ? this.folder.displayName : 'unknown'}`;
+    }
   }
-}
+  module.exports = Task.setup(ExpungeAllInFolderTask)

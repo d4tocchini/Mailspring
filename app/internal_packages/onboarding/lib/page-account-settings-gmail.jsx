@@ -7,7 +7,7 @@ import OAuthSignInPage from './oauth-signin-page';
 import OnboardingActions from './onboarding-actions';
 import AccountProviders from './account-providers';
 
-export default class AccountSettingsPageGmail extends React.Component {
+module.exports = class AccountSettingsPageGmail extends React.Component {
   static displayName = 'AccountSettingsPageGmail';
 
   static propTypes = {

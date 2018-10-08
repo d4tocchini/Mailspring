@@ -6,4 +6,4 @@ for (const key of Object.keys(ActivityActions)) {
   ActivityActions[key].sync = true;
 }
 
-export default ActivityActions;
+module.exports = ActivityActions;

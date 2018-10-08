@@ -4,8 +4,8 @@ const path = require('path');
 const fs = require('fs');
 const { RetinaImg, Flexbox, ConfigPropContainer } = require('mailspring-component-kit');
 const { AccountStore, IdentityStore } = require('mailspring-exports');
-const OnboardingActions = require('./onboarding-actions').default;
-const NewsletterSignup = require('./newsletter-signup').default;
+const OnboardingActions = require('./onboarding-actions');
+const NewsletterSignup = require('./newsletter-signup');
 
 // NOTE: Temporarily copied from preferences module
 class AppearanceModeOption extends React.Component {

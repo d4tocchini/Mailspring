@@ -1,8 +1,20 @@
 /* eslint global-require: 0 */
-import path from 'path';
-import Model from './model';
-import Attributes from '../attributes';
-let RegExpUtils = null;
+
+const Model = require('./model');
+
+let path
+function path_extname(x) {
+  path = require('path');
+  path_extname = path.extname
+  return path.extname(x)
+}
+
+let RegExpUtils
+function RegExpUtils_illegalPathCharactersRegexp() {
+  RegExpUtils = require('../../regexp-utils')
+  RegExpUtils_illegalPathCharactersRegexp = RegExpUtils.illegalPathCharactersRegexp
+  return RegExpUtils_illegalPathCharactersRegexp()
+}
 
 /**
 Public: File model represents an email attachment.
@@ -22,82 +34,75 @@ This class also inherits attributes from {Model}
 
 Section: Models
 */
-export default class File extends Model {
-  static attributes = Object.assign({}, Model.attributes, {
-    filename: Attributes.String({
-      modelKey: 'filename',
-      queryable: true,
-    }),
-    size: Attributes.Number({
-      modelKey: 'size',
-    }),
-    contentType: Attributes.String({
-      modelKey: 'contentType',
-    }),
-    messageId: Attributes.String({
-      modelKey: 'messageId',
-    }),
-    contentId: Attributes.String({
-      modelKey: 'contentId',
-    }),
-  });
 
-  // Public: Files can have empty names, or no name. `displayName` returns the file's
-  // name if one is present, and falls back to appropriate default name based on
-  // the contentType. It will always return a non-empty string.
-  displayName() {
-    // BG: This logic has been moved to the sync side - all files should always have names
-    // as of the 1.1 release. This is just here still because people's local dbs could
-    // still contain unnammed files.
-    const defaultNames = {
-      'text/calendar': 'Event.ics',
-      'image/png': 'Unnamed Image.png',
-      'image/jpg': 'Unnamed Image.jpg',
-      'image/jpeg': 'Unnamed Image.jpg',
-    };
-    if (this.filename && this.filename.length) {
-      return this.filename;
-    }
-    if (defaultNames[this.contentType]) {
-      return defaultNames[this.contentType];
-    }
-    return 'Unnamed Attachment';
-  }
+  class File extends Model {
 
-  safeDisplayName() {
-    RegExpUtils = RegExpUtils || require('../../regexp-utils');
-    return this.displayName().replace(RegExpUtils.illegalPathCharactersRegexp(), '-');
-  }
-
-  // Public: Returns the file extension that should be used for this file.
-  // Note that asking for the displayExtension is more accurate than trying to read
-  // the extension directly off the filename. The returned extension may be based
-  // on contentType and is always lowercase.
-
-  // Returns the extension without the leading '.' (ex: 'png', 'pdf')
-  displayExtension() {
-    return path.extname(this.displayName().toLowerCase()).substr(1);
-  }
-
-  displayFileSize(bytes = this.size) {
-    if (bytes === 0) {
-      return 'Empty';
+    static defineAttributes(Attribute) {
+      Attribute('String', { modelKey: 'filename',
+        queryable: true,
+      })
+      Attribute('Number', { modelKey: 'size', })
+      Attribute('String', { modelKey: 'contentType', })
+      Attribute('String', { modelKey: 'messageId', })
+      Attribute('String', { modelKey: 'contentId', })
     }
 
-    const units = ['B', 'KB', 'MB', 'GB'];
-    let threshold = 1000000000;
-    let idx = units.length - 1;
-
-    let result = bytes / threshold;
-    while (result < 1 && idx >= 0) {
-      threshold /= 1000;
-      result = bytes / threshold;
-      idx--;
+    // Public: Files can have empty names, or no name. `displayName` returns the file's
+    // name if one is present, and falls back to appropriate default name based on
+    // the contentType. It will always return a non-empty string.
+    displayName() {
+      // BG: This logic has been moved to the sync side - all files should always have names
+      // as of the 1.1 release. This is just here still because people's local dbs could
+      // still contain unnammed files.
+      const defaultNames = {
+        'text/calendar': 'Event.ics',
+        'image/png': 'Unnamed Image.png',
+        'image/jpg': 'Unnamed Image.jpg',
+        'image/jpeg': 'Unnamed Image.jpg',
+      };
+      if (this.filename && this.filename.length) {
+        return this.filename;
+      }
+      if (defaultNames[this.contentType]) {
+        return defaultNames[this.contentType];
+      }
+      return 'Unnamed Attachment';
     }
 
-    // parseFloat will remove trailing zeros
-    const decimalPoints = idx >= 2 ? 1 : 0;
-    const rounded = parseFloat(result.toFixed(decimalPoints));
-    return `${rounded} ${units[idx]}`;
+    safeDisplayName() {
+      return this.displayName().replace(RegExpUtils_illegalPathCharactersRegexp(), '-');
+    }
+
+    // Public: Returns the file extension that should be used for this file.
+    // Note that asking for the displayExtension is more accurate than trying to read
+    // the extension directly off the filename. The returned extension may be based
+    // on contentType and is always lowercase.
+
+    // Returns the extension without the leading '.' (ex: 'png', 'pdf')
+    displayExtension() {
+      return path_extname(this.displayName().toLowerCase()).substr(1);
+    }
+
+    displayFileSize(bytes = this.size) {
+      if (bytes === 0) {
+        return 'Empty';
+      }
+
+      const units = ['B', 'KB', 'MB', 'GB'];
+      let threshold = 1000000000;
+      let idx = units.length - 1;
+
+      let result = bytes / threshold;
+      while (result < 1 && idx >= 0) {
+        threshold /= 1000;
+        result = bytes / threshold;
+        idx--;
+      }
+
+      // parseFloat will remove trailing zeros
+      const decimalPoints = idx >= 2 ? 1 : 0;
+      const rounded = parseFloat(result.toFixed(decimalPoints));
+      return `${rounded} ${units[idx]}`;
+    }
   }
-}
+  module.exports = Model.setup( File )  

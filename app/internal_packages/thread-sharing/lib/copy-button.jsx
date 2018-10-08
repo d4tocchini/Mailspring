@@ -48,4 +48,4 @@ class CopyButton extends React.Component {
     );
   }
 }
-export default CopyButton;
+module.exports = CopyButton;

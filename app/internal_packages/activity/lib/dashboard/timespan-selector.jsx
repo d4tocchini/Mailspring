@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { DropdownMenu, Menu } from 'mailspring-component-kit';
 import { getTimespanOptions } from './timespan';
 
-export default class TimespanSelector extends React.Component {
+module.exports = class TimespanSelector extends React.Component {
   static propTypes = {
     timespan: PropTypes.object,
     onChange: PropTypes.func,

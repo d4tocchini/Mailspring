@@ -2,7 +2,7 @@
 import { EventEmitter } from 'events';
 import ListSelection from './list-selection';
 
-export default class ListDataSource {
+class ListDataSource {
   constructor() {
     this._emitter = new EventEmitter();
     this._cleanedup = false;
@@ -29,7 +29,6 @@ export default class ListDataSource {
       callback.apply(bindContext, args);
     };
     this._emitter.addListener('trigger', eventHandler);
-
     return () => {
       this._emitter.removeListener('trigger', eventHandler);
     };
@@ -100,4 +99,6 @@ class EmptyListDataSource extends ListDataSource {
   }
 }
 
+module.exports = ListDataSource
 ListDataSource.Empty = EmptyListDataSource;
+

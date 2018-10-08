@@ -1,5 +1,5 @@
-import Attribute from './attribute';
-import Matcher from './matcher';
+const Attribute = require('./attribute');
+const Matcher = require('./matcher');
 
 /*
 Public: Collection attributes provide basic support for one-to-many relationships.
@@ -29,16 +29,18 @@ The value of this attribute is always an array of other model objects.
 
 Section: Database
 */
-export default class AttributeCollection extends Attribute {
-  constructor({
-    modelKey,
-    jsonKey,
-    itemClass,
-    joinOnField,
-    joinQueryableBy,
-    joinTableName,
-    queryable,
-  }) {
+
+class AttributeCollection extends Attribute {
+  constructor(opts) {
+    const {
+      modelKey,
+      jsonKey,
+      itemClass,
+      joinOnField,
+      joinQueryableBy,
+      joinTableName,
+      queryable,
+    } = opts
     super({ modelKey, jsonKey, queryable });
     this.itemClass = itemClass;
     this.joinOnField = joinOnField;
@@ -98,3 +100,5 @@ export default class AttributeCollection extends Attribute {
     return new Matcher(this, 'containsAny', vals);
   }
 }
+
+module.exports = AttributeCollection

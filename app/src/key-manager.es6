@@ -113,4 +113,4 @@ class KeyManager {
   }
 }
 
-export default new KeyManager();
+module.exports = new KeyManager();

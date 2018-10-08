@@ -57,4 +57,4 @@ class NativeNotifications {
   }
 }
 
-export default new NativeNotifications();
+module.exports = new NativeNotifications();

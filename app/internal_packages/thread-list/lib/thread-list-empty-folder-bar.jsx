@@ -64,7 +64,7 @@ class ThreadListEmptyFolderBar extends React.Component {
   }
 }
 
-export default ListensToFluxStore(ThreadListEmptyFolderBar, {
+module.exports = ListensToFluxStore(ThreadListEmptyFolderBar, {
   stores: [TaskQueue, ThreadCountsStore, FocusedPerspectiveStore],
   getStateFromStores: props => {
     const p = FocusedPerspectiveStore.current();

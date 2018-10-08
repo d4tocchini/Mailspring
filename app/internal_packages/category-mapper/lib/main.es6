@@ -4,7 +4,7 @@ export function activate() {
   this.preferencesTab = new PreferencesUIStore.TabItem({
     tabId: 'Folders',
     displayName: 'Folders',
-    componentClassFn: () => require('./preferences-category-mapper').default,
+    componentClassFn: () => require('./preferences-category-mapper'),
   });
 
   PreferencesUIStore.registerPreferencesTab(this.preferencesTab);

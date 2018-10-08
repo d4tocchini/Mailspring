@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function CreateButtonGroup(name, buttons, { order = 0 }) {
+module.exports = function CreateButtonGroup(name, buttons, { order = 0 }) {
   const fn = props => {
     return (
       <div className="button-group" style={{ order }}>

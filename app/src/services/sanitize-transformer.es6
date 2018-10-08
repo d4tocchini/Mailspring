@@ -530,4 +530,4 @@ class SanitizeTransformer {
   }
 }
 
-export default new SanitizeTransformer();
+module.exports = new SanitizeTransformer();

@@ -1,8 +1,9 @@
-import Rx from 'rx-lite';
-import Folder from '../flux/models/folder';
-import Label from '../flux/models/label';
-import QuerySubscriptionPool from '../flux/models/query-subscription-pool';
-import DatabaseStore from '../flux/stores/database-store';
+const Rx = require('rx-lite');
+enhanceRx(Rx)
+const Folder = require('../flux/models/folder');
+const Label = require('../flux/models/label');
+const QuerySubscriptionPool = require('../flux/models/query-subscription-pool');
+const DatabaseStore = require('../flux/stores/database-store');
 
 const CategoryOperators = {
   sort() {
@@ -81,75 +82,78 @@ module.exports = {
 
 // Attach a few global helpers
 
-Rx.Observable.fromStore = store => {
-  return Rx.Observable.create(observer => {
-    const unsubscribe = store.listen(() => {
+function enhanceRx(Rx) {
+  Rx.Observable.fromStore = store => {
+    return Rx.Observable.create(observer => {
+      const unsubscribe = store.listen(() => {
+        observer.onNext(store);
+      });
       observer.onNext(store);
+      return Rx.Disposable.create(unsubscribe);
     });
-    observer.onNext(store);
-    return Rx.Disposable.create(unsubscribe);
-  });
-};
-
-// Takes a store that provides an {ObservableListDataSource} via `dataSource()`
-// Returns an observable that provides array of selected items on subscription
-Rx.Observable.fromListSelection = originStore => {
-  return Rx.Observable.create(observer => {
-    let dataSourceDisposable = null;
-    const storeObservable = Rx.Observable.fromStore(originStore);
-
-    const disposable = storeObservable.subscribe(() => {
-      const dataSource = originStore.dataSource();
-      const dataSourceObservable = Rx.Observable.fromStore(dataSource);
-
-      if (dataSourceDisposable) {
-        dataSourceDisposable.dispose();
-      }
-
-      dataSourceDisposable = dataSourceObservable.subscribe(() =>
-        observer.onNext(dataSource.selection.items())
+  };
+  
+  // Takes a store that provides an {ObservableListDataSource} via `dataSource()`
+  // Returns an observable that provides array of selected items on subscription
+  Rx.Observable.fromListSelection = originStore => {
+    return Rx.Observable.create(observer => {
+      let dataSourceDisposable = null;
+      const storeObservable = Rx.Observable.fromStore(originStore);
+  
+      const disposable = storeObservable.subscribe(() => {
+        const dataSource = originStore.dataSource();
+        const dataSourceObservable = Rx.Observable.fromStore(dataSource);
+  
+        if (dataSourceDisposable) {
+          dataSourceDisposable.dispose();
+        }
+  
+        dataSourceDisposable = dataSourceObservable.subscribe(() =>
+          observer.onNext(dataSource.selection.items())
+        );
+        return;
+      });
+      const dispose = () => {
+        if (dataSourceDisposable) {
+          dataSourceDisposable.dispose();
+        }
+        disposable.dispose();
+      };
+      return Rx.Disposable.create(dispose);
+    });
+  };
+  
+  Rx.Observable.fromConfig = configKey => {
+    return Rx.Observable.create(observer => {
+      const disposable = AppEnv.config.onDidChange(configKey, () =>
+        observer.onNext(AppEnv.config.get(configKey))
       );
-      return;
+      observer.onNext(AppEnv.config.get(configKey));
+      return Rx.Disposable.create(disposable.dispose);
     });
-    const dispose = () => {
-      if (dataSourceDisposable) {
-        dataSourceDisposable.dispose();
-      }
-      disposable.dispose();
-    };
-    return Rx.Disposable.create(dispose);
-  });
-};
+  };
+  
+  Rx.Observable.fromAction = action => {
+    return Rx.Observable.create(observer => {
+      const unsubscribe = action.listen((...args) => observer.onNext(...args));
+      return Rx.Disposable.create(unsubscribe);
+    });
+  };
+  
+  Rx.Observable.fromQuery = query => {
+    return Rx.Observable.create(observer => {
+      const unsubscribe = QuerySubscriptionPool.add(query, result => observer.onNext(result));
+      return Rx.Disposable.create(unsubscribe);
+    });
+  };
+  
+  Rx.Observable.fromNamedQuerySubscription = (name, subscription) => {
+    return Rx.Observable.create(observer => {
+      const unsubscribe = QuerySubscriptionPool.addPrivateSubscription(name, subscription, result =>
+        observer.onNext(result)
+      );
+      return Rx.Disposable.create(unsubscribe);
+    });
+  };
+}
 
-Rx.Observable.fromConfig = configKey => {
-  return Rx.Observable.create(observer => {
-    const disposable = AppEnv.config.onDidChange(configKey, () =>
-      observer.onNext(AppEnv.config.get(configKey))
-    );
-    observer.onNext(AppEnv.config.get(configKey));
-    return Rx.Disposable.create(disposable.dispose);
-  });
-};
-
-Rx.Observable.fromAction = action => {
-  return Rx.Observable.create(observer => {
-    const unsubscribe = action.listen((...args) => observer.onNext(...args));
-    return Rx.Disposable.create(unsubscribe);
-  });
-};
-
-Rx.Observable.fromQuery = query => {
-  return Rx.Observable.create(observer => {
-    const unsubscribe = QuerySubscriptionPool.add(query, result => observer.onNext(result));
-    return Rx.Disposable.create(unsubscribe);
-  });
-};
-
-Rx.Observable.fromNamedQuerySubscription = (name, subscription) => {
-  return Rx.Observable.create(observer => {
-    const unsubscribe = QuerySubscriptionPool.addPrivateSubscription(name, subscription, result =>
-      observer.onNext(result)
-    );
-    return Rx.Disposable.create(unsubscribe);
-  });
-};

@@ -1,7 +1,7 @@
 import { React, PropTypes } from 'mailspring-exports';
 import Templates from './templates';
 
-export default class SignatureTemplatePicker extends React.Component {
+module.exports = class SignatureTemplatePicker extends React.Component {
   static propTypes = {
     resolvedData: PropTypes.object,
     onChange: PropTypes.func,

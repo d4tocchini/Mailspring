@@ -126,4 +126,4 @@ Object.assign(EnhancedSendActionButton.prototype, {
 
 EnhancedSendActionButton.UndecoratedSendActionButton = SendActionButton;
 
-export default EnhancedSendActionButton;
+module.exports = EnhancedSendActionButton;

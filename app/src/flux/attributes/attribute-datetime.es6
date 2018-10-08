@@ -1,12 +1,12 @@
-import Attribute from './attribute';
-import Matcher from './matcher';
+const Attribute = require('./attribute');
+const Matcher = require('./matcher');
 
 /*
 Public: The value of this attribute is always a Javascript `Date`, or `null`.
 
 Section: Database
 */
-export default class AttributeDateTime extends Attribute {
+class AttributeDateTime extends Attribute {
   toJSON(val) {
     if (!val) {
       return null;
@@ -59,3 +59,5 @@ export default class AttributeDateTime extends Attribute {
   gte = AttributeDateTime.greaterThanOrEqualTo;
   lte = AttributeDateTime.lessThanOrEqualTo;
 }
+
+module.exports = AttributeDateTime

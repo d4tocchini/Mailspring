@@ -1,10 +1,10 @@
 /* eslint global-require: 0*/
 
 import { DraftStore, Actions, QuotedHTMLTransformer, RegExpUtils } from 'mailspring-exports';
-import { remote } from 'electron';
-import MailspringStore from 'mailspring-store';
-import path from 'path';
-import fs from 'fs';
+const { remote } = require('electron');
+const MailspringStore = require('mailspring-store')
+const path = require('path');
+const fs = require('fs');
 
 import TemplateActions from './template-actions';
 
@@ -283,4 +283,4 @@ class TemplateStore extends MailspringStore {
   }
 }
 
-export default new TemplateStore();
+module.exports = new TemplateStore();

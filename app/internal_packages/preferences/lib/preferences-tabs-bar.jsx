@@ -86,4 +86,4 @@ class PreferencesTabsBar extends React.Component {
   }
 }
 
-export default PreferencesTabsBar;
+module.exports = PreferencesTabsBar;

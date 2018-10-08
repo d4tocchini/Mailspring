@@ -88,7 +88,7 @@ class KeymapFile {
   }
 }
 
-export default class KeymapManager {
+module.exports = class KeymapManager {
   constructor({ configDirPath, resourcePath }) {
     this.configDirPath = configDirPath;
     this.resourcePath = resourcePath;

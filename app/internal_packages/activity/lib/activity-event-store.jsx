@@ -204,4 +204,4 @@ class ActivityEventStore extends MailspringStore {
   }
 }
 
-export default new ActivityEventStore();
+module.exports = new ActivityEventStore();

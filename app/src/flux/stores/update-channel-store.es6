@@ -1,9 +1,10 @@
-import MailspringStore from 'mailspring-store';
-import { remote } from 'electron';
-import { makeRequest } from '../mailspring-api-request';
+const MailspringStore = require('mailspring-store');
+// const { remote } = require('electron');
+// const MailspringAPIRequest = require('../mailspring-api-request');
+// const { makeRequest } = MailspringAPIRequest
 
-const autoUpdater = remote.getGlobal('application').autoUpdateManager;
-const preferredChannel = autoUpdater.preferredChannel;
+// const autoUpdater = remote.getGlobal('application').autoUpdateManager;
+// const preferredChannel = autoUpdater.preferredChannel;
 
 class UpdateChannelStore extends MailspringStore {
   constructor() {
@@ -29,48 +30,50 @@ class UpdateChannelStore extends MailspringStore {
   }
 
   async refreshChannel() {
+    // D4
     // TODO BG
-    try {
-      const { current, available } = await makeRequest({
-        server: 'identity',
-        method: 'GET',
-        path: `/api/update-channel`,
-        qs: Object.assign({ preferredChannel: preferredChannel }, autoUpdater.parameters()),
-        json: true,
-      });
-      this._current = current || { name: 'Channel API Not Available' };
-      this._available = available || [];
-      this.trigger();
-    } catch (err) {
-      // silent
-    }
+    // try {
+    //   const { current, available } = await makeRequest({
+    //     server: 'identity',
+    //     method: 'GET',
+    //     path: `/api/update-channel`,
+    //     qs: Object.assign({ preferredChannel: preferredChannel }, autoUpdater.parameters()),
+    //     json: true,
+    //   });
+    //   this._current = current || { name: 'Channel API Not Available' };
+    //   this._available = available || [];
+    //   this.trigger();
+    // } catch (err) {
+    //   // silent
+    // }
     return;
   }
 
   async setChannel(channelName) {
-    try {
-      const { current, available } = await makeRequest({
-        server: 'identity',
-        method: 'POST',
-        path: `/api/update-channel`,
-        qs: Object.assign(
-          {
-            channel: channelName,
-            preferredChannel: preferredChannel,
-          },
-          autoUpdater.parameters()
-        ),
-        json: true,
-      });
-      this._current = current || { name: 'Channel API Not Available' };
-      this._available = available || [];
-      this.trigger();
-    } catch (err) {
-      AppEnv.showErrorDialog(err.toString());
-      this.trigger();
-    }
-    return null;
+    // D4
+  //   try {
+  //     const { current, available } = await makeRequest({
+  //       server: 'identity',
+  //       method: 'POST',
+  //       path: `/api/update-channel`,
+  //       qs: Object.assign(
+  //         {
+  //           channel: channelName,
+  //           preferredChannel: preferredChannel,
+  //         },
+  //         autoUpdater.parameters()
+  //       ),
+  //       json: true,
+  //     });
+  //     this._current = current || { name: 'Channel API Not Available' };
+  //     this._available = available || [];
+  //     this.trigger();
+  //   } catch (err) {
+  //     AppEnv.showErrorDialog(err.toString());
+  //     this.trigger();
+  //   }
+  //   return null;
   }
 }
 
-export default new UpdateChannelStore();
+module.exports = new UpdateChannelStore();

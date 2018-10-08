@@ -72,4 +72,4 @@ class SearchStore extends MailspringStore {
   };
 }
 
-export default new SearchStore();
+module.exports = new SearchStore();

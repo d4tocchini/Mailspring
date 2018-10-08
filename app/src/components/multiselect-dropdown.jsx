@@ -86,4 +86,4 @@ class MultiselectDropdown extends Component {
     );
   }
 }
-export default MultiselectDropdown;
+module.exports = MultiselectDropdown;

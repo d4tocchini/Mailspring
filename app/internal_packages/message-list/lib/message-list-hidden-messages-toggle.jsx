@@ -1,6 +1,7 @@
 import { React, Actions, MessageStore, FocusedPerspectiveStore } from 'mailspring-exports';
 
-export default class MessageListHiddenMessagesToggle extends React.Component {
+
+class MessageListHiddenMessagesToggle extends React.Component {
   static displayName = 'MessageListHiddenMessagesToggle';
 
   constructor() {
@@ -60,4 +61,5 @@ export default class MessageListHiddenMessagesToggle extends React.Component {
   }
 }
 
+module.exports = MessageListHiddenMessagesToggle
 MessageListHiddenMessagesToggle.containerRequired = false;

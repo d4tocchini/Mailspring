@@ -126,4 +126,4 @@ class TabInstalled extends React.Component {
   }
 }
 
-export default TabInstalled;
+module.exports = TabInstalled;

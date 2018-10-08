@@ -375,7 +375,7 @@ class ThreadSearchBar extends Component {
   }
 }
 
-export default ListensToFluxStore(ThreadSearchBar, {
+module.exports = ListensToFluxStore(ThreadSearchBar, {
   stores: [SearchStore, FocusedPerspectiveStore],
   getStateFromStores() {
     return {

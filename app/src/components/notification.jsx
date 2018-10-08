@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import RetinaImg from './retina-img';
 
-export default class Notification extends React.Component {
+module.exports = class Notification extends React.Component {
   static containerRequired = false;
 
   static propTypes = {

@@ -6,7 +6,7 @@ import { remote } from 'electron';
 const { Menu, MenuItem } = remote;
 const MAX_COLLAPSED = 5;
 
-export default class MessageParticipants extends React.Component {
+module.exports = class MessageParticipants extends React.Component {
   static displayName = 'MessageParticipants';
 
   static propTypes = {

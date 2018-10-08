@@ -1,7 +1,12 @@
-const Sqlite3 = require('better-sqlite3');
+
+let Sqlite3
+const initDB = function(path, opts) {
+  Sqlite3 || (Sqlite3 = require('better-sqlite3'))
+  return new Sqlite3(path, opts)
+}
 const dbs = {};
 
-const deathDelay = 5000;
+const deathDelay = 5555 // D4 5000;
 let deathTimer = setTimeout(() => process.exit(0), deathDelay);
 
 const getDatabase = (dbpath) => {
@@ -11,7 +16,7 @@ const getDatabase = (dbpath) => {
 
   let openResolve = null;
 
-  dbs[dbpath] = new Sqlite3(dbpath, {readonly: true});
+  dbs[dbpath] = initDB(dbpath, {readonly: true});
   dbs[dbpath].on('close', (err) => {
     console.error(err);
     process.exit(1);

@@ -33,7 +33,7 @@ function forEachATagInBody(draftBodyRootNode, callback) {
  * up in the users's sent folder. This ensures the sender doesn't trip
  * their own link tracks.
  */
-export default class LinkTrackingComposerExtension extends ComposerExtension {
+module.exports = class LinkTrackingComposerExtension extends ComposerExtension {
   static needsPerRecipientBodies(draft) {
     return !!draft.metadataForPluginId(PLUGIN_ID);
   }

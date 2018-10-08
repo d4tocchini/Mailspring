@@ -81,4 +81,4 @@ class ParticipantProfileDataSource {
   }
 }
 
-export default new ParticipantProfileDataSource();
+module.exports = new ParticipantProfileDataSource();

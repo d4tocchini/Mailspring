@@ -2,7 +2,7 @@ import { React } from 'mailspring-exports';
 import { ipcRenderer, remote, shell } from 'electron';
 import { Notification } from 'mailspring-component-kit';
 
-export default class UpdateNotification extends React.Component {
+module.exports = class UpdateNotification extends React.Component {
   static displayName = 'UpdateNotification';
 
   constructor() {

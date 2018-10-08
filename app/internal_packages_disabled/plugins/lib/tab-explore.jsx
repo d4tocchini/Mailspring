@@ -84,4 +84,4 @@ class TabExplore extends React.Component {
   }
 }
 
-export default TabExplore;
+module.exports = TabExplore;

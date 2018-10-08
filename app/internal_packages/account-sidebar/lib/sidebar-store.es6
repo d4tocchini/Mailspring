@@ -1,5 +1,5 @@
 const _ = require('underscore');
-const MailspringStore = require('mailspring-store').default;
+const MailspringStore = require('mailspring-store');
 const {
   Actions,
   AccountStore,

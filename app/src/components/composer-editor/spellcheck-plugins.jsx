@@ -242,7 +242,7 @@ function onChange(change, editor) {
   timer = setTimeout(() => onSpellcheckFullDocument(editor), 1000);
 }
 
-export default [
+module.exports = [
   {
     onChange,
     renderMark,

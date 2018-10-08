@@ -52,4 +52,4 @@ class SendRemindersMailboxPerspective extends MailboxPerspective {
   }
 }
 
-export default SendRemindersMailboxPerspective;
+module.exports = SendRemindersMailboxPerspective;

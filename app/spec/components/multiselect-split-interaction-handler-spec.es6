@@ -1,6 +1,6 @@
 const MultiselectSplitInteractionHandler = require('../../src/components/multiselect-split-interaction-handler');
 const WorkspaceStore = require('../../src/flux/stores/workspace-store');
-const Thread = require('../../src/flux/models/thread').default;
+const Thread = require('../../src/flux/models/thread');
 const _ = require('underscore');
 
 describe('MultiselectSplitInteractionHandler', function() {

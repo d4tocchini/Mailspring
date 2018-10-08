@@ -11,4 +11,4 @@ class AccountSidebarExtension {
   static sidebarItem() {}
 }
 
-export default AccountSidebarExtension;
+module.exports = AccountSidebarExtension;

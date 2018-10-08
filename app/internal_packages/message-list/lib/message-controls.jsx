@@ -3,7 +3,7 @@ import { remote } from 'electron';
 import { React, PropTypes, Actions, TaskQueue, GetMessageRFC2822Task } from 'mailspring-exports';
 import { RetinaImg, ButtonDropdown, Menu } from 'mailspring-component-kit';
 
-export default class MessageControls extends React.Component {
+module.exports = class MessageControls extends React.Component {
   static displayName = 'MessageControls';
   static propTypes = {
     thread: PropTypes.object.isRequired,

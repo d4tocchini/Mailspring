@@ -7,7 +7,7 @@ you can make it the data source of a MultiselectList.
 When the MultiselectList is refactored to take an Observable, this class should
 go away!
 */
-export default class ObservableListDataSource extends ListTabular.DataSource {
+module.exports = class ObservableListDataSource extends ListTabular.DataSource {
   constructor(resultSetObservable, setRetainedRange) {
     super();
     this._$resultSetObservable = resultSetObservable;

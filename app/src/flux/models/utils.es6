@@ -3,17 +3,18 @@
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-let Utils;
+
 const _ = require('underscore');
 const fs = require('fs-plus');
 const path = require('path');
 
 let DefaultResourcePath = null;
-const DatabaseObjectRegistry = require('../../registries/database-object-registry').default;
+const DatabaseObjectRegistry = require('../../registries/database-object-registry');
 
 let imageData = null;
 
-module.exports = Utils = {
+const Utils = module.exports =  {
+
   waitFor(latch, options = {}) {
     const timeout = options.timeout || 400;
     const expire = Date.now() + timeout;
@@ -66,12 +67,14 @@ module.exports = Utils = {
     if (!json) {
       return null;
     }
+
     if (!json.__cls) {
       throw new Error('convertToModel: no __cls found on object.');
     }
     if (!DatabaseObjectRegistry.isInRegistry(json.__cls)) {
-      throw new Error('convertToModel: __cls is not a known class.');
+      throw new Error('convertToModel: __cls is not a known class. ' + json.__cls);
     }
+    debugger
     return DatabaseObjectRegistry.deserialize(json.__cls, json);
   },
 
@@ -200,7 +203,7 @@ module.exports = Utils = {
 
   generateTempId() {
     const s4 = () =>
-      Math.floor((1 + Math.random()) * 0x10000)
+      (((1 + Math.random()) * 0x10000)|0)
         .toString(16)
         .substring(1);
     return `local-${s4()}${s4()}-${s4()}`;
@@ -208,7 +211,7 @@ module.exports = Utils = {
 
   generateContentId() {
     const s4 = () =>
-      Math.floor((1 + Math.random()) * 0x10000)
+      (((1 + Math.random()) * 0x10000)|0)
         .toString(16)
         .substring(1);
     return `mcid-${s4()}${s4()}-${s4()}`;

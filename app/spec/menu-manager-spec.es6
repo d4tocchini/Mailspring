@@ -1,4 +1,4 @@
-const MenuManager = require('../src/menu-manager').default;
+const MenuManager = require('../src/menu-manager');
 
 describe('MenuManager', function() {
   let menu = null;

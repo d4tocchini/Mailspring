@@ -2,7 +2,7 @@ import React from 'react';
 import { Actions } from 'mailspring-exports';
 import { RetinaImg } from 'mailspring-component-kit';
 
-export default class ComposeButton extends React.Component {
+module.exports = class ComposeButton extends React.Component {
   static displayName = 'ComposeButton';
 
   _onNewCompose = () => {

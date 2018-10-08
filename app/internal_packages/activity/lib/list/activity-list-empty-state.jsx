@@ -19,4 +19,4 @@ const ActivityListEmptyState = function ActivityListEmptyState() {
   );
 };
 
-export default ActivityListEmptyState;
+module.exports = ActivityListEmptyState;

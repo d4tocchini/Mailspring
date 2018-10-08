@@ -9,16 +9,16 @@ import {
 
 import BaseBlockPlugins from './base-block-plugins';
 
-export const DEFAULT_FONT_SIZE = 2;
-export const DEFAULT_FONT_OPTIONS = [
+const DEFAULT_FONT_SIZE = 2;
+const DEFAULT_FONT_OPTIONS = [
   { name: 'Small', value: 1 },
   { name: 'Normal', value: 2 },
   { name: 'Large', value: 4 },
   { name: 'Huge', value: 6 },
 ];
 
-export const DEFAULT_FONT_FACE = 'sans-serif';
-export const DEFAULT_FONT_FACE_OPTIONS = [
+const DEFAULT_FONT_FACE = 'sans-serif';
+const DEFAULT_FONT_FACE_OPTIONS = [
   { name: 'Sans Serif', value: 'sans-serif' },
   { name: 'Serif', value: 'serif' },
   { name: 'Fixed Width', value: 'monospace' },
@@ -47,7 +47,7 @@ function isMeaningfulFontStyle(style) {
   return style && style !== '14px';
 }
 
-export const MARK_CONFIG = {
+const MARK_CONFIG = {
   bold: {
     type: 'bold',
     tagNames: ['b', 'strong'],
@@ -251,7 +251,7 @@ const rules = [
   },
 ];
 
-export default [
+module.exports = [
   {
     toolbarComponents: Object.values(MARK_CONFIG)
       .filter(m => m.button)
@@ -312,3 +312,9 @@ export default [
     rules,
   },
 ];
+
+module.exports.DEFAULT_FONT_SIZE = DEFAULT_FONT_SIZE
+module.exports.MARK_CONFIG = MARK_CONFIG
+module.exports.DEFAULT_FONT_FACE_OPTIONS = DEFAULT_FONT_FACE_OPTIONS
+module.exports.DEFAULT_FONT_FACE = DEFAULT_FONT_FACE
+module.exports.DEFAULT_FONT_OPTIONS = DEFAULT_FONT_OPTIONS

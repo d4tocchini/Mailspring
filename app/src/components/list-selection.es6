@@ -3,7 +3,7 @@ import _ from 'underscore';
 import Model from '../flux/models/model';
 import DatabaseStore from '../flux/stores/database-store';
 
-export default class ListSelection {
+module.exports = class ListSelection {
   constructor(_view, callback) {
     this._view = _view;
     if (!this._view) {

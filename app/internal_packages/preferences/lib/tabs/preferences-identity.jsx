@@ -260,4 +260,4 @@ class PreferencesIdentity extends React.Component {
   }
 }
 
-export default PreferencesIdentity;
+module.exports = PreferencesIdentity;

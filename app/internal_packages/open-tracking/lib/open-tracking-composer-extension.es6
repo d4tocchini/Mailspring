@@ -1,7 +1,7 @@
 import { ComposerExtension, FeatureUsageStore } from 'mailspring-exports';
 import { PLUGIN_ID, PLUGIN_URL } from './open-tracking-constants';
 
-export default class OpenTrackingComposerExtension extends ComposerExtension {
+module.exports = class OpenTrackingComposerExtension extends ComposerExtension {
   static needsPerRecipientBodies(draft) {
     return !!draft.metadataForPluginId(PLUGIN_ID);
   }

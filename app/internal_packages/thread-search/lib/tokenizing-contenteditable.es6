@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { TokenAndTermRegexp } from './search-bar-util';
 
-export default class TokenizingContenteditable extends Component {
+module.exports = class TokenizingContenteditable extends Component {
   shouldComponentUpdate(nextProps) {
     if (nextProps.value !== this._textEl.innerText.replace(/\s/g, ' ')) {
       this._textEl.innerHTML = nextProps.value.replace(/\s/g, '&nbsp;');

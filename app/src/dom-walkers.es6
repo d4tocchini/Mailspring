@@ -22,4 +22,4 @@ const DOMWalkers = {
     return;
   },
 };
-export default DOMWalkers;
+module.exports = DOMWalkers;

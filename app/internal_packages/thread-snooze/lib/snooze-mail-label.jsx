@@ -49,4 +49,4 @@ class SnoozeMailLabel extends Component {
   }
 }
 
-export default SnoozeMailLabel;
+module.exports = SnoozeMailLabel;

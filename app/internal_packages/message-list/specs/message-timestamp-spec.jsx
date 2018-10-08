@@ -6,7 +6,7 @@
 const moment = require('moment');
 const React = require('react');
 const ReactTestUtils = require('react-dom/test-utils');
-const MessageTimestamp = require('../lib/message-timestamp').default;
+const MessageTimestamp = require('../lib/message-timestamp');
 
 const msgTime = () => moment([2010, 1, 14, 15, 25, 50, 125]);
 

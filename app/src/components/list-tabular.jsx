@@ -5,11 +5,12 @@ import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 
 import ScrollRegion from './scroll-region';
-import Spinner from './spinner';
+
 
 import ListDataSource from './list-data-source';
 import ListSelection from './list-selection';
 import ListTabularItem from './list-tabular-item';
+// import { Map } from 'core-js';
 
 class ListColumn {
   constructor({ name, resolver, flex, width }) {
@@ -20,10 +21,149 @@ class ListColumn {
   }
 }
 
-class ListTabularRows extends Component {
+// D4
+
+class VPoolComponent extends Component {
+
+  renderItem(item, idx, id, key, itemProps) {
+
+  }
+
+  constructor(a,b,c) {
+    super(a,b,c)
+    this.items = []
+    this.renderedRows = []
+    this._key_count = 0
+    this._id2key = new Map()
+    this._id2render = new Map()
+    this._id2props = new Map()
+    this._prev_ids = []
+    this._next_ids = []
+    this._free_keys_count = 0
+    this._free_keys = []
+    this._added_count = 0
+    this._added_ids = []
+    // this._removed_ids = []
+    this.key_allocs = new Map()
+
+    this.renderItems = function(items) {
+      this.items = items
+      this._loop_items(items, '_load_added_id')
+      this._prerender_items(items)
+      const res = this._render_items(items)
+      this._postrender_items()
+      this.items = []
+      return res
+    }
+    this._loop_items = function(items, fn_name) {
+      var idx = 0
+      const l = items.length
+      while (idx < l) {
+        this[fn_name](items[idx], idx++)
+      }
+    }
+  }
+  _loop_ids(ids, fn_name) {
+    var idx = 0
+    const l = ids.length
+    while (idx < l) {
+      this[fn_name](ids[idx], idx++)
+    }
+  }
+
+  _prerender_items() {
+    this._added_count = 0
+    this._loop_ids(this._prev_ids, '_free_removed')
+    this._loop_ids(this._added_ids, '_assign_new_id_keys')
+  }
+
+  _postrender_items() {
+    this._added_ids.length = 0
+    const _next_ids = this._prev_ids
+    this._prev_ids = this._next_ids
+    this._next_ids = _next_ids
+    this._next_ids.length = 0
+  }
+
+  _render_items(items) {
+    let vacancies = 0
+    let i = 0
+    const l = items.length
+    const res = this.renderedRows
+    while (i < l) {
+      const data = items[i]
+      const item = (data !== undefined) && data.item
+      if (item) {
+        const id = item.id
+        const key = this._id2key.get(id)
+        const idx = data.idx
+        const itemProps = data.itemProps
+        res[i - vacancies] = this.renderItem(item, idx, id, key, itemProps)
+
+        // res[i - vacancies] = this._id2render.get(id)
+      }
+      else {
+        vacancies = vacancies + 1
+      }
+      i = i + 1
+    }
+    const _actual_length = l - vacancies
+    if (res.length !== _actual_length) {
+      res.length = _actual_length
+    }
+    return res
+  }
+
+  _take_key() {
+    return this._free_keys_count > 0
+      ? this._recycle_key()
+      : this._alloc_key()
+  }
+
+  _alloc_key() {
+    return this._key_count++
+  }
+
+  // recycle most recently freed keys first
+  _recycle_key() {
+    const key = this._free_keys[--this._free_keys_count]
+    this._free_keys.length = this._free_keys_count
+    return key
+  }
+
+  _free_key(key) {
+    this._free_keys[this._free_keys_count++] = key
+  }
+
+  _load_added_id(_item, i) {
+    const id = _item.item.id
+    this._next_ids[i] = id
+    if (this._id2key.has(id) === false) {
+      this._added_ids[this._added_count++] = id
+    }
+  }
+
+  _free_removed(id, i) {
+    if (this._next_ids.indexOf(id) === -1) {
+      this._free_key(this._id2key.get(id))
+      this._id2key.delete(id)
+      this._id2render.delete(id)
+      this._id2props.delete(id)
+    }
+  }
+  _assign_new_id_keys(id, i) {
+    const key = this._take_key(id)
+    this._id2key.set(id, key)
+  }
+
+}
+
+class ListTabularRows extends VPoolComponent {
   static displayName = 'ListTabularRows';
 
   static propTypes = {
+    vstart: PropTypes.number,
+    vend: PropTypes.number,
     rows: PropTypes.array,
     columns: PropTypes.array.isRequired,
     draggable: PropTypes.bool,
@@ -36,27 +176,52 @@ class ListTabularRows extends Component {
     onDragEnd: PropTypes.func,
   };
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return !Utils.isEqualReact(nextProps, this.props) || !Utils.isEqualReact(nextState, this.state);
+  constructor(a,b,c) {
+    super(a,b,c)
   }
 
-  renderRow({ item, idx, itemProps = {} } = {}) {
-    if (!item) {
-      return false;
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   return !Utils.isEqualReact(nextProps, this.props) || !Utils.isEqualReact(nextState, this.state);
+  // }
+
+  // D4
+  renderItem(item, idx, id, key, itemProps) {
+    // let key = this._get_row_key(id, idx, n)
+    const props = this.props
+    const itemHeight = props.itemHeight
+    const child_props = ListTabularItem.Props({
+      id,
+      key,
+      item: item,
+      itemProps: itemProps,
+      metrics: {
+        top: idx * itemHeight,
+        height: itemHeight
+      },
+      columns: props.columns,
+      onSelect: props.onSelect,
+      onClick: props.onClick,
+      onDoubleClick: props.onDoubleClick,
+    })
+    let rendered
+    const prev_child_props = this._id2props.get(id)
+    this._id2props.set(id, child_props)
+    const in_render_cache = this._id2render.has(id)
+    const in_visible_range = this.props.vstart < idx && idx < this.props.vend
+    if (
+      in_render_cache === false ||
+      (in_visible_range === true
+      && ListTabularItem.propsDiff(child_props, prev_child_props)
+      )
+    ){
+        this._id2render.set(id,
+          rendered = React.createElement(ListTabularItem, child_props)
+        )
     }
-    const { columns, itemHeight, onClick, onSelect, onDoubleClick } = this.props;
-    return (
-      <ListTabularItem
-        key={item.id || idx}
-        item={item}
-        itemProps={itemProps}
-        metrics={{ top: idx * itemHeight, height: itemHeight }}
-        columns={columns}
-        onSelect={onSelect}
-        onClick={onClick}
-        onDoubleClick={onDoubleClick}
-      />
-    );
+    else {
+      return this._id2render.get(id)
+    }
+
   }
 
   render() {
@@ -69,11 +234,16 @@ class ListTabularRows extends Component {
         onDragEnd={onDragEnd}
         draggable={draggable}
       >
-        {rows.map(r => this.renderRow(r))}
+        {this.renderItems(rows)}
+
       </div>
     );
   }
+
+
 }
+
+
 
 class ListTabular extends Component {
   static displayName = 'ListTabular';
@@ -117,11 +287,94 @@ class ListTabular extends Component {
 
     this._unlisten = () => {};
     this.state = this.buildStateForRange({ start: -1, end: -1 });
+
+    // D4
+    this._RANGE_DID_CHANGE = false
+    this._pre_buffer = 16
+    this._post_buffer = 16
+    this._vstart = -9999999
+    this._vend = 9999999
+    this._is_updating_range = false
+    this._prev_range_start = -this._pre_buffer
+    this._prev_range_end = -this._post_buffer
+    this._coerce_range_update = () => {
+      this._prev_range_start = -this._pre_buffer
+      this._prev_range_end = -this._post_buffer
+      this._vstart = -9999999
+      this._vend = 9999999
+    }
+    this._updateRangeState = () => {
+      if (this._is_updating_range === false) {
+        this._is_updating_range = true
+        requestAnimationFrame(this._updateRangeState_)
+      }
+    }
+    this._updateRangeState_ = () => {
+      const { scrollTop } = this._scrollRegion;
+      const { itemHeight } = this.props;
+
+      // Determine the exact range of rows we want onscreen
+      const rangeSize = Math.ceil(window.innerHeight / itemHeight);
+
+      let rangeStart = (scrollTop / itemHeight)|0;
+      let rangeEnd = rangeStart + rangeSize;
+
+      // Expand the start/end so that you can advance the keyboard cursor fast and
+      // we have items to move to and then scroll to.
+      const d = rangeEnd - rangeStart
+      this._pre_buffer = d + (d >> 1)
+      this._post_buffer = d << 1
+
+      this._vstart = rangeStart - 1
+      this._vend = rangeEnd +  1
+
+      rangeStart = Math.max(0, rangeStart - this._pre_buffer );
+      rangeEnd = Math.min(rangeEnd + this._post_buffer , this.state.count + 1);
+
+
+
+      const rangeStart_delta = Math.abs(rangeStart - this._prev_range_start) //this.state.renderedRangeStart)
+      const rangeEnd_delta = Math.abs(rangeEnd - this._prev_range_end) //this.state.renderedRangeEnd)
+
+      // Final sanity check to prevent needless work
+      const shouldUpdate =
+          (rangeStart_delta > 0) || //(this._pre_buffer >> 1)) ||
+          (rangeEnd_delta > 0 )
+          || true
+
+        // ) ||
+        // (
+        //   (rangeEnd === this.state.renderedRangeEnd) &&
+        //   (rangeStart === this.state.renderedRangeStart)
+        // );
+        
+      if (shouldUpdate === true ) {
+        this._RANGE_DID_CHANGE = true
+
+        this.updateRangeStateFiring = true;
+
+        this._prev_range_start = rangeStart
+        this._prev_range_end = rangeEnd
+
+        this.props.dataSource.setRetainedRange({
+          start: rangeStart,
+          end: rangeEnd,
+        });
+
+        const nextState = this.buildStateForRange({ start: rangeStart, end: rangeEnd });
+        this.setState(nextState);
+      }
+
+
+      this._is_updating_range = false
+    }
+
   }
 
   componentDidMount() {
     window.addEventListener('resize', this.onWindowResize, true);
     this.setupDataSource(this.props.dataSource);
+    this._coerce_range_update()
     this.updateRangeState();
   }
 
@@ -132,6 +385,7 @@ class ListTabular extends Component {
   }
 
   componentDidUpdate(prevProps) {
+    this._RANGE_DID_CHANGE = false
     if (this.props.onComponentDidUpdate) {
       this.props.onComponentDidUpdate();
     }
@@ -139,6 +393,7 @@ class ListTabular extends Component {
     // reset our scroll position to the top.
     if (prevProps.dataSource !== this.props.dataSource) {
       this._scrollRegion.scrollTop = 0;
+      this._coerce_range_update()
     }
 
     if (!this.updateRangeStateFiring) {
@@ -240,35 +495,7 @@ class ListTabular extends Component {
     if (!this._scrollRegion) {
       return;
     }
-    const { scrollTop } = this._scrollRegion;
-    const { itemHeight } = this.props;
-
-    // Determine the exact range of rows we want onscreen
-    const rangeSize = Math.ceil(window.innerHeight / itemHeight);
-    let rangeStart = Math.floor(scrollTop / itemHeight);
-    let rangeEnd = rangeStart + rangeSize;
-
-    // Expand the start/end so that you can advance the keyboard cursor fast and
-    // we have items to move to and then scroll to.
-    rangeStart = Math.max(0, rangeStart - 2);
-    rangeEnd = Math.min(rangeEnd + 2, this.state.count + 1);
-
-    // Final sanity check to prevent needless work
-    const shouldNotUpdate =
-      rangeEnd === this.state.renderedRangeEnd && rangeStart === this.state.renderedRangeStart;
-    if (shouldNotUpdate) {
-      return;
-    }
-
-    this.updateRangeStateFiring = true;
-
-    this.props.dataSource.setRetainedRange({
-      start: rangeStart,
-      end: rangeEnd,
-    });
-
-    const nextState = this.buildStateForRange({ start: rangeStart, end: rangeEnd });
-    this.setState(nextState);
+    this._updateRangeState()
   }
 
   buildStateForRange(args = {}) {
@@ -319,8 +546,7 @@ class ListTabular extends Component {
       if (animatingCount > 8 || animatingCount === Object.keys(this.state.items).length) {
         animatingOut = {};
       }
-    }
-
+    }    
     return {
       items,
       animatingOut,
@@ -351,9 +577,12 @@ class ListTabular extends Component {
     const rows = this.getRowsToRender();
     const innerStyles = { height: count * itemHeight };
 
+    const visible = (!loaded && empty)|0
+
     return (
       <div className={`list-container list-tabular ${className}`}>
         <ScrollRegion
+          key="scroll-region"
           ref={cm => {
             this._scrollRegion = cm;
           }}
@@ -362,6 +591,9 @@ class ListTabular extends Component {
           scrollTooltipComponent={scrollTooltipComponent}
         >
           <ListTabularRows
+            key="list-rows"
+            vstart={this._vstart}
+            vend={this._vend}
             rows={rows}
             columns={columns}
             draggable={draggable}
@@ -373,13 +605,65 @@ class ListTabular extends Component {
             onDragStart={onDragStart}
             onDoubleClick={onDoubleClick}
           />
-          <div className="footer">{footer}</div>
+          <div
+            key="footer"
+            className="footer">
+            {footer}
+          </div>
         </ScrollRegion>
-        <Spinner visible={!loaded && empty} />
-        <EmptyComponent visible={loaded && empty} />
+        {renderSpinner(visible)}
+        {renderEmptyComponent(visible, EmptyComponent)}
       </div>
     );
   }
 }
 
-export default ListTabular;
+function renderSpinner(vis) {
+  const Spinner = require('./spinner');
+  let _spinners = [
+    (
+      <Spinner
+        key="spinner"
+        visible={false} />
+    ),
+    (
+      <Spinner
+        key="spinner"
+        visible={true} />
+    )
+  ]
+  renderSpinner = function (vis) {
+    return _spinners[vis]
+  }
+  return renderSpinner(vis)
+}
+
+const EmptyComponentRenderers = new WeakMap()
+
+function renderEmptyComponent(vis, EmptyComponent) {
+  return EmptyComponentRenderers.has(EmptyComponent)
+    ? EmptyComponentRenderers.get(EmptyComponent)(vis)
+    : (function (vis) {
+      let _empties = [
+        (
+          <EmptyComponent
+              key="empty"
+              visible={false} />
+        ),
+        (
+          <EmptyComponent
+              key="empty"
+              visible={false} />
+        )
+      ]
+      const renderer = function (vis) {
+        return _empties[vis]
+      }
+      EmptyComponentRenderers.set(EmptyComponent, renderer)
+      return renderer(vis)
+    })(vis)
+}
+
+
+
+module.exports = ListTabular;

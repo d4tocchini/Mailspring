@@ -9,4 +9,4 @@ const Tabs = [
   },
 ];
 
-export default Tabs;
+module.exports = Tabs;

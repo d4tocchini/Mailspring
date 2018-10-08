@@ -1,0 +1,14 @@
+{
+  "name": "80sBaby",
+  "displayName": "80s Baby",
+  "theme": "ui",
+  "version": "3.0.0",
+  "description": "A customizable, dark sidebar theme for Mailspring, based on Darkside",
+  "license": "MIT",
+  "engines": {
+    "nylas": "*",
+    "mailspring": "*"
+  },
+  "styleSheets": ["80sBaby"],
+  "private": true
+}

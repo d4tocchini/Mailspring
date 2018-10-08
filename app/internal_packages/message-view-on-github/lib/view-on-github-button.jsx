@@ -46,7 +46,7 @@ simple button with a GitHub logo in it.
 
 We'll also display nothing if there is no link.
 */
-export default class ViewOnGithubButton extends React.Component {
+module.exports = class ViewOnGithubButton extends React.Component {
   static displayName = 'ViewOnGithubButton';
 
   static containerRequired = false;

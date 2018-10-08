@@ -20,7 +20,7 @@ function ensureInteger(f, fallback) {
 // Essential: AppEnv global for dealing with packages, themes, menus, and the window.
 //
 // The singleton of this class is always available as the `AppEnv` global.
-export default class AppEnvConstructor {
+module.exports = class AppEnvConstructor {
   // Returns the load settings hash associated with the current window.
   static getLoadSettings() {
     if (this.loadSettings == null) {
@@ -56,12 +56,12 @@ export default class AppEnvConstructor {
     this.loadTime = null;
 
     const Config = require('./config');
-    const KeymapManager = require('./keymap-manager').default;
-    const CommandRegistry = require('./registries/command-registry').default;
-    const PackageManager = require('./package-manager').default;
-    const ThemeManager = require('./theme-manager').default;
-    const StyleManager = require('./style-manager').default;
-    const MenuManager = require('./menu-manager').default;
+    const KeymapManager = require('./keymap-manager');
+    const CommandRegistry = require('./registries/command-registry');
+    const PackageManager = require('./package-manager');
+    const ThemeManager = require('./theme-manager');
+    const StyleManager = require('./style-manager');
+    const MenuManager = require('./menu-manager')
 
     document.body.classList.add(`platform-${process.platform}`);
     document.body.classList.add(`window-type-${windowType}`);
@@ -94,7 +94,7 @@ export default class AppEnvConstructor {
     });
     this.themes.activateThemePackage();
 
-    this.spellchecker = require('./spellchecker').default;
+    this.spellchecker = require('./spellchecker');
     this.menu = new MenuManager({ resourcePath });
     if (process.platform === 'win32') {
       this.getCurrentWindow().setMenuBarVisibility(false);
@@ -115,10 +115,10 @@ export default class AppEnvConstructor {
     // the window starts loading.
     require('mailspring-exports');
 
-    const ActionBridge = require('./flux/action-bridge').default;
+    const ActionBridge = require('./flux/action-bridge');
     this.actionBridge = new ActionBridge(ipcRenderer);
 
-    const MailsyncBridge = require('./flux/mailsync-bridge').default;
+    const MailsyncBridge = require('./flux/mailsync-bridge');
     this.mailsyncBridge = new MailsyncBridge();
 
     process.title = `Mailspring ${this.getWindowType()}`;
@@ -615,8 +615,12 @@ export default class AppEnvConstructor {
   // hot windows), the packages won't be loaded until `populateHotWindow`
   // gets fired.
   async startSecondaryWindow() {
+    // D4
+    console.log('startSecondaryWindow')
     await this.startWindow();
-    ipcRenderer.on('load-settings-changed', (...args) => this.populateHotWindow(...args));
+    ipcRenderer.on('load-settings-changed', (...args) => {
+      return this.populateHotWindow(...args)
+    });
   }
 
   // We setup the initial Sheet for hot windows. This is the default title
@@ -729,7 +733,8 @@ export default class AppEnvConstructor {
 
     const React = require('react');
     const ReactDOM = require('react-dom');
-    const SheetContainer = require('./sheet-container').default;
+    const SheetContainer = require('./sheet-container');
+
     ReactDOM.render(React.createElement(SheetContainer), this.item);
 
     if (this.inSpecMode()) {
@@ -742,7 +747,7 @@ export default class AppEnvConstructor {
   loadConfig() {
     this.config.setSchema(null, {
       type: 'object',
-      properties: _.clone(require('./config-schema').default),
+      properties: _.clone(require('./config-schema')),
     });
     this.config.load();
   }

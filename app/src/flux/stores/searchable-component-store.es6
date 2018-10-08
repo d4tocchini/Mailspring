@@ -226,4 +226,4 @@ class SearchableComponentStore extends MailspringStore {
     this._recalculateMatches();
   }
 }
-export default new SearchableComponentStore();
+module.exports = new SearchableComponentStore();

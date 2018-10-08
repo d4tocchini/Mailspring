@@ -1,7 +1,7 @@
 import { Rx, Message, DatabaseStore } from 'mailspring-exports';
 import { OPEN_TRACKING_ID, LINK_TRACKING_ID } from './plugin-helpers';
 
-export default class ActivityDataSource {
+module.exports = class ActivityDataSource {
   buildObservable({ messageLimit }) {
     const query = DatabaseStore.findAll(Message)
       .order(Message.attributes.date.descending())

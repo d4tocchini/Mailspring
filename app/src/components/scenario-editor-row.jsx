@@ -75,7 +75,7 @@ class SourceSelect extends React.Component {
   }
 }
 
-export default class ScenarioEditorRow extends React.Component {
+module.exports = class ScenarioEditorRow extends React.Component {
   static displayName = 'ScenarioEditorRow';
   static propTypes = {
     instance: PropTypes.object.isRequired,

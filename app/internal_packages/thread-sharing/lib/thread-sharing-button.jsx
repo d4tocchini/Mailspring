@@ -3,7 +3,7 @@ import { RetinaImg, BindGlobalCommands } from 'mailspring-component-kit';
 import ThreadSharingPopover from './thread-sharing-popover';
 import { isShared } from './main';
 
-export default class ThreadSharingButton extends React.Component {
+module.exports = class ThreadSharingButton extends React.Component {
   static displayName = 'ThreadSharingButton';
 
   static containerRequired = false;

@@ -431,4 +431,4 @@ const Templates = [
   },
 ];
 
-export default Templates;
+module.exports = Templates;

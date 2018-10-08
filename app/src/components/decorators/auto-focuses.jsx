@@ -73,4 +73,4 @@ function AutoFocuses(ComposedComponent, { onMount = true, onUpdate = true } = {}
   };
 }
 
-export default AutoFocuses;
+module.exports = AutoFocuses;

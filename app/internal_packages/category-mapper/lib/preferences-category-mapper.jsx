@@ -10,7 +10,7 @@ import CategorySelection from './category-selection';
 
 const SELECTABLE_ROLES = ['inbox', 'sent', 'drafts', 'spam', 'archive', 'trash'];
 
-export default class PreferencesCategoryMapper extends React.Component {
+module.exports = class PreferencesCategoryMapper extends React.Component {
   constructor() {
     super();
     this.state = this._getStateFromStores();

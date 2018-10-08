@@ -249,7 +249,7 @@ class StructuredSearchQueryVisitor extends SearchQueryExpressionVisitor {
   }
 }
 
-export default class LocalSearchQueryBackend {
+module.exports = class LocalSearchQueryBackend {
   constructor(modelClassName) {
     this._modelClassName = modelClassName;
   }

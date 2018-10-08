@@ -1,7 +1,6 @@
 /* eslint global-require:0 */
-import Attributes from '../attributes';
-import ModelWithMetadata from './model-with-metadata';
 
+const ModelWithMetadata = require('./model-with-metadata');
 let CategoryStore = null;
 let Contact = null;
 
@@ -23,154 +22,132 @@ let Contact = null;
  *
  * Section: Models
  */
-export default class Account extends ModelWithMetadata {
-  static SYNC_STATE_OK = 'ok';
 
-  static SYNC_STATE_AUTH_FAILED = 'invalid';
 
-  static SYNC_STATE_ERROR = 'sync_error';
+const Account = module.exports = ModelWithMetadata.setup(
 
-  static attributes = Object.assign({}, ModelWithMetadata.attributes, {
-    name: Attributes.String({
-      modelKey: 'name',
-    }),
+  class extends ModelWithMetadata {
 
-    provider: Attributes.String({
-      modelKey: 'provider',
-    }),
+    static defineAttributes(Attribute) {
 
-    emailAddress: Attributes.String({
-      queryable: true,
-      modelKey: 'emailAddress',
-    }),
+      this.SYNC_STATE_OK = 'ok';
+      this.SYNC_STATE_AUTH_FAILED = 'invalid';
+      this.SYNC_STATE_ERROR = 'sync_error';
 
-    settings: Attributes.Object({
-      modelKey: 'settings',
-    }),
-
-    label: Attributes.String({
-      modelKey: 'label',
-    }),
-
-    autoaddress: Attributes.Object({
-      modelKey: 'autoaddress',
-    }),
-
-    aliases: Attributes.Object({
-      modelKey: 'aliases',
-    }),
-
-    defaultAlias: Attributes.Object({
-      modelKey: 'defaultAlias',
-    }),
-
-    syncState: Attributes.String({
-      modelKey: 'syncState',
-    }),
-
-    syncError: Attributes.Object({
-      modelKey: 'syncError',
-    }),
-  });
-
-  constructor(args) {
-    super(args);
-    this.aliases = this.aliases || [];
-    this.label = this.label || this.emailAddress;
-    this.syncState = this.syncState || Account.SYNC_STATE_OK;
-    this.autoaddress = this.autoaddress || {
-      type: 'bcc',
-      value: '',
-    };
-  }
-
-  toJSON(...args) {
-    // ensure we deep-copy our settings object into the JSON
-    const json = super.toJSON(...args);
-    json.settings = Object.assign({}, json.settings);
-    return json;
-  }
-
-  fromJSON(json) {
-    super.fromJSON(json);
-    if (!this.label) {
-      this.label = this.emailAddress;
+      Attribute('String', { modelKey: 'name', })
+      Attribute('String', { modelKey: 'provider', })
+      Attribute('String', { modelKey: 'emailAddress',
+        queryable: true,
+      })
+      Attribute('Object', { modelKey: 'settings', })
+      Attribute('String', { modelKey: 'label', })
+      Attribute('Object', { modelKey: 'autoaddress', })
+      Attribute('Object', { modelKey: 'aliases', })
+      Attribute('Object', { modelKey: 'defaultAlias', })
+      Attribute('String', { modelKey: 'syncState', })
+      Attribute('Object', { modelKey: 'syncError', })
     }
-    return this;
-  }
 
-  // Returns a {Contact} model that represents the current user.
-  me() {
-    Contact = Contact || require('./contact').default;
+    constructor(args) {
+      super(args);
+      this.aliases = this.aliases || [];
+      this.label = this.label || this.emailAddress;
+      // if (!this.getStatic('SYNC_STATE_OK') === undefined) throw new Error('!!!')
+      this.syncState = this.syncState || this.getStatic('SYNC_STATE_OK')
+      this.autoaddress = this.autoaddress || {
+        type: 'bcc',
+        value: '',
+      };
+    }
 
-    return new Contact({
-      // used to give them random strings, let's try for something consistent
-      id: `local-${this.id}-me`,
-      accountId: this.id,
-      name: this.name,
-      email: this.emailAddress,
-    });
-  }
+    toJSON(...args) {
+      // ensure we deep-copy our settings object into the JSON
+      const json = super.toJSON(...args);
+      json.settings = Object.assign({}, json.settings);
+      return json;
+    }
 
-  meUsingAlias(alias) {
-    Contact = Contact || require('./contact').default;
+    fromJSON(json) {
+      super.fromJSON(json);
+      if (!this.label) {
+        this.label = this.emailAddress;
+      }
+      return this;
+    }
 
-    if (!alias) {
+    // Returns a {Contact} model that represents the current user.
+    me() {
+      Contact = Contact || require('./contact');
+
+      return new Contact({
+        // used to give them random strings, let's try for something consistent
+        id: `local-${this.id}-me`,
+        accountId: this.id,
+        name: this.name,
+        email: this.emailAddress,
+      });
+    }
+
+    meUsingAlias(alias) {
+      Contact = Contact || require('./contact');
+
+      if (!alias) {
+        return this.me();
+      }
+      return Contact.fromString(alias, {
+        accountId: this.id,
+      });
+    }
+
+    defaultMe() {
+      if (this.defaultAlias) {
+        return this.meUsingAlias(this.defaultAlias);
+      }
       return this.me();
     }
-    return Contact.fromString(alias, {
-      accountId: this.id,
-    });
-  }
 
-  defaultMe() {
-    if (this.defaultAlias) {
-      return this.meUsingAlias(this.defaultAlias);
+    usesLabels() {
+      return this.provider === 'gmail';
     }
-    return this.me();
-  }
 
-  usesLabels() {
-    return this.provider === 'gmail';
-  }
-
-  // Public: Returns the localized, properly capitalized provider name,
-  // like Gmail, Exchange, or Outlook 365
-  displayProvider() {
-    if (this.provider === 'eas') {
-      return 'Exchange';
-    } else if (this.provider === 'gmail') {
-      return 'Gmail';
-    } else if (this.provider === 'yahoo') {
-      return 'Yahoo';
-    } else if (this.provider === 'imap') {
-      return 'IMAP';
-    } else if (this.provider === 'office365') {
-      return 'Office 365';
+    // Public: Returns the localized, properly capitalized provider name,
+    // like Gmail, Exchange, or Outlook 365
+    displayProvider() {
+      if (this.provider === 'eas') {
+        return 'Exchange';
+      } else if (this.provider === 'gmail') {
+        return 'Gmail';
+      } else if (this.provider === 'yahoo') {
+        return 'Yahoo';
+      } else if (this.provider === 'imap') {
+        return 'IMAP';
+      } else if (this.provider === 'office365') {
+        return 'Office 365';
+      }
+      return this.provider;
     }
-    return this.provider;
-  }
 
-  canArchiveThreads() {
-    CategoryStore = CategoryStore || require('../stores/category-store').default;
-    return CategoryStore.getArchiveCategory(this);
-  }
+    canArchiveThreads() {
+      CategoryStore = CategoryStore || require('../stores/category-store');
+      return CategoryStore.getArchiveCategory(this);
+    }
 
-  canTrashThreads() {
-    CategoryStore = CategoryStore || require('../stores/category-store').default;
-    return CategoryStore.getTrashCategory(this);
-  }
-
-  preferredRemovalDestination() {
-    CategoryStore = CategoryStore || require('../stores/category-store').default;
-    const preferDelete = AppEnv.config.get('core.reading.backspaceDelete');
-    if (preferDelete || !CategoryStore.getArchiveCategory(this)) {
+    canTrashThreads() {
+      CategoryStore = CategoryStore || require('../stores/category-store');
       return CategoryStore.getTrashCategory(this);
     }
-    return CategoryStore.getArchiveCategory(this);
-  }
 
-  hasSyncStateError() {
-    return this.syncState !== Account.SYNC_STATE_OK;
+    preferredRemovalDestination() {
+      CategoryStore = CategoryStore || require('../stores/category-store');
+      const preferDelete = AppEnv.config.get('core.reading.backspaceDelete');
+      if (preferDelete || !CategoryStore.getArchiveCategory(this)) {
+        return CategoryStore.getTrashCategory(this);
+      }
+      return CategoryStore.getArchiveCategory(this);
+    }
+
+    hasSyncStateError() {
+      return this.syncState !== this.getStatic('SYNC_STATE_OK');
+    }
   }
-}
+)

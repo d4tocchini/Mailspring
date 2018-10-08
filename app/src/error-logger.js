@@ -59,6 +59,7 @@ module.exports = ErrorLogger = (function() {
   /////////////////////////////////////////////////////////////////////
 
   ErrorLogger.prototype.reportError = function(error, extra = {}) {
+    
     if (this.inSpecMode) {
       return;
     }
@@ -94,7 +95,8 @@ module.exports = ErrorLogger = (function() {
        * This is a rare use of `sendSync` to ensure the command has made
        * it before the window closes.
        */
-      ipcRenderer.sendSync('report-error', { errorJSON: errorJSON, extra: extraJSON });
+      // D4 TODO: sendSync is depfrecated https://electronjs.org/releases
+      ipcRenderer.sendSync('report-error', errorJSON);
     } else {
       this._notifyExtensions('reportError', error, extra);
     }

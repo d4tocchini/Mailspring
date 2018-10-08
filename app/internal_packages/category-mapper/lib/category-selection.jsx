@@ -7,7 +7,7 @@ import {
 } from 'mailspring-component-kit';
 import { Label, Utils, React, PropTypes } from 'mailspring-exports';
 
-export default class CategorySelection extends React.Component {
+module.exports = class CategorySelection extends React.Component {
   static propTypes = {
     accountUsesLabels: PropTypes.bool,
     all: PropTypes.array,

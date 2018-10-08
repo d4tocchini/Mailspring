@@ -45,7 +45,7 @@ describe('Spellchecker', function spellcheckerTests() {
     });
 
     it('maintains it across instances', () => {
-      const Spellchecker2 = require('../src/spellchecker').default;
+      const Spellchecker2 = require('../src/spellchecker');
       expect(Spellchecker2.isMisspelled(this.customWord)).toEqual(false);
     });
   });

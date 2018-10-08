@@ -1,4 +1,4 @@
-import QueryRange from './query-range';
+const QueryRange = require('./query-range');
 
 /*
 Public: Instances of QueryResultSet hold a set of models retrieved
@@ -17,7 +17,9 @@ To avoid confusion, "index" refers to an item's position in an
 array, and "offset" refers to it's position in the query result set. For example,
 an item might be at index 20 in the _ids array, but at offset 120 in the result.
 */
-export default class QueryResultSet {
+const QueryResultSet =
+  module.exports = class {
+
   static setByApplyingModels(set, models) {
     if (models instanceof Array) {
       throw new Error('setByApplyingModels: A hash of models is required.');
@@ -33,13 +35,17 @@ export default class QueryResultSet {
     this._query = other._query !== undefined ? other._query : null;
     this._idToIndexHash = other._idToIndexHash !== undefined ? other._idToIndexHash : null;
     // Clone, since the others may be frozen
-    this._modelsHash = Object.assign({}, other._modelsHash || {});
-    this._ids = [].concat(other._ids || []);
+    this._modelsHash = other._modelsHash === undefined
+      ? {}
+      : Object.assign({}, other._modelsHash)
+    this._ids = other._ids === undefined
+      ? []
+      : other._ids.slice(0)
   }
 
   clone() {
     return new this.constructor({
-      _ids: [].concat(this._ids),
+      _ids: this._ids.slice(0),
       _modelsHash: Object.assign({}, this._modelsHash),
       _idToIndexHash: Object.assign({}, this._idToIndexHash),
       _query: this._query,

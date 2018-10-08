@@ -3,7 +3,7 @@ import { RetinaImg } from 'mailspring-component-kit';
 
 const StaticEmptyIndicator = <div className="personal-level-icon" />;
 
-export default class PersonalLevelIcon extends React.Component {
+module.exports = class PersonalLevelIcon extends React.Component {
   // Note: You should assign a new displayName to avoid naming
   // conflicts when injecting your item
   static displayName = 'PersonalLevelIcon';

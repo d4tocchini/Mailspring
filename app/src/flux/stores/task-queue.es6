@@ -1,8 +1,9 @@
-import _ from 'underscore';
-import MailspringStore from 'mailspring-store';
-import { Rx } from 'mailspring-exports';
-import Task from '../tasks/task';
-import DatabaseStore from './database-store';
+const _ = require('underscore');
+const MailspringStore = require('mailspring-store');
+const Task = require('../tasks/task');
+const DatabaseStore = require('./database-store');
+const Rx_Observable = require('mailspring-exports').Rx.Observable;
+
 
 /**
 Public: The TaskQueue is a Flux-compatible Store that manages a queue of {Task}
@@ -49,8 +50,8 @@ class TaskQueue extends MailspringStore {
 
     this._waitingForLocal = [];
     this._waitingForRemote = [];
-
-    Rx.Observable.fromQuery(DatabaseStore.findAll(Task)).subscribe(this._onQueueChangedDebounced);
+    // Rx_Observable || (Rx_Observable = EXPORTS.Rx.Observable)
+    Rx_Observable.fromQuery(DatabaseStore.findAll(Task)).subscribe(this._onQueueChangedDebounced);
   }
 
   _onQueueChangedDebounced = _.throttle(tasks => {
@@ -132,4 +133,4 @@ class TaskQueue extends MailspringStore {
   };
 }
 
-export default new TaskQueue();
+module.exports = new TaskQueue();

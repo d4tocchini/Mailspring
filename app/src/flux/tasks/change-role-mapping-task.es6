@@ -1,17 +1,16 @@
-import Task from './task';
-import Attributes from '../attributes';
 
-export default class ChangeRoleMappingTask extends Task {
-  static attributes = Object.assign({}, Task.attributes, {
-    path: Attributes.String({
-      modelKey: 'path',
-    }),
-    role: Attributes.String({
-      modelKey: 'role',
-    }),
-  });
+const Task = require('./task');
 
-  label() {
-    return `Changing folder mapping...`;
+  class ChangeRoleMappingTask extends Task {
+
+    static defineAttributes(Attribute) {
+      Attribute('String', { modelKey: 'path', })
+      Attribute('String', { modelKey: 'role', })
+    }
+
+    label() {
+      return `Changing folder mapping...`;
+    }
   }
-}
+  module.exports = Task.setup(ChangeRoleMappingTask)
+  

@@ -40,4 +40,4 @@ class OpenTrackingMessagePopover extends React.Component {
   }
 }
 
-export default OpenTrackingMessagePopover;
+module.exports = OpenTrackingMessagePopover;

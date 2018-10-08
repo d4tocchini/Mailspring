@@ -1,6 +1,7 @@
-import SerializableRegistry from './serializable-registry';
+const SerializableRegistry = require('./serializable-registry');
 
 class DatabaseObjectRegistry extends SerializableRegistry {}
 
 const registry = new DatabaseObjectRegistry();
-export default registry;
+
+module.exports = registry;

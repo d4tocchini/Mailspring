@@ -1,4 +1,4 @@
-const File = require('../../src/flux/models/file').default;
+const File = require('../../src/flux/models/file');
 
 const test_file_path = "/path/to/file.jpg";
 

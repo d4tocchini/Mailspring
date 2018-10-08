@@ -4,7 +4,7 @@ import createDebug from 'debug';
 import childProcess from 'child_process';
 import LRU from 'lru-cache';
 import Sqlite3 from 'better-sqlite3';
-import { remote } from 'electron';
+import { remote, ipcRenderer } from 'electron';
 import { ExponentialBackoffScheduler } from '../../backoff-schedulers';
 
 import MailspringStore from '../../global/mailspring-store';
@@ -38,7 +38,7 @@ function handleUnrecoverableDatabaseError(
   if (!app) {
     throw new Error('handleUnrecoverableDatabaseError: `app` is not ready!');
   }
-  const ipc = require('electron').ipcRenderer;
+  const ipc = ipcRenderer
   ipc.send('command', 'application:reset-database', {
     errorMessage: err.toString(),
   });
@@ -524,4 +524,4 @@ class DatabaseStore extends MailspringStore {
   }
 }
 
-export default new DatabaseStore();
+module.exports = new DatabaseStore();

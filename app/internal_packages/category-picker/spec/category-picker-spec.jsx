@@ -1,7 +1,7 @@
 const React = require('react');
 const ReactDOM = require('react-dom');
 const ReactTestUtils = require('react-dom/test-utils');
-const MovePickerPopover = require('../lib/move-picker-popover').default;
+const MovePickerPopover = require('../lib/move-picker-popover');
 
 const {
   Category,

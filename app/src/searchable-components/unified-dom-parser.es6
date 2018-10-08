@@ -1,7 +1,7 @@
 import { Utils } from 'mailspring-exports';
 import { MAX_MATCHES, CHAR_THRESHOLD } from './search-constants';
 
-export default class UnifiedDOMParser {
+module.exports = class UnifiedDOMParser {
   constructor(regionId) {
     this.regionId = regionId;
     this.matchRenderIndex = 0;

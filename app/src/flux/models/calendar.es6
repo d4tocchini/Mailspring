@@ -1,5 +1,4 @@
-import Model from './model';
-import Attributes from '../attributes';
+const Model = require('./model');
 
 /**
 Public: The Calendar model represents a Calendar object.
@@ -14,19 +13,14 @@ This class also inherits attributes from {Model}
 
 Section: Models
 */
-export default class Calendar extends Model {
-  static attributes = Object.assign({}, Model.attributes, {
-    name: Attributes.String({
-      modelKey: 'name',
-      jsonKey: 'name',
-    }),
-    description: Attributes.String({
-      modelKey: 'description',
-      jsonKey: 'description',
-    }),
-    readOnly: Attributes.Boolean({
-      modelKey: 'readOnly',
-      jsonKey: 'read_only',
-    }),
-  });
+
+class Calendar extends Model {
+
+  static defineAttributes(Attribute) {
+    Attribute('String', { modelKey: 'name', jsonKey: 'name', })
+    Attribute('String', { modelKey: 'description', jsonKey: 'description', })
+    Attribute('Boolean', { modelKey: 'readOnly', jsonKey: 'read_only', })
+  }
 }
+
+  module.exports = Model.setup(Calendar)

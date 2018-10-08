@@ -7,7 +7,7 @@ import fs from 'fs';
 
 import { keyAndModifiersForEvent } from './mousetrap-keybinding-helpers';
 
-export default class CommandKeybinding extends React.Component {
+module.exports = class CommandKeybinding extends React.Component {
   static propTypes = {
     bindings: PropTypes.array,
     label: PropTypes.string,

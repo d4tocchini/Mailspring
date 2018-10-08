@@ -1,6 +1,6 @@
 const _ = require('underscore');
 const classNames = require('classnames');
-const ListTabular = require('./list-tabular').default;
+const ListTabular = require('./list-tabular');
 const Spinner = require('./spinner');
 const { React, ReactDOM, PropTypes, Utils, WorkspaceStore } = require('mailspring-exports');
 const { KeyCommandsRegion } = require('mailspring-component-kit');

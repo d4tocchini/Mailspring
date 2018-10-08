@@ -38,7 +38,7 @@ class ConditionalQuotedTextControl extends React.Component {
   }
 }
 
-export default class MessageItemBody extends React.Component {
+module.exports = class MessageItemBody extends React.Component {
   static displayName = 'MessageItemBody';
   static propTypes = {
     message: PropTypes.object.isRequired,

@@ -1,6 +1,6 @@
 import { React, Utils, PropTypes } from 'mailspring-exports';
 
-export default class SyncbackActivity extends React.Component {
+module.exports = class SyncbackActivity extends React.Component {
   static propTypes = {
     tasks: PropTypes.array,
   };

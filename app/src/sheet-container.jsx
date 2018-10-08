@@ -1,13 +1,13 @@
 import React from 'react';
-import { CSSTransitionGroup } from 'react-transition-group';
 import { WorkspaceStore } from 'mailspring-exports';
 
+import CSSTransitionGroup from './components/CSSTransitionGroup';
 import Sheet from './sheet';
 import Toolbar from './sheet-toolbar';
 import Flexbox from './components/flexbox';
 import InjectedComponentSet from './components/injected-component-set';
 
-export default class SheetContainer extends React.Component {
+module.exports = class SheetContainer extends React.Component {
   static displayName = 'SheetContainer';
 
   constructor(props) {
@@ -98,14 +98,20 @@ export default class SheetContainer extends React.Component {
         onColumnSizeChanged={this._onColumnSizeChanged}
       />
     ));
-
+    const toolbar_container = this._toolbarContainerElement()
+    const comps = {
+      toolbar_container,
+      Flexbox,
+      InjectedComponentSet,
+      sheetComponents
+    }
     return (
       <Flexbox
         direction="column"
         className={`layout-mode-${this.state.mode}`}
         style={{ overflow: 'hidden' }}
       >
-        {this._toolbarContainerElement()}
+        {toolbar_container}
 
         <div name="Header" style={{ order: 1, zIndex: 2 }}>
           <InjectedComponentSet

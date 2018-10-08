@@ -1,6 +1,6 @@
 import { WorkspaceStore, MailboxPerspective } from 'mailspring-exports';
 
-export default class ActivityMailboxPerspective extends MailboxPerspective {
+module.exports = class ActivityMailboxPerspective extends MailboxPerspective {
   sheet() {
     return WorkspaceStore.Sheet.Activity;
   }

@@ -99,4 +99,4 @@ class OnlineStatusStore extends MailspringStore {
   };
 }
 
-export default new OnlineStatusStore();
+module.exports = new OnlineStatusStore();

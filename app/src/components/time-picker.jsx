@@ -8,7 +8,7 @@ require('moment-round'); // overrides moment
 
 const INTERVAL = [30, 'minutes'];
 
-export default class TimePicker extends React.Component {
+module.exports = class TimePicker extends React.Component {
   static displayName = 'TimePicker';
 
   static propTypes = {

@@ -33,4 +33,4 @@ class EmailFrameStylesStore extends MailspringStore {
   }
 }
 
-export default new EmailFrameStylesStore();
+module.exports = new EmailFrameStylesStore();

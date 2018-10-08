@@ -48,4 +48,4 @@ class SendRemindersThreadTimestamp extends Component {
   }
 }
 
-export default SendRemindersThreadTimestamp;
+module.exports = SendRemindersThreadTimestamp;

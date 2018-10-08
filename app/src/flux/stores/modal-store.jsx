@@ -1,7 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Modal } from 'mailspring-component-kit';
 import MailspringStore from 'mailspring-store';
+
+// D4
+let Modal
+// import { Modal } from 'mailspring-component-kit';
+function renderModal(props, child) {
+  // <Modal {...props}>{child}</Modal>;
+  Modal || (Modal = require('mailspring-component-kit').Modal)
+  return React.createElement(Modal, props, child)
+}
 
 import Actions from '../actions';
 
@@ -29,7 +37,7 @@ class ModalStore extends MailspringStore {
   };
 
   renderModal = (child, props, callback) => {
-    const modal = <Modal {...props}>{child}</Modal>;
+    const modal = renderModal(props, child)
 
     ReactDOM.render(modal, this.container, () => {
       this.isOpen = true;
@@ -62,4 +70,4 @@ class ModalStore extends MailspringStore {
   };
 }
 
-export default new ModalStore();
+module.exports = new ModalStore();

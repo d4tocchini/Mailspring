@@ -3,16 +3,16 @@
 /*
 Warning! This file is imported from the main process as well as the renderer process
 */
-import { spawn, exec } from 'child_process';
-import { Readable } from 'stream';
-import path from 'path';
-import os from 'os';
-import { EventEmitter } from 'events';
-import fs from 'fs';
+const { spawn, exec } = require('child_process');
+const { Readable } = require('stream');
+const path = require('path');
+const os = require('os');
+const { EventEmitter } = require('events');
+const fs = require('fs');
 
 let Utils = null;
 
-export const LocalizedErrorStrings = {
+const LocalizedErrorStrings = {
   ErrorConnection: 'Connection Error - Unable to connect to the server / port you provided.',
   ErrorInvalidAccount:
     'This account is invalid or Mailspring could not find the Inbox or All Mail folder. http://support.getmailspring.com/hc/en-us/articles/115001881912',
@@ -51,7 +51,8 @@ export const LocalizedErrorStrings = {
     'Your Mailspring ID is missing required fields - you may need to reset Mailspring. http://support.getmailspring.com/hc/en-us/articles/115002012491',
 };
 
-export default class MailsyncProcess extends EventEmitter {
+class MailsyncProcess extends EventEmitter {
+
   constructor({ configDirPath, resourcePath, verbose }) {
     super();
     this.verbose = verbose;
@@ -281,6 +282,7 @@ export default class MailsyncProcess extends EventEmitter {
     try {
       this._proc.stdin.write(msg, 'UTF8');
     } catch (error) {
+
       if (error && error.message.includes('socket has been ended')) {
         // The process probably already exited and we missed it somehow,
         // but try to kill it anyway and then force-emit a 'close' to trigger
@@ -344,3 +346,6 @@ end tell
     exec(`osascript ${tmppath}`);
   }
 }
+
+MailsyncProcess.LocalizedErrorStrings = LocalizedErrorStrings
+module.exports = MailsyncProcess

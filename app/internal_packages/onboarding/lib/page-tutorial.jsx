@@ -51,7 +51,7 @@ const Steps = [
   // },
 ];
 
-export default class TutorialPage extends React.Component {
+module.exports = class TutorialPage extends React.Component {
   static displayName = 'TutorialPage';
 
   constructor(props) {

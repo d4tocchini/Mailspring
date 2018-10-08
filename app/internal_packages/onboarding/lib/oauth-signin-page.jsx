@@ -7,7 +7,7 @@ import url from 'url';
 import FormErrorMessage from './form-error-message';
 import { LOCAL_SERVER_PORT } from './onboarding-helpers';
 
-export default class OAuthSignInPage extends React.Component {
+module.exports = class OAuthSignInPage extends React.Component {
   static displayName = 'OAuthSignInPage';
 
   static propTypes = {

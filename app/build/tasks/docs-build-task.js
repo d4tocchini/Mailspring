@@ -2,7 +2,6 @@ const path = require('path');
 const rimraf = require('rimraf');
 
 const fs = require('fs-plus');
-var fs_extra = require('fs-extra');
 
 const joanna = require('joanna');
 const tello = require('tello');
@@ -109,7 +108,7 @@ module.exports = function(grunt) {
         } else if (path.extname(file) === '.js') {
           let dest_path = path.join(cjsxOutputDir, path.basename(file));
           console.log('Copying ' + file + ' to ' + dest_path);
-          fs_extra.copySync(file, dest_path);
+          fs.copyFileSyncs(file, dest_path);
         }
         return true;
       });

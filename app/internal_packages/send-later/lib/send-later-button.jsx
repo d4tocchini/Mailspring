@@ -164,4 +164,4 @@ class SendLaterButton extends Component {
   }
 }
 
-export default SendLaterButton;
+module.exports = SendLaterButton;

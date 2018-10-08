@@ -4,8 +4,8 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 const _ = require('underscore');
-const Actions = require('../actions').default;
-const MailspringStore = require('mailspring-store').default;
+const Actions = require('../actions');
+const MailspringStore = require('mailspring-store');
 
 let Sheet = {};
 let Location = {};
@@ -33,6 +33,7 @@ class WorkspaceStore extends MailspringStore {
     this.listenTo(Actions.pushSheet, this.pushSheet);
 
     const { windowType } = AppEnv.getLoadSettings();
+    
     if (windowType !== 'onboarding') {
       require('electron').webFrame.setVisualZoomLevelLimits(1, 1);
       AppEnv.config.observe('core.workspace.interfaceZoom', z => {
@@ -106,6 +107,7 @@ class WorkspaceStore extends MailspringStore {
   };
 
   _onSetFocus = ({ collection, item }) => {
+    debugger
     if (collection === 'thread') {
       if (this.layoutMode() === 'list') {
         if (item && this.topSheet() !== Sheet.Thread) {

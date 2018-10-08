@@ -176,4 +176,4 @@ WorkspaceSection.propTypes = {
   configSchema: PropTypes.object,
 };
 
-export default WorkspaceSection;
+module.exports = WorkspaceSection;

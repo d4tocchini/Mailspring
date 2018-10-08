@@ -1,7 +1,7 @@
-import _ from 'underscore';
-import MailspringStore from 'mailspring-store';
-import DatabaseStore from './database-store';
-import Thread from '../models/thread';
+const _ = require('underscore')
+const MailspringStore = require('mailspring-store')
+const DatabaseStore = require('./database-store')
+const Thread = require('../models/thread')
 
 class ThreadCountsStore extends MailspringStore {
   constructor() {
@@ -49,4 +49,4 @@ class ThreadCountsStore extends MailspringStore {
   }
 }
 
-export default new ThreadCountsStore();
+module.exports = new ThreadCountsStore();

@@ -64,7 +64,7 @@ import SelectableTable, { SelectableTableCell } from './selectable-table';
  * @callback props.onRemoveColumn
  */
 
-export class EditableTableCell extends Component {
+class EditableTableCell extends Component {
   static propTypes = {
     tableDataSource: SelectableTableCell.propTypes.tableDataSource,
     rowIdx: SelectableTableCell.propTypes.colIdx,
@@ -209,4 +209,5 @@ EditableTable.propTypes = {
   onRemoveRow: PropTypes.func,
 };
 
-export default EditableTable;
+EditableTable.EditableTableCell = EditableTableCell
+module.exports = EditableTable;

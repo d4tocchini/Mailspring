@@ -1,9 +1,9 @@
-import MailspringStore from 'mailspring-store';
-import AccountStore from './account-store';
-import WorkspaceStore from './workspace-store';
-import DatabaseStore from './database-store';
-import Actions from '../actions';
-import Model from '../models/model';
+const MailspringStore = require('mailspring-store');
+const AccountStore = require('./account-store');
+const WorkspaceStore = require('./workspace-store');
+const DatabaseStore = require('./database-store');
+const Actions = require('../actions');
+const Model = require('../models/model');
 
 /**
 Public: The FocusedContentStore provides access to the objects currently selected
@@ -109,6 +109,7 @@ class FocusedContentStore extends MailspringStore {
   };
 
   _onFocus = ({ collection, item, usingClick }) => {
+    debugger
     if (item && !(item instanceof Model)) {
       throw new Error('focus() requires a Model or null');
     }
@@ -254,4 +255,4 @@ class FocusedContentStore extends MailspringStore {
   }
 }
 
-export default new FocusedContentStore();
+module.exports = new FocusedContentStore();

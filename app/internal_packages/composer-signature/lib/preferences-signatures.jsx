@@ -143,7 +143,7 @@ class SignatureEditor extends React.Component {
   }
 }
 
-export default class PreferencesSignatures extends React.Component {
+module.exports = class PreferencesSignatures extends React.Component {
   static displayName = 'PreferencesSignatures';
 
   constructor() {

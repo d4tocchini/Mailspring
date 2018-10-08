@@ -25,28 +25,54 @@ describe('Model', function modelSpecs() {
 
   describe('clone', () =>
     it('should return a deep copy of the object (not reusing array members, etc.)', () => {
+      // class SubSubmodel extends Model {
+      //   static attributes = Object.assign({}, Model.attributes, {
+      //     value: Attributes.Number({
+      //       modelKey: 'value',
+      //       jsonKey: 'value',
+      //     }),
+      //   });
+      // }
+
+      // class Submodel extends Model {
+      //   static attributes = Object.assign({}, Model.attributes, {
+      //     testNumber: Attributes.Number({
+      //       modelKey: 'testNumber',
+      //       jsonKey: 'test_number',
+      //     }),
+      //     testArray: Attributes.Collection({
+      //       itemClass: SubSubmodel,
+      //       modelKey: 'testArray',
+      //       jsonKey: 'test_array',
+      //     }),
+      //   });
+      // }
+
       class SubSubmodel extends Model {
-        static attributes = Object.assign({}, Model.attributes, {
-          value: Attributes.Number({
+        static defineAttributes(Attribute){
+          Attribute('Number', {
             modelKey: 'value',
             jsonKey: 'value',
-          }),
-        });
+          })
+        }
       }
+      Model.setup(SubSubmodel)
 
       class Submodel extends Model {
-        static attributes = Object.assign({}, Model.attributes, {
-          testNumber: Attributes.Number({
+        static defineAttributes(Attribute){
+          Attribute('Number',{
             modelKey: 'testNumber',
             jsonKey: 'test_number',
-          }),
-          testArray: Attributes.Collection({
+          })
+          Attribute('Collection',{
             itemClass: SubSubmodel,
             modelKey: 'testArray',
             jsonKey: 'test_array',
-          }),
-        });
+          })
+        }
       }
+
+      Model.setup(Submodel)
 
       const old = new Submodel({
         testNumber: 4,

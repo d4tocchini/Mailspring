@@ -8,7 +8,8 @@ const rimraf = require('rimraf');
 const targz = require('targz');
 const { safeExec } = require('./utils/child-process-wrapper.js');
 
-const npmElectronTarget = require('../package.json').devDependencies.electron;
+// D4
+const npmElectronTarget = require('../../../../../package.json').devDependencies.electron;
 const npmEnvs = {
   system: process.env,
   electron: Object.assign({}, process.env, {
@@ -20,7 +21,7 @@ const npmEnvs = {
     npm_config_build_from_source: true,
   }),
 };
-
+/*
 function npm(cmd, options) {
   const { cwd, env } = Object.assign({ cwd: '.', env: 'system' }, options);
 
@@ -39,7 +40,7 @@ function npm(cmd, options) {
     );
   });
 }
-
+*/
 function downloadMailsync() {
   https.get(`https://mailspring-builds.s3.amazonaws.com/stable.txt`, response => {
     let data = '';
@@ -95,35 +96,40 @@ function downloadMailsync() {
     });
   });
 }
+ // if the user hasn't cloned the private mailsync module, download
+  // the binary for their operating system that was shipped to S3.
+  if (!fs.existsSync('./mailsync/build.sh')) {
+    console.log(`\n-- Downloading the last released version of Mailspring mailsync --`);
+    downloadMailsync();
+  }
 
 // For speed, we cache app/node_modules. However, we need to
 // be sure to do a full rebuild of native node modules when the
 // Electron version changes. To do this we check a marker file.
 const appModulesPath = path.resolve(__dirname, '..', 'app', 'node_modules');
 const cacheVersionPath = path.join(appModulesPath, '.postinstall-target-version');
-const cacheElectronTarget =
-  fs.existsSync(cacheVersionPath) && fs.readFileSync(cacheVersionPath).toString();
+// const cacheElectronTarget =
+//   fs.existsSync(cacheVersionPath) && fs.readFileSync(cacheVersionPath).toString();
 
-if (cacheElectronTarget !== npmElectronTarget) {
-  console.log(`\n-- Clearing app/node_modules --`);
-  rimraf.sync(appModulesPath);
-}
+fs.writeFileSync(cacheVersionPath, npmElectronTarget);
 
-// run `npm install` in ./app with Electron NPM config
-npm('install', { cwd: './app', env: 'electron' }).then(() => {
-  // run `npm dedupe` in ./app with Electron NPM config
-  npm('dedupe', { cwd: './app', env: 'electron' }).then(() => {
-    // run `npm ls` in ./app - detects missing peer dependencies, etc.
-    npm('ls', { cwd: './app', env: 'electron' }).then(() => {
-      // write the marker with the electron version
-      fs.writeFileSync(cacheVersionPath, npmElectronTarget);
+// if (cacheElectronTarget !== npmElectronTarget) {
+//   console.log(`\n-- Clearing app/node_modules --`);
+//   rimraf.sync(appModulesPath);
+// }
 
-      // if the user hasn't cloned the private mailsync module, download
-      // the binary for their operating system that was shipped to S3.
-      if (!fs.existsSync('./mailsync/build.sh')) {
-        console.log(`\n-- Downloading the last released version of Mailspring mailsync --`);
-        downloadMailsync();
-      }
-    });
-  });
-});
+// // run `npm install` in ./app with Electron NPM config
+// npm('install', { cwd: './app', env: 'electron' }).then(() => {
+//   // run `npm dedupe` in ./app with Electron NPM config
+//   npm('dedupe', { cwd: './app', env: 'electron' }).then(() => {
+//     // run `npm ls` in ./app - detects missing peer dependencies, etc.
+//     npm('ls', { cwd: './app', env: 'electron' }).then(() => {
+//       // write the marker with the electron version
+//       fs.writeFileSync(cacheVersionPath, npmElectronTarget);
+//     });
+//   });
+
+
+
+
+// });

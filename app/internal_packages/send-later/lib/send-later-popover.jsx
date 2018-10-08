@@ -45,4 +45,4 @@ SendLaterPopover.propTypes = {
   onCancelSendLater: PropTypes.func.isRequired,
 };
 
-export default SendLaterPopover;
+module.exports = SendLaterPopover;

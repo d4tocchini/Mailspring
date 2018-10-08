@@ -6,12 +6,12 @@ import MessageStore from '../flux/stores/message-store';
 import AccountStore from '../flux/stores/account-store';
 import { MailLabel } from './mail-label';
 import Actions from '../flux/actions';
-import ChangeLabelsTask from '../flux/tasks/change-labels-task';
+const ChangeLabelsTask = require('../flux/tasks/change-labels-task');
 import InjectedComponentSet from './injected-component-set';
 
 const LabelComponentCache = {};
 
-export default class MailLabelSet extends React.Component {
+module.exports = class MailLabelSet extends React.Component {
   static displayName = 'MailLabelSet';
 
   static propTypes = {

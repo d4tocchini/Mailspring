@@ -53,4 +53,4 @@ class DraftListToolbar extends Component {
   }
 }
 
-export default ListensToObservable(DraftListToolbar, { getObservable, getStateFromObservable });
+module.exports = ListensToObservable(DraftListToolbar, { getObservable, getStateFromObservable });

@@ -1,6 +1,6 @@
 import { Emitter, Disposable, CompositeDisposable } from 'event-kit';
 
-export default class CommandRegistry {
+module.exports = class CommandRegistry {
   constructor() {
     this.emitter = new Emitter();
     this.listenerCounts = {};

@@ -140,4 +140,4 @@ class TemplatePicker extends React.Component {
   }
 }
 
-export default TemplatePicker;
+module.exports = TemplatePicker;

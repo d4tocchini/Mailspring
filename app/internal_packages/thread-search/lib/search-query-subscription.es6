@@ -103,4 +103,4 @@ class SearchQuerySubscription extends MutableQuerySubscription {
   }
 }
 
-export default SearchQuerySubscription;
+module.exports = SearchQuerySubscription;

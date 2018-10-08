@@ -4,7 +4,7 @@ import { shell, remote, ipcRenderer } from 'electron';
 
 import Package from './package';
 
-export default class PackageManager {
+module.exports = class PackageManager {
   constructor({ configDirPath, devMode, safeMode, resourcePath, specMode }) {
     this.packageDirectories = [];
     this.resourcePath = resourcePath;
@@ -57,10 +57,13 @@ export default class PackageManager {
   }
 
   activatePackages(windowType) {
+    // console.log('activatePackages',windowType)
+
     for (const name of Object.keys(this.available)) {
       const pkg = this.available[name];
 
       if (pkg.windowTypes[windowType] || pkg.windowTypes.all) {
+        // console.log('activatePackages pkg',pkg)
         if (pkg.syncInit) {
           this.activatePackage(pkg);
         } else {

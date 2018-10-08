@@ -13,7 +13,7 @@ let winNum = 0;
  * all we need to do is load the handful of packages the window
  * requires and show it.
  */
-export default class WindowLauncher {
+module.exports = class WindowLauncher {
   static EMPTY_WINDOW = 'emptyWindow';
 
   constructor({
@@ -62,6 +62,7 @@ export default class WindowLauncher {
     if (this._mustUseColdWindow(opts)) {
       win = new MailspringWindow(opts);
     } else {
+
       // Check if the hot window has been deleted. This may happen when we are
       // relaunching the app
       if (!this.hotWindow) {
@@ -70,6 +71,7 @@ export default class WindowLauncher {
       win = this.hotWindow;
 
       const newLoadSettings = Object.assign({}, win.loadSettings(), opts);
+      // console.log('------------- hot win newLoadSettings', newLoadSettings)
       if (newLoadSettings.windowType === WindowLauncher.EMPTY_WINDOW) {
         throw new Error('Must specify a windowType');
       }

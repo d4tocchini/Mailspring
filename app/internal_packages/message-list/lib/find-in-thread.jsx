@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import { Actions, MessageStore, SearchableComponentStore } from 'mailspring-exports';
 import { RetinaImg, KeyCommandsRegion } from 'mailspring-component-kit';
 
-export default class FindInThread extends React.Component {
+module.exports = class FindInThread extends React.Component {
   static displayName = 'FindInThread';
 
   constructor(props) {

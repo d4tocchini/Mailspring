@@ -8,7 +8,7 @@ export function activate() {
     new PreferencesUIStore.TabItem({
       tabId: 'General',
       displayName: 'General',
-      componentClassFn: () => require('./tabs/preferences-general').default,
+      componentClassFn: () => require('./tabs/preferences-general'),
       order: 1,
     })
   );
@@ -16,7 +16,7 @@ export function activate() {
     new PreferencesUIStore.TabItem({
       tabId: 'Accounts',
       displayName: 'Accounts',
-      componentClassFn: () => require('./tabs/preferences-accounts').default,
+      componentClassFn: () => require('./tabs/preferences-accounts'),
       order: 2,
     })
   );
@@ -24,7 +24,7 @@ export function activate() {
     new PreferencesUIStore.TabItem({
       tabId: 'Subscription',
       displayName: 'Subscription',
-      componentClassFn: () => require('./tabs/preferences-identity').default,
+      componentClassFn: () => require('./tabs/preferences-identity'),
       order: 3,
     })
   );
@@ -32,7 +32,7 @@ export function activate() {
     new PreferencesUIStore.TabItem({
       tabId: 'Appearance',
       displayName: 'Appearance',
-      componentClassFn: () => require('./tabs/preferences-appearance').default,
+      componentClassFn: () => require('./tabs/preferences-appearance'),
       order: 4,
     })
   );
@@ -40,7 +40,7 @@ export function activate() {
     new PreferencesUIStore.TabItem({
       tabId: 'Shortcuts',
       displayName: 'Shortcuts',
-      componentClassFn: () => require('./tabs/preferences-keymaps').default,
+      componentClassFn: () => require('./tabs/preferences-keymaps'),
       order: 5,
     })
   );
@@ -48,7 +48,7 @@ export function activate() {
     new PreferencesUIStore.TabItem({
       tabId: 'Mail Rules',
       displayName: 'Mail Rules',
-      componentClassFn: () => require('./tabs/preferences-mail-rules').default,
+      componentClassFn: () => require('./tabs/preferences-mail-rules'),
       order: 6,
     })
   );

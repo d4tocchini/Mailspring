@@ -2,7 +2,7 @@ const React = require('react');
 const ReactDOM = require('react-dom');
 const ReactTestUtils = require('react-dom/test-utils');
 const { Message } = require('mailspring-exports');
-const MessageParticipants = require('../lib/message-participants').default;
+const MessageParticipants = require('../lib/message-participants');
 
 const user_1 = {
   name: 'User One',

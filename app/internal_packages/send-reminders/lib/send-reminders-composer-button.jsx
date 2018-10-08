@@ -8,7 +8,7 @@ import moment from 'moment';
 import SendRemindersPopover from './send-reminders-popover';
 import { reminderDateFor, updateDraftReminderMetadata } from './send-reminders-utils';
 
-export default class SendRemindersComposerButton extends Component {
+module.exports = class SendRemindersComposerButton extends Component {
   static displayName = 'SendRemindersComposerButton';
 
   static containerRequired = false;

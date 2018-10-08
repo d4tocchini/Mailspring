@@ -75,4 +75,4 @@ All {MailspringStore}s are constructed upon their first `require` by another
 module.  Since `require` is cached, they are only constructed once and
 are therefore singletons.
 */
-export default new GithubStore();
+module.exports = new GithubStore();

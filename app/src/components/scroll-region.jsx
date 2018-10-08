@@ -1,7 +1,27 @@
-const _ = require('underscore');
+// const _ = require('underscore');
 const { React, ReactDOM, PropTypes, Utils } = require('mailspring-exports');
-const classNames = require('classnames');
-const ScrollbarTicks = require('./scrollbar-ticks').default;
+const ScrollbarTicks = require('./scrollbar-ticks');
+
+var FN
+
+var debounce = function(fn, wait) {
+  FN || (FN = require('fn'))
+  // debounce = FN.debounce
+  return FN.debounce(()=>{
+    requestAnimationFrame(fn)
+  }, wait)
+}
+// D4
+var rafdebounce = function(fn, wait, opts) {
+  FN || (FN = require('fn'))
+  rafdebounce = FN.rafdebounce
+  const result = rafdebounce(fn, wait, opts)
+  fn = null
+  opts = null
+  return result
+}
+
+// D4: TODO: handle recompute dimensions
 
 class Scrollbar extends React.Component {
   static displayName = 'Scrollbar';
@@ -38,9 +58,9 @@ class Scrollbar extends React.Component {
     }
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return !Utils.isEqualReact(nextProps, this.props) || !Utils.isEqualReact(nextState, this.state);
-  }
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   return !Utils.isEqualReact(nextProps, this.props) || !Utils.isEqualReact(nextState, this.state);
+  // }
 
   componentWillUnmount() {
     this._onHandleUp({ preventDefault() {} });
@@ -54,12 +74,13 @@ class Scrollbar extends React.Component {
   }
 
   render() {
-    const containerClasses = classNames({
-      'scrollbar-track': true,
-      dragging: this.state.dragging,
-      scrolling: this.state.scrolling,
-      'with-ticks': this.state.scrollbarTicks.length > 0,
-    });
+    var containerClasses = 'scrollbar-track'
+    if (this.state.dragging === true)
+      containerClasses += ' dragging'
+    if (this.state.scrolling === true)
+      containerClasses += ' scrolling'
+    if (this.state.scrollbarTicks.length > 0)
+      containerClasses += ' with-ticks'
 
     let tooltip = [];
     if (this.props.scrollTooltipComponent && this.state.dragging) {
@@ -192,7 +213,7 @@ class Scrollbar extends React.Component {
 
   _onScrollJump = event => {
     this._trackOffset = ReactDOM.findDOMNode(this.refs.track).getBoundingClientRect().top;
-    this._mouseOffsetWithinHandle = this._getHandleHeight() / 2;
+    this._mouseOffsetWithinHandle = this._getHandleHeight() >> 1;
     this._onHandleMove(event);
   };
 
@@ -239,7 +260,7 @@ class ScrollRegion extends React.Component {
 
   constructor(props) {
     super(props);
-
+    this._is_recomputing = false
     this._scrollToTaskId = 0;
     this._scrollbarComponent = null;
     this.state = {
@@ -249,45 +270,70 @@ class ScrollRegion extends React.Component {
       scrolling: false,
     };
 
+    this._onScrollEnd = debounce(() => {
+      this._setSharedState({ scrolling: false });
+      this.recomputeDimensions();
+      if (this.props.onScrollEnd) {
+        this.props.onScrollEnd(event);
+      }
+    }, 250);
+
+    let is_setting = false
     Object.defineProperty(this, 'scrollTop', {
       get() {
         return ReactDOM.findDOMNode(this.refs.content).scrollTop;
       },
       set(val) {
-        ReactDOM.findDOMNode(this.refs.content).scrollTop = val;
+        // TODO:!!!!!!!! ugh
+        if (is_setting) return
+        is_setting = true
+        requestAnimationFrame(()=>{
+          ReactDOM.findDOMNode(this.refs.content).scrollTop = val;
+          is_setting = false
+        })
       },
     });
+
+    this._onScroll = rafdebounce(this._onScroll_, {leading:true})
+
   }
 
   componentDidMount() {
     this._mounted = true;
     this.recomputeDimensions();
 
-    this._heightObserver = new MutationObserver(mutations => {
-      let recompute = false;
-      mutations.forEach(
-        mutation =>
-          recompute ||
-          (recompute = !mutation.oldValue || mutation.oldValue.indexOf('height:') !== -1)
-      );
-      if (recompute) {
-        this.recomputeDimensions({ useCachedValues: false });
-      }
-    });
+    // this._heightObserver = new MutationObserver(mutations => {
+    //   let recompute = false;
+    //   mutations.forEach(
+    //     mutation =>
+    //       recompute ||
+    //       (recompute = !mutation.oldValue || mutation.oldValue.indexOf('height:') !== -1)
+    //   );
+    //   if (recompute) {
+    //     this.recomputeDimensions({ useCachedValues: false });
+    //   }
+    // });
 
-    this._heightObserver.observe(ReactDOM.findDOMNode(this.refs.content), {
-      subtree: true,
-      attributes: true,
-      attributeOldValue: true,
-      attributeFilter: ['style'],
-    });
+    // this._heightObserver.observe(ReactDOM.findDOMNode(this.refs.content), {
+    //   subtree: true,
+    //   attributes: true,
+    //   attributeOldValue: true,
+    //   attributeFilter: ['style'],
+    // });
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (!this.state.scrolling && this.props.children !== prevProps.children) {
-      this.recomputeDimensions();
-    }
-  }
+  // componentDidUpdate(prevProps, prevState) {
+  //   if (
+  //     (!this.state.scrolling)
+  //     &&
+  //     (this.props.children !== prevProps.children)
+  //     ) {
+  //       // requestAnimationFrame(()=>{
+
+  //       // })
+  //     this.recomputeDimensions();
+  //   }
+  // }
 
   componentWillReceiveProps(props) {
     if (this.shouldInvalidateScrollbarComponent(props)) {
@@ -296,7 +342,7 @@ class ScrollRegion extends React.Component {
   }
 
   componentWillUnmount() {
-    this._heightObserver.disconnect();
+    // this._heightObserver.disconnect();
     this._mounted = false;
   }
 
@@ -318,18 +364,19 @@ class ScrollRegion extends React.Component {
   };
 
   render() {
-    const containerClasses =
-      `${this.props.className != null ? this.props.className : ''} ` +
-      classNames({
-        'scroll-region': true,
-        dragging: this.state.dragging,
-        scrolling: this.state.scrolling,
-      });
+    var containerClasses = 'scroll-region'
+    if (this.props.className != null)
+      containerClasses += ' ' + this.props.className
+    if (this.state.dragging === true)
+      containerClasses += ' dragging'
+    if (this.state.scrolling === true)
+      containerClasses += ' scrolling'
 
     if (!this.props.getScrollbar) {
       if (this._scrollbarComponent == null) {
         this._scrollbarComponent = (
           <Scrollbar
+            key="scrollbar"
             ref="scrollbar"
             scrollbarTickProvider={this.props.scrollbarTickProvider}
             scrollTooltipComponent={this.props.scrollTooltipComponent}
@@ -342,9 +389,9 @@ class ScrollRegion extends React.Component {
     const otherProps = Utils.fastOmit(this.props, Object.keys(this.constructor.propTypes));
 
     return (
-      <div className={containerClasses} {...otherProps}>
+      <div key="scrllbr_container" className={containerClasses} {...otherProps}>
         {this._scrollbarComponent}
-        <div className="scroll-region-content" onScroll={this._onScroll} ref="content">
+        <div key="scroll-region-content" className="scroll-region-content" onScroll={this._onScroll} ref="content">
           <div className="scroll-region-content-inner">{this.props.children}</div>
         </div>
       </div>
@@ -363,7 +410,10 @@ class ScrollRegion extends React.Component {
         'ScrollRegion.scrollTo: requires a DOM node or React element. Maybe you meant scrollToRect?'
       );
     }
-    this._scroll({ position, settle, done }, () => node.getBoundingClientRect());
+    this._scroll( position, settle, done , () => {
+      const {top,bottom,left,right,width,height,x,y} = node.getBoundingClientRect()
+      return {top,bottom,left,right,width,height,x,y}
+    });
   };
 
   // Public: Scroll to the client rectangle provided. Note: This method expects
@@ -380,10 +430,10 @@ class ScrollRegion extends React.Component {
         'ScrollRegion.scrollToRect: requires a rect with `top` and `height` attributes.'
       );
     }
-    this._scroll({ position, settle, done }, () => rect);
+    this._scroll( position, settle, done , () => rect);
   }
 
-  _scroll({ position, settle, done }, clientRectProviderCallback) {
+  _scroll( position, settle, done, clientRectProviderCallback) {
     let settleFn;
     const contentNode = ReactDOM.findDOMNode(this.refs.content);
     if (position == null) {
@@ -405,38 +455,43 @@ class ScrollRegion extends React.Component {
         return typeof done === 'function' ? done(false) : undefined;
       }
 
-      const contentClientRect = contentNode.getBoundingClientRect();
-      const rect = _.clone(clientRectProviderCallback());
+      const {top,bottom,left,right,width,height,x,y} = contentNode.getBoundingClientRect();
+      const rect = clientRectProviderCallback() //_.clone(clientRectProviderCallback());
+      const scrollTop = contentNode.scrollTop;
 
       // For sanity's sake, convert the client rectangle we get into a rect
       // relative to the contentRect of our scroll region.
-      rect.top = rect.top - contentClientRect.top + contentNode.scrollTop;
-      rect.bottom = rect.bottom - contentClientRect.top + contentNode.scrollTop;
+      rect.top = rect.top - top + scrollTop;
+      rect.bottom = rect.bottom - top + scrollTop;
 
       // Also give ourselves a representation of the visible region, in the same
       // coordinate space as `rect`
-      const contentVisibleRect = _.clone(contentClientRect);
-      contentVisibleRect.top += contentNode.scrollTop;
-      contentVisibleRect.bottom += contentNode.scrollTop;
+      // D4
+      const contentVisibleRect = {
+        top,bottom,left,right,width,height,x,y
+      }
+      contentVisibleRect.top += scrollTop;
+      contentVisibleRect.bottom += scrollTop;
 
       if (position === ScrollRegion.ScrollPosition.Top) {
         this.scrollTop = rect.top;
       } else if (position === ScrollRegion.ScrollPosition.Bottom) {
-        this.scrollTop = rect.top + rect.height - contentClientRect.height;
+        this.scrollTop = rect.top + rect.height - height;
       } else if (position === ScrollRegion.ScrollPosition.Center) {
-        this.scrollTop = rect.top - (contentClientRect.height - rect.height) / 2;
+        this.scrollTop = rect.top - ((height - rect.height) >> 1);
       } else if (position === ScrollRegion.ScrollPosition.CenterIfInvisible) {
         if (!Utils.rectVisibleInRect(rect, contentVisibleRect)) {
-          this.scrollTop = rect.top - (contentClientRect.height - rect.height) / 2;
+          this.scrollTop = rect.top - ((height - rect.height) >> 1 );
         }
       } else if (position === ScrollRegion.ScrollPosition.Visible) {
         const distanceBelowBottom =
-          rect.top + rect.height - (contentClientRect.height + contentNode.scrollTop);
-        const distanceAboveTop = this.scrollTop - rect.top;
+          rect.top + rect.height - (height + scrollTop);
+        let st = this.scrollTop
+        const distanceAboveTop = st - rect.top;
         if (distanceBelowBottom >= 0) {
-          this.scrollTop += distanceBelowBottom;
+          this.scrollTop = st + distanceBelowBottom;
         } else if (distanceAboveTop >= 0) {
-          this.scrollTop -= distanceAboveTop;
+          this.scrollTop = st + distanceAboveTop;
         }
       }
 
@@ -465,11 +520,14 @@ class ScrollRegion extends React.Component {
   };
 
   recomputeDimensions(options = {}) {
-    const scrollbar = this.props.getScrollbar ? this.props.getScrollbar() : this.refs.scrollbar;
-    if (scrollbar) {
-      scrollbar._recomputeDimensions(options);
-    }
-    this._recomputeDimensions(options);
+
+      const scrollbar = this.props.getScrollbar ? this.props.getScrollbar() : this.refs.scrollbar;
+      if (scrollbar) {
+        scrollbar._recomputeDimensions(options);
+      }
+
+      this._recomputeDimensions(options);
+
   }
 
   _recomputeDimensions = ({ useCachedValues }) => {
@@ -515,7 +573,7 @@ class ScrollRegion extends React.Component {
     this.setState(state);
   }
 
-  _onScroll = event => {
+  _onScroll_ = event => {
     // onScroll events propogate, which is a bit strange. We could actually be
     // receiving a scroll event for a textarea inside the scroll region.
     // See Preferences > Signatures > textarea
@@ -534,15 +592,6 @@ class ScrollRegion extends React.Component {
       this.props.onScroll(event);
     }
 
-    if (this._onScrollEnd == null) {
-      this._onScrollEnd = _.debounce(() => {
-        this._setSharedState({ scrolling: false });
-        this.recomputeDimensions();
-        if (this.props.onScrollEnd) {
-          this.props.onScrollEnd(event);
-        }
-      }, 250);
-    }
     this._onScrollEnd();
   };
 

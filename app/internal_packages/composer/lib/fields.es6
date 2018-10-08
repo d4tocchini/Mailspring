@@ -18,4 +18,4 @@ Fields.Order = {
   contentBody: 6,
 };
 
-export default Fields;
+module.exports = Fields;

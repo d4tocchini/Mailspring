@@ -27,7 +27,7 @@ const {
 const ThreadListColumns = require('./thread-list-columns');
 const ThreadListScrollTooltip = require('./thread-list-scroll-tooltip');
 const ThreadListStore = require('./thread-list-store');
-const ThreadListContextMenu = require('./thread-list-context-menu').default;
+const ThreadListContextMenu = require('./thread-list-context-menu');
 
 class ThreadList extends React.Component {
   static displayName = 'ThreadList';
@@ -177,7 +177,7 @@ class ThreadList extends React.Component {
       };
       props.onSwipeLeft = callback => {
         // TODO this should be grabbed from elsewhere
-        const SnoozePopover = require('../../thread-snooze/lib/snooze-popover').default;
+        const SnoozePopover = require('../../thread-snooze/lib/snooze-popover');
 
         const element = document.querySelector(`[data-item-id="${item.id}"]`);
         const originRect = element.getBoundingClientRect();

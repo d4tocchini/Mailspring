@@ -5,7 +5,7 @@ import { VirtualDOMUtils } from 'mailspring-exports';
 import SearchMatch from './search-match';
 import UnifiedDOMParser from './unified-dom-parser';
 
-export default class VirtualDOMParser extends UnifiedDOMParser {
+module.exports = class VirtualDOMParser extends UnifiedDOMParser {
   getWalker(dom) {
     const pruneFn = node => {
       return node.type === 'style';

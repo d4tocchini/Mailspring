@@ -1,4 +1,4 @@
-const MailspringStore = require('mailspring-store').default;
+const MailspringStore = require('mailspring-store');
 const {
   Rx,
   Message,

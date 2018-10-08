@@ -1,8 +1,9 @@
-import { EventEmitter } from 'events';
+const { EventEmitter } = require('events');
 
 // A very, very simple Flux implementation
 
-export default class MailspringStore {
+class MailspringStore {
+
   hasListener(listenable) {
     for (const sub of this.subscriptions || []) {
       if (
@@ -104,15 +105,23 @@ export default class MailspringStore {
       return;
     }
     if (this._emitter == null) {
-      this._emitter = new EventEmitter();
+      class Ex extends EventEmitter {
+        addListener() {
+          // console.log(...arguments)
+          return super.addListener(...arguments)
+        }
+      }
+      this._emitter = new Ex();
     }
-    return this._emitter.setMaxListeners(100);
+    return this._emitter.setMaxListeners(128);
   }
 
   listen(callback, bindContext = this) {
     if (!callback) {
       throw new Error('@listen called with undefined callback');
     }
+    // window.n++
+    // if (window.n > 50) debugger
 
     this.setupEmitter();
 
@@ -137,3 +146,6 @@ export default class MailspringStore {
     return this._emitter.emit('trigger', arguments);
   }
 }
+// window.n = 0
+
+module.exports = MailspringStore

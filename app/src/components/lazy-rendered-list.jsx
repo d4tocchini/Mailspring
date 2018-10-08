@@ -82,4 +82,4 @@ class LazyRenderedList extends Component {
   }
 }
 
-export default LazyRenderedList;
+module.exports = LazyRenderedList;

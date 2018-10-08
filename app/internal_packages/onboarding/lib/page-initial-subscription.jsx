@@ -1,7 +1,7 @@
 import { RetinaImg } from 'mailspring-component-kit';
 import { React } from 'mailspring-exports';
 
-export default class InitialPreferencesPage extends React.Component {
+module.exports = class InitialPreferencesPage extends React.Component {
   static displayName = 'InitialPreferencesPage';
 
   _onFinished = () => {

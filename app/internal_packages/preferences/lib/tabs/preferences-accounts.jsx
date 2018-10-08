@@ -87,4 +87,4 @@ class PreferencesAccounts extends React.Component {
   }
 }
 
-export default PreferencesAccounts;
+module.exports = PreferencesAccounts;

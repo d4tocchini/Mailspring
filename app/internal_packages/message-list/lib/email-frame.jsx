@@ -11,7 +11,7 @@ import { autolink } from './autolinker';
 import { adjustImages } from './adjust-images';
 import EmailFrameStylesStore from './email-frame-styles-store';
 
-export default class EmailFrame extends React.Component {
+module.exports = class EmailFrame extends React.Component {
   static displayName = 'EmailFrame';
 
   static propTypes = {

@@ -1,1 +1,1 @@
-throw new Error('This package throws an exception');
+// throw new Error('This package throws an exception');

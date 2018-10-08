@@ -1,3 +1,5 @@
+window.XXXX = true
+
 window.eval = global.eval = function() {
   throw new Error('Sorry, N1 does not support window.eval() for security reasons.');
 };

@@ -3,7 +3,7 @@ import fs from 'fs';
 
 class NoPackageJSONError extends Error {}
 
-export default class Package {
+module.exports = class Package {
   static NoPackageJSONError = NoPackageJSONError;
 
   constructor(dir) {

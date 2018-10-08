@@ -11,9 +11,9 @@ const {
   MailspringTestUtils,
 } = require('mailspring-exports');
 
-const MessageParticipants = require('../lib/message-participants').default;
-const MessageItemContainer = require('../lib/message-item-container').default;
-const MessageList = require('../lib/message-list').default;
+const MessageParticipants = require('../lib/message-participants');
+const MessageItemContainer = require('../lib/message-item-container');
+const MessageList = require('../lib/message-list');
 
 // User_1 needs to be "me" so that when we calculate who we should reply
 // to, it properly matches the AccountStore

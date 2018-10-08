@@ -111,4 +111,4 @@ class SnoozePopover extends Component {
   }
 }
 
-export default SnoozePopover;
+module.exports = SnoozePopover;

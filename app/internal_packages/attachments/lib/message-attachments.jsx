@@ -87,4 +87,4 @@ class MessageAttachments extends Component {
   }
 }
 
-export default MessageAttachments;
+module.exports = MessageAttachments;

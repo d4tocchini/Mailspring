@@ -34,7 +34,7 @@ const isSelectionPresent = () => {
 };
 
 // Handles low-level events related to the window.
-export default class WindowEventHandler {
+module.exports = class WindowEventHandler {
   constructor() {
     this.unloadCallbacks = [];
     this.unloadCompleteCallbacks = [];
@@ -114,7 +114,7 @@ export default class WindowEventHandler {
     });
 
     AppEnv.commands.add(document.body, 'window:toggle-component-regions', () => {
-      ComponentRegistry = ComponentRegistry || require('./registries/component-registry').default;
+      ComponentRegistry = ComponentRegistry || require('./registries/component-registry');
       ComponentRegistry.toggleComponentRegions();
     });
 
@@ -129,7 +129,7 @@ export default class WindowEventHandler {
 
     let _UndoStore = null;
     const getUndoStore = () => {
-      if (!_UndoStore) _UndoStore = require('./flux/stores/undo-redo-store').default;
+      if (!_UndoStore) _UndoStore = require('./flux/stores/undo-redo-store');
       return _UndoStore;
     };
 
@@ -146,11 +146,11 @@ export default class WindowEventHandler {
     // "Pinch to zoom" on the Mac gets translated by the system into a
     // "scroll with ctrl key down". To prevent the page from zooming in,
     // prevent default when the ctrlKey is detected.
-    document.addEventListener('mousewheel', event => {
-      if (event.ctrlKey) {
-        event.preventDefault();
-      }
-    });
+    // document.addEventListener('mousewheel', event => {
+    //   if (event.ctrlKey) {
+    //     event.preventDefault();
+    //   }
+    // });
 
     document.addEventListener('drop', this.onDrop);
 
@@ -329,7 +329,7 @@ export default class WindowEventHandler {
     const { Menu, MenuItem } = remote;
     const menu = new Menu();
 
-    Spellchecker = Spellchecker || require('./spellchecker').default;
+    Spellchecker = Spellchecker || require('./spellchecker');
     Spellchecker.appendSpellingItemsToMenu({ menu, word, onCorrect });
 
     menu.append(

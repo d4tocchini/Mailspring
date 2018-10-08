@@ -1,13 +1,13 @@
-import url from 'url';
-import React from 'react';
-import PropTypes from 'prop-types';
-import { shell } from 'electron';
-import ReactDOM from 'react-dom';
-import classnames from 'classnames';
-import networkErrors from 'chromium-net-errors';
-
-import { rootURLForServer } from '../flux/mailspring-api-request';
-import RetinaImg from './retina-img';
+const url = require('url')
+const React = require('react')
+const PropTypes = require('prop-types')
+const { shell } = require('electron')
+const ReactDOM = require('react-dom')
+const classnames = require('classnames')
+const networkErrors = require('chromium-net-errors')
+const RetinaImg = require('./retina-img')
+const MailspringAPIRequest = require('../flux/mailspring-api-request')
+const { rootURLForServer } = MailspringAPIRequest
 
 class InitialLoadingCover extends React.Component {
   static propTypes = {
@@ -68,7 +68,7 @@ class InitialLoadingCover extends React.Component {
   }
 }
 
-export default class Webview extends React.Component {
+module.exports = class Webview extends React.Component {
   static displayName = 'Webview';
 
   static propTypes = {
@@ -106,7 +106,9 @@ export default class Webview extends React.Component {
     const listeners = {
       'did-fail-load': this._webviewDidFailLoad,
       'did-finish-load': this._webviewDidFinishLoad,
-      'did-get-response-details': this._webviewDidGetResponseDetails,
+      // D4 TODO:
+      // 'did-get-response-details': this._webviewDidGetResponseDetails,
+      'did-stop-loading': this._webviewDidGetResponseDetails,
       'console-message': this._onConsoleMessage,
     };
     for (const event of Object.keys(listeners)) {
@@ -131,7 +133,12 @@ export default class Webview extends React.Component {
     console.log('Guest page logged a message:', e.message);
   };
 
-  _webviewDidGetResponseDetails = ({ httpResponseCode, originalURL }) => {
+  _webviewDidGetResponseDetails = (e) => {
+
+    // D4
+    this.setState({ webviewLoading: false });
+    return
+    // TODO:
     if (!this._mounted) return;
     if (!originalURL.includes(url.parse(this.props.src).host)) {
       // This means that some other secondarily loaded resource (like
@@ -157,7 +164,7 @@ export default class Webview extends React.Component {
       return;
     }
 
-    const e = networkErrors.createByCode(errorCode);
+    const e = new networkErrors.getErrorByCode(-1);
     const error = `Could not reach ${validatedURL}. ${e ? e.message : errorCode}`;
     this.setState({ ready: false, error: error, webviewLoading: false });
   };

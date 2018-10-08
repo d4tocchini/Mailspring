@@ -19,4 +19,4 @@ SearchMatch.propTypes = {
   renderIndex: PropTypes.number,
 };
 
-export default SearchMatch;
+module.exports = SearchMatch;

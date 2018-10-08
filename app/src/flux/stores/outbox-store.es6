@@ -28,4 +28,4 @@ class OutboxStore extends MailspringStore {
 }
 
 const store = new OutboxStore();
-export default store;
+module.exports = store;

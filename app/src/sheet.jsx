@@ -8,7 +8,7 @@ import Flexbox from './components/flexbox';
 
 const FLEX = 10000;
 
-export default class Sheet extends React.Component {
+module.exports = class Sheet extends React.Component {
   static displayName = 'Sheet';
 
   static propTypes = {

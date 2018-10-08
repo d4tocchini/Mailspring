@@ -28,4 +28,4 @@ Switch.propTypes = {
   className: PropTypes.string,
 };
 
-export default Switch;
+module.exports = Switch;

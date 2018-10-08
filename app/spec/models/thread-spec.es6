@@ -1,5 +1,5 @@
-const Thread = require('../../src/flux/models/thread').default;
-const Folder = require('../../src/flux/models/folder').default;
+const Thread = require('../../src/flux/models/thread');
+const Folder = require('../../src/flux/models/folder');
 const _ = require('underscore');
 
 describe('Thread', function() {

@@ -31,7 +31,7 @@ For example:
     }]
 */
 
-export default class ScenarioEditor extends React.Component {
+module.exports = class ScenarioEditor extends React.Component {
   static displayName = 'ScenarioEditor';
 
   static propTypes = {

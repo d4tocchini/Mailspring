@@ -22,4 +22,4 @@ const TabsStore = Reflux.createStore({
   },
 });
 
-export default TabsStore;
+module.exports = TabsStore;

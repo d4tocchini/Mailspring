@@ -4,6 +4,13 @@ import path from 'path';
 import fs from 'fs-plus';
 
 import LessCompileCache from './less-compile-cache';
+let x = LessCompileCache
+
+// D4
+const {keepRightUntil} = require('string')
+function LESS_PATH(p) {
+  return path.join(__dirname, '..', 'static', keepRightUntil(p, '/'))
+}
 
 const CONFIG_THEME_KEY = 'core.theme';
 
@@ -20,7 +27,7 @@ const CONFIG_THEME_KEY = 'core.theme';
  *    they are only placed in the LESS import path.
  *  - ThemeManager directly updates <style> tags when recompiling LESS.
  */
-export default class ThemeManager {
+module.exports = class ThemeManager {
   constructor({ packageManager, resourcePath, configDirPath, safeMode }) {
     this.baseThemeOnly = false;
 
@@ -151,8 +158,12 @@ export default class ThemeManager {
   // ------
 
   requireStylesheet(stylesheetPath) {
+    // D4
+    stylesheetPath = LESS_PATH(stylesheetPath)
+
     const sourcePath = this.resolveStylesheetPath(stylesheetPath);
     if (!sourcePath) {
+
       throw new Error(`Could not find a file at path '${stylesheetPath}'`);
     }
     const content = this.cssContentsOfStylesheet(sourcePath);
@@ -162,7 +173,7 @@ export default class ThemeManager {
     });
   }
 
-  loadStaticStylesheets() {
+  loadStaticStylesheets() {   
     this.requireStylesheet('../static/index');
     this.requireStylesheet('../static/email-frame');
   }

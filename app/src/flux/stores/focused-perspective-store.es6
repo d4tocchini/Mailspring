@@ -202,4 +202,4 @@ class FocusedPerspectiveStore extends MailspringStore {
   }
 }
 
-export default new FocusedPerspectiveStore();
+module.exports = new FocusedPerspectiveStore();

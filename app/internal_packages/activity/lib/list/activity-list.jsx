@@ -107,4 +107,4 @@ class ActivityList extends React.Component {
   }
 }
 
-export default ActivityList;
+module.exports = ActivityList;

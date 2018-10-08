@@ -111,4 +111,4 @@ class DatePickerPopover extends Component {
   }
 }
 
-export default DatePickerPopover;
+module.exports = DatePickerPopover;

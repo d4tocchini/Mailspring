@@ -1,7 +1,14 @@
 /* eslint global-require: 0 */
-import QuerySubscription from './query-subscription';
-let DatabaseStore = null;
 
+const DatabaseStore = require('../stores/database-store')
+
+function create_QuerySubscription(query) {
+  const QuerySubscription = require('./query-subscription');
+  create_QuerySubscription = function(query) {
+    return new QuerySubscription(query);
+  }
+  return create_QuerySubscription(query)
+}
 /*
 Public: The QuerySubscriptionPool maintains a list of all of the query
 subscriptions in the app. In the future, this class will monitor performance,
@@ -22,7 +29,7 @@ class QuerySubscriptionPool {
     const key = this._keyForQuery(query);
     let subscription = this._subscriptions[key];
     if (!subscription) {
-      subscription = new QuerySubscription(query);
+      subscription = create_QuerySubscription(query)
       this._subscriptions[key] = subscription;
     }
 
@@ -80,7 +87,7 @@ class QuerySubscriptionPool {
 
   _formatRegistrationPoint(stackString) {
     const stack = stackString.split('\n');
-    let ii = 0;
+    var ii = 0;
     let seenRx = false;
     while (ii < stack.length) {
       const hasRx = stack[ii].indexOf('rx.lite') !== -1;
@@ -99,7 +106,6 @@ class QuerySubscriptionPool {
   }
 
   _setup() {
-    DatabaseStore = DatabaseStore || require('../stores/database-store').default;
     DatabaseStore.listen(this._onChange);
   }
 
@@ -112,4 +118,4 @@ class QuerySubscriptionPool {
 }
 
 const pool = new QuerySubscriptionPool();
-export default pool;
+module.exports = pool;

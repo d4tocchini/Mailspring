@@ -358,7 +358,7 @@ const parseQueryWrapper = text => {
   return result;
 };
 
-export default class SearchQueryParser {
+module.exports = class SearchQueryParser {
   static parse(query) {
     return parseQueryWrapper(query);
   }

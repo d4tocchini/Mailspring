@@ -3,7 +3,7 @@ import { RetinaImg, DropZone } from 'mailspring-component-kit';
 
 const MAX_IMAGE_RES = 250;
 
-export default class SignaturePhotoPicker extends React.Component {
+module.exports = class SignaturePhotoPicker extends React.Component {
   static propTypes = {
     id: PropTypes.string,
     data: PropTypes.object,

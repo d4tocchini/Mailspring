@@ -22,7 +22,7 @@ If no matching component is found, the InjectedComponent renders an empty div.
 
 Section: Component Kit
  */
-export default class InjectedComponent extends React.Component {
+module.exports = class InjectedComponent extends React.Component {
   static displayName = 'InjectedComponent';
 
   /*

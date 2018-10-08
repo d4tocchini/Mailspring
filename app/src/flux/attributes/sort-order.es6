@@ -12,7 +12,7 @@ DatabaseStore.findBy(Message)
 
 Section: Database
 */
-export default class SortOrder {
+class SortOrder {
   constructor(attr, direction = 'DESC') {
     this.attr = attr;
     this.direction = direction;
@@ -26,3 +26,4 @@ export default class SortOrder {
     return this.attr;
   }
 }
+module.exports = SortOrder

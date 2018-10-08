@@ -1,8 +1,7 @@
 /* eslint global-require: 0 */
-import { ipcRenderer } from 'electron';
-import crypto from 'crypto';
-
-import RegExpUtils from '../regexp-utils';
+const { ipcRenderer } = require('electron');
+const crypto = require('crypto');
+const RegExpUtils = require('../regexp-utils');
 
 let userAgentDefault = null;
 
@@ -56,7 +55,7 @@ class InlineStyleTransformer {
     }
 
     if (typeof userAgentDefault === 'undefined' || userAgentDefault === null) {
-      userAgentDefault = require('../chrome-user-agent-stylesheet-string').default;
+      userAgentDefault = require('../chrome-user-agent-stylesheet-string');
     }
     return `${body.slice(0, i)}<style>${userAgentDefault}</style>${body.slice(i)}`;
   }
@@ -68,4 +67,4 @@ class InlineStyleTransformer {
   }
 }
 
-export default new InlineStyleTransformer();
+module.exports = new InlineStyleTransformer();

@@ -3,7 +3,7 @@ import { Menu, RetinaImg, ButtonDropdown } from 'mailspring-component-kit';
 
 import { applySignature, currentSignatureId } from './signature-utils';
 
-export default class SignatureComposerDropdown extends React.Component {
+module.exports = class SignatureComposerDropdown extends React.Component {
   static displayName = 'SignatureComposerDropdown';
 
   static containerRequired = false;

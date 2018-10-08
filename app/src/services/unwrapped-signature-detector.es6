@@ -25,7 +25,7 @@ function textAndNodesAfterNode(node) {
  *
  * See email_18, email_20, email_21, and email_23 test cases for this.
  */
-export default function unwrappedSignatureDetector(doc, quoteElements) {
+module.exports = function unwrappedSignatureDetector(doc, quoteElements) {
   // Find the last quoteBlock
   for (const node of DOMWalkers.walkBackwards(doc)) {
     let textAndNodes;

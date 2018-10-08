@@ -3,7 +3,7 @@ import { Inline } from 'slate';
 import AutoReplace from 'slate-auto-replace';
 import { BuildToggleButton } from './toolbar-component-factories';
 
-export const VARIABLE_TYPE = 'templatevar';
+const VARIABLE_TYPE = 'templatevar';
 
 function renderNode({ attributes, node, editor, isSelected }) {
   if (node.type === VARIABLE_TYPE) {
@@ -99,7 +99,7 @@ function onKeyDown(event, change, editor) {
   }
 }
 
-export default [
+module.exports = [
   {
     toolbarSectionClass: 'templates hide-in-composer',
     toolbarComponents: [
@@ -148,3 +148,5 @@ export default [
     },
   }),
 ];
+
+module.exports.VARIABLE_TYPE = VARIABLE_TYPE

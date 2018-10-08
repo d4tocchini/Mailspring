@@ -4,7 +4,7 @@ import Message from '../models/message';
 import Thread from '../models/thread';
 import DatabaseStore from './database-store';
 import TaskFactory from '../tasks/task-factory';
-import FocusedPerspectiveStore from './focused-perspective-store';
+const FocusedPerspectiveStore = require('./focused-perspective-store')
 import FocusedContentStore from './focused-content-store';
 import * as ExtensionRegistry from '../../registries/extension-registry';
 import electron from 'electron';
@@ -72,7 +72,7 @@ class MessageStore extends MailspringStore {
   }
 
   _onExtensionsChanged(role) {
-    const MessageBodyProcessor = require('./message-body-processor').default;
+    const MessageBodyProcessor = require('./message-body-processor');
     MessageBodyProcessor.resetCache();
   }
 
@@ -388,4 +388,4 @@ class MessageStore extends MailspringStore {
 
 const store = new MessageStore();
 store.FolderNamesHiddenByDefault = FolderNamesHiddenByDefault;
-export default store;
+module.exports = store;

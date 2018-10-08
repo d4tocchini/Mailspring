@@ -73,7 +73,7 @@ move the selection. E.g. 1, -2.
 @param {string} selectionDeltas.key - string that represents the key used to
 shift the selection
  */
-export class SelectableTableCell extends Component {
+class SelectableTableCell extends Component {
   static propTypes = {
     className: PropTypes.string,
     tableDataSource: Table.propTypes.tableDataSource,
@@ -131,7 +131,7 @@ export class SelectableTableCell extends Component {
   }
 }
 
-export class SelectableTableRow extends Component {
+class SelectableTableRow extends Component {
   static propTypes = {
     className: PropTypes.string,
     tableDataSource: Table.propTypes.tableDataSource,
@@ -273,6 +273,9 @@ class SelectableTable extends Component {
   }
 }
 
-export default compose(SelectableTable, ListensToMovementKeys, Comp =>
+module.exports = compose(SelectableTable, ListensToMovementKeys, Comp =>
   AutoFocuses(Comp, { onUpdate: false })
 );
+
+module.exports.SelectableTableRow = SelectableTableRow
+module.exports.SelectableTableCell = SelectableTableCell

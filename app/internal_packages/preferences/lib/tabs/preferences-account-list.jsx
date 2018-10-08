@@ -78,4 +78,4 @@ class PreferencesAccountList extends Component {
   }
 }
 
-export default PreferencesAccountList;
+module.exports = PreferencesAccountList;

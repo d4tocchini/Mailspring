@@ -9,7 +9,15 @@ const SendRemindersPopoverButtonWithTip = HasTutorialTip(SendRemindersPopoverBut
     "Get reminded if you don't receive a reply for this message within a specified time.",
 });
 
-export default function SendRemindersToolbarButton(props) {
+module.exports = SendRemindersToolbarButton
+
+SendRemindersToolbarButton.containerRequired = false;
+SendRemindersToolbarButton.displayName = 'SendRemindersToolbarButton';
+SendRemindersToolbarButton.propTypes = {
+  items: PropTypes.array,
+};
+
+function SendRemindersToolbarButton(props) {
   const threads = props.items;
   if (threads.length > 1) {
     return <span />;
@@ -24,8 +32,4 @@ export default function SendRemindersToolbarButton(props) {
   return <SendRemindersPopoverButtonWithTip thread={thread} />;
 }
 
-SendRemindersToolbarButton.containerRequired = false;
-SendRemindersToolbarButton.displayName = 'SendRemindersToolbarButton';
-SendRemindersToolbarButton.propTypes = {
-  items: PropTypes.array,
-};
+

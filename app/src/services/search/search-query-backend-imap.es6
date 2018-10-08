@@ -161,7 +161,7 @@ class IMAPSearchQueryExpressionVisitor extends SearchQueryExpressionVisitor {
   }
 }
 
-export default class IMAPSearchQueryBackend {
+module.exports = class IMAPSearchQueryBackend {
   static ALL_FOLDERS() {
     return 'all';
   }

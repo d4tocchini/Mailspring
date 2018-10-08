@@ -105,4 +105,4 @@ class N1SpecLoader {
     this._setSpecField('specType', specType);
   }
 }
-export default new N1SpecLoader();
+module.exports = new N1SpecLoader();

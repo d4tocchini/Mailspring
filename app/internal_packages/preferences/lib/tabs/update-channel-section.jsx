@@ -81,4 +81,4 @@ class UpdateChannelSection extends React.Component {
   }
 }
 
-export default UpdateChannelSection;
+module.exports = UpdateChannelSection;

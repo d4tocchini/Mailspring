@@ -1,24 +1,26 @@
-import path from 'path';
-import fs from 'fs';
-import { ipcRenderer, remote } from 'electron';
-import _ from 'underscore';
+const path = require('path');
+const fs = require('fs');
+const { ipcRenderer, remote } = require('electron');
+const _ = require('underscore');
 
-import Task from './tasks/task';
+const Task = require('./tasks/task');
 import TaskQueue from './stores/task-queue';
 import IdentityStore from './stores/identity-store';
 
-import Account from './models/account';
+const Account = require('./models/account');
+const Utils = require('./models/utils');
+
 import AccountStore from './stores/account-store';
 import DatabaseStore from './stores/database-store';
 import OnlineStatusStore from './stores/online-status-store';
 import DatabaseChangeRecord from './stores/database-change-record';
-import DatabaseObjectRegistry from '../registries/database-object-registry';
+const DatabaseObjectRegistry = require('../registries/database-object-registry');
 import MailsyncProcess from '../mailsync-process';
 import KeyManager from '../key-manager';
 import Actions from './actions';
-import Utils from './models/utils';
 
-const MAX_CRASH_HISTORY = 10;
+
+const MAX_CRASH_HISTORY = 15;
 
 const VERBOSE_UNTIL_KEY = 'core.sync.verboseUntil';
 
@@ -51,7 +53,7 @@ class CrashTracker {
       const logpath = path.join(AppEnv.getConfigDirPath(), logfile);
       const { size } = fs.statSync(logpath);
       const tailSize = Math.min(1200, size);
-      const buffer = new Buffer(tailSize);
+      const buffer = Buffer.allocUnsafe(tailSize);
       const fd = fs.openSync(logpath, 'r');
       fs.readSync(fd, buffer, 0, tailSize, size - tailSize);
       log = buffer.toString('UTF8');
@@ -69,7 +71,8 @@ class CrashTracker {
   }
 
   _keyFor({ id, settings }) {
-    return JSON.stringify({ id, settings });
+    return `{"id":"${id}", "settings":${JSON.stringify(settings)}}`
+    //return JSON.stringify({ id, settings });
   }
 
   _appendCrashToHistory(fullAccountJSON) {
@@ -95,7 +98,7 @@ class CrashTracker {
   }
 }
 
-export default class MailsyncBridge {
+class MailsyncBridge {
   constructor() {
     if (!AppEnv.isMainWindow() || AppEnv.inSpecMode()) {
       ipcRenderer.on('mailsync-bridge-message', this._onIncomingRebroadcastMessage);
@@ -322,6 +325,7 @@ export default class MailsyncBridge {
 
   _onQueueTask(task) {
     if (!DatabaseObjectRegistry.isInRegistry(task.constructor.name)) {
+      debugger
       console.log(task);
       throw new Error(
         'You must queue a `Task` instance which is registred with the DatabaseObjectRegistry'
@@ -478,3 +482,5 @@ export default class MailsyncBridge {
     }
   };
 }
+
+module.exports = MailsyncBridge

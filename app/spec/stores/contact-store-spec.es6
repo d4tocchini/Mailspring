@@ -1,6 +1,6 @@
 const _ = require('underscore');
-const Contact = require('../../src/flux/models/contact').default;
-const ContactStore = require('../../src/flux/stores/contact-store').default;
+const Contact = require('../../src/flux/models/contact');
+const ContactStore = require('../../src/flux/stores/contact-store');
 
 xdescribe('ContactStore', function() {
   beforeEach(function() {

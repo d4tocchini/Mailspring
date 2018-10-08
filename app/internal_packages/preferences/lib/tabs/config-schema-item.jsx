@@ -99,4 +99,4 @@ class ConfigSchemaItem extends React.Component {
   }
 }
 
-export default ConfigSchemaItem;
+module.exports = ConfigSchemaItem;

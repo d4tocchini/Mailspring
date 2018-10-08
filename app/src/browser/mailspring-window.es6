@@ -39,6 +39,7 @@ module.exports = class MailspringWindow extends EventEmitter {
       autoHideMenuBar,
     } = settings);
 
+
     if (!this.windowKey) {
       this.windowKey = `${this.windowType}-${idNum}`;
       idNum += 1;
@@ -91,6 +92,7 @@ module.exports = class MailspringWindow extends EventEmitter {
       browserWindowOptions.icon = WindowIconPath;
     }
 
+    // console.log('new BrowserWindow', browserWindowOptions)
     this.browserWindow = new BrowserWindow(browserWindowOptions);
     this.browserWindow.updateLoadSettings = this.updateLoadSettings;
 
@@ -99,6 +101,7 @@ module.exports = class MailspringWindow extends EventEmitter {
     const loadSettings = Object.assign({}, settings);
     loadSettings.appVersion = global.application.version;
     loadSettings.resourcePath = this.resourcePath;
+    // console.log('loadSettings I', loadSettings)
     if (loadSettings.devMode == null) {
       loadSettings.devMode = false;
     }
@@ -128,8 +131,9 @@ module.exports = class MailspringWindow extends EventEmitter {
     }
 
     this.browserWindow.loadSettings = loadSettings;
-
+    // console.log('loadSettings II', loadSettings)
     this.browserWindow.once('window:loaded', () => {
+      // console.log('\n\nmswin', 'window:loaded')
       this.loaded = true;
       if (this.browserWindow.loadSettingsChangedSinceGetURL) {
         this.browserWindow.webContents.send(
@@ -140,7 +144,9 @@ module.exports = class MailspringWindow extends EventEmitter {
       this.emit('window:loaded');
     });
 
-    this.browserWindow.loadURL(this.getURL(loadSettings));
+    const url = this.getURL(loadSettings)
+    console.log('loadURL', url)
+    this.browserWindow.loadURL(url);
     if (this.isSpec) {
       this.browserWindow.focusOnWebView();
     }
@@ -163,6 +169,7 @@ module.exports = class MailspringWindow extends EventEmitter {
   setLoadSettings(loadSettings) {
     this.browserWindow.loadSettings = loadSettings;
     this.browserWindow.loadSettingsChangedSinceGetURL = true;
+    // console.log('setLoadSettings',this.browserWindow.webContents.id,loadSettings)
     this.browserWindow.webContents.send('load-settings-changed', loadSettings);
   }
 

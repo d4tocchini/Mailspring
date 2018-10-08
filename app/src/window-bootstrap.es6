@@ -7,6 +7,8 @@ import AppEnvClass from './app-env';
 window.AppEnv = new AppEnvClass();
 AppEnv.startRootWindow();
 
+window.XXX = true
+
 // Workaround for focus getting cleared upon window creation
 const windowFocused = () => {
   window.removeEventListener('focus', windowFocused);

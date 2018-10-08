@@ -1,6 +1,6 @@
 import { Utils, KeyManager } from 'mailspring-exports';
 import IdentityStore from '../../src/flux/stores/identity-store';
-import * as MailspringAPIRequest from '../../src/flux/mailspring-api-request';
+import MailspringAPIRequest from '../../src/flux/mailspring-api-request';
 
 const TEST_NYLAS_ID = 'icihsnqh4pwujyqihlrj70vh';
 

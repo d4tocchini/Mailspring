@@ -70,4 +70,4 @@ class SearchMailboxPerspective extends MailboxPerspective {
   }
 }
 
-export default SearchMailboxPerspective;
+module.exports = SearchMailboxPerspective;

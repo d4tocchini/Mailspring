@@ -94,4 +94,4 @@ class ThreadListDataSource extends ObservableListDataSource {
   }
 }
 
-export default ThreadListDataSource;
+module.exports = ThreadListDataSource;

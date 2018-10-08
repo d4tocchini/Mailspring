@@ -6,7 +6,7 @@ import RetinaImg from './retina-img';
 import BillingModal from './billing-modal';
 import IdentityStore from '../flux/stores/identity-store';
 
-export default class FeatureUsedUpModal extends React.Component {
+module.exports = class FeatureUsedUpModal extends React.Component {
   static propTypes = {
     modalClass: PropTypes.string.isRequired,
     headerText: PropTypes.string.isRequired,

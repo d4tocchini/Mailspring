@@ -193,4 +193,4 @@ class OutlineView extends Component {
   }
 }
 
-export default OutlineView;
+module.exports = OutlineView;

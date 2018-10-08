@@ -4,7 +4,7 @@ import { remote } from 'electron';
 
 const { app, BrowserWindow } = remote;
 
-export default class PrintWindow {
+module.exports = class PrintWindow {
   constructor({ subject, account, participants, styleTags, htmlContent, printMessages }) {
     // This script will create the print prompt when loaded. We can also call
     // print directly from this process, but inside print.js we can make sure to

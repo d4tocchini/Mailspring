@@ -1,13 +1,13 @@
-const Thread = require('../../src/flux/models/thread').default;
-const Folder = require('../../src/flux/models/folder').default;
-const Label = require('../../src/flux/models/label').default;
-const Message = require('../../src/flux/models/message').default;
-const FocusedContentStore = require('../../src/flux/stores/focused-content-store').default;
-const FocusedPerspectiveStore = require('../../src/flux/stores/focused-perspective-store').default;
-const MessageStore = require('../../src/flux/stores/message-store').default;
-const DatabaseStore = require('../../src/flux/stores/database-store').default;
-const ChangeUnreadTask = require('../../src/flux/tasks/change-unread-task').default;
-const Actions = require('../../src/flux/actions').default;
+const Thread = require('../../src/flux/models/thread');
+const Folder = require('../../src/flux/models/folder');
+const Label = require('../../src/flux/models/label');
+const Message = require('../../src/flux/models/message');
+const FocusedContentStore = require('../../src/flux/stores/focused-content-store');
+const FocusedPerspectiveStore = require('../../src/flux/stores/focused-perspective-store');
+const MessageStore = require('../../src/flux/stores/message-store');
+const DatabaseStore = require('../../src/flux/stores/database-store');
+const ChangeUnreadTask = require('../../src/flux/tasks/change-unread-task');
+const Actions = require('../../src/flux/actions');
 
 const testThread = new Thread({ id: '123', accountId: TEST_ACCOUNT_ID });
 const testMessage1 = new Message({

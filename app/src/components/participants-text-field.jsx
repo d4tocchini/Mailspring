@@ -25,7 +25,7 @@ TokenRenderer.propTypes = {
   token: PropTypes.object,
 };
 
-export default class ParticipantsTextField extends React.Component {
+module.exports = class ParticipantsTextField extends React.Component {
   static displayName = 'ParticipantsTextField';
 
   static propTypes = {

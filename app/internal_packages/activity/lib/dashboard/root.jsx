@@ -486,7 +486,7 @@ class Root extends React.Component {
     );
   }
 }
-export default ListensToFluxStore(Root, {
+module.exports = ListensToFluxStore(Root, {
   stores: [FocusedPerspectiveStore],
   getStateFromStores: props => {
     return Object.assign({}, props, {

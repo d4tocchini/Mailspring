@@ -345,4 +345,4 @@ class QuotedHTMLTransformer {
   }
 }
 
-export default new QuotedHTMLTransformer();
+module.exports = new QuotedHTMLTransformer();

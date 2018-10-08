@@ -2,7 +2,7 @@ import { WorkspaceStore, Actions } from 'mailspring-exports';
 import { RetinaImg } from 'mailspring-component-kit';
 import React from 'react';
 
-export default class ModeToggle extends React.Component {
+module.exports = class ModeToggle extends React.Component {
   static displayName = 'ModeToggle';
 
   constructor(props) {

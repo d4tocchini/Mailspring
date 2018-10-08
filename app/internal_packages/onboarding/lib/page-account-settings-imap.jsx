@@ -205,4 +205,4 @@ class AccountIMAPSettingsForm extends React.Component {
   }
 }
 
-export default CreatePageForForm(AccountIMAPSettingsForm);
+module.exports = CreatePageForForm(AccountIMAPSettingsForm);

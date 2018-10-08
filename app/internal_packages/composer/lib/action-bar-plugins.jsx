@@ -4,7 +4,7 @@ import { InjectedComponentSet } from 'mailspring-component-kit';
 
 const ROLE = 'Composer:ActionButton';
 
-export default class ActionBarPlugins extends React.Component {
+module.exports = class ActionBarPlugins extends React.Component {
   static displayName = 'ActionBarPlugins';
 
   static propTypes = {

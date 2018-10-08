@@ -31,4 +31,4 @@ class MasterAfterEach {
   }
 }
 
-export default new MasterAfterEach();
+module.exports = new MasterAfterEach();

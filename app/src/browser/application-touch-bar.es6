@@ -20,7 +20,7 @@ function makeCommandButton(options) {
   return b;
 }
 
-export default class ApplicationTouchBar {
+module.exports = class ApplicationTouchBar {
   constructor(resourcePath) {
     this._touchbar = null;
     this._hash = '';

@@ -100,7 +100,7 @@ class TipPopoverContents extends React.Component {
   }
 }
 
-export default function HasTutorialTip(ComposedComponent, TipConfig) {
+module.exports = function HasTutorialTip(ComposedComponent, TipConfig) {
   const TipKey = ComposedComponent.displayName;
 
   if (!TipKey) {

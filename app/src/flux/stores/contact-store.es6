@@ -159,4 +159,4 @@ class ContactStore extends MailspringStore {
   }
 }
 
-export default new ContactStore();
+module.exports = new ContactStore();

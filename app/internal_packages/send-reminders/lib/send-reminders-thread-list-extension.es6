@@ -10,7 +10,7 @@ export function cssClassNamesForThreadListItem(thread) {
   return '';
 }
 
-export function cssClassNamesForThreadListIcon(thread) {
+export function cssClassNamesForThreadListIcon(thread) {  
   const { expiration, shouldNotify } = thread.metadataForPluginId(PLUGIN_ID) || {};
   if (shouldNotify) {
     return 'thread-icon-reminder-triggered';

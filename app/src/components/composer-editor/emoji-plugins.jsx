@@ -19,7 +19,8 @@ const EMOJI_TYPE = 'emoji';
 const MAX_EMOJI_SUGGESTIONS = 6;
 
 /* Returns the official emoji names matching the provided text. */
-export function getEmojiSuggestions(word) {
+
+function getEmojiSuggestions(word) {
   const emojiOptions = [];
   const emojiNames = Object.keys(NodeEmoji.emoji).sort();
   for (const emojiName of emojiNames) {
@@ -30,7 +31,7 @@ export function getEmojiSuggestions(word) {
   return emojiOptions;
 }
 
-export function getEmojiImagePath(emojiname) {
+function getEmojiImagePath(emojiname) {
   EmojiNameToImageTable = EmojiNameToImageTable || require('./emoji-name-to-image-table');
   return process.platform === 'darwin'
     ? `images/composer-emoji/apple/${EmojiNameToImageTable[emojiname]}`
@@ -163,7 +164,7 @@ const rules = [
   },
 ];
 
-export function swapEmojiMarkFor(change, emoji, picked) {
+function swapEmojiMarkFor(change, emoji, picked) {
   change.removeMark(emoji);
   if (picked) {
     change.extend(-emoji.data.get('typed').length);
@@ -181,7 +182,7 @@ export function swapEmojiMarkFor(change, emoji, picked) {
   return change;
 }
 
-export function updateEmojiMark(change, emoji, { typed, suggestions, picked }) {
+function updateEmojiMark(change, emoji, { typed, suggestions, picked }) {
   change.extend(-typed.length);
   change.delete();
 
@@ -295,7 +296,7 @@ const ToolbarEmojiButton = ({ value, onChange }) => {
   );
 };
 
-export default [
+module.exports = [
   {
     toolbarComponents: [ToolbarEmojiButton],
     topLevelComponent: FloatingEmojiPicker,
@@ -306,3 +307,7 @@ export default [
     onKeyUp,
   },
 ];
+module.exports.getEmojiSuggestions = getEmojiSuggestions
+module.exports.getEmojiImagePath = getEmojiImagePath
+module.exports.swapEmojiMarkFor = swapEmojiMarkFor
+module.exports.updateEmojiMark = updateEmojiMark

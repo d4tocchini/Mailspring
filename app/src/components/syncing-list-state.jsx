@@ -18,4 +18,4 @@ SyncingListState.propTypes = {
   empty: PropTypes.bool,
 };
 
-export default SyncingListState;
+module.exports = SyncingListState;

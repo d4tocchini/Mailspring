@@ -8,7 +8,7 @@ _ = Object.assign(_, require('../config-utils'));
 
 const RETRY_SAVES = 3;
 
-export default class ConfigPersistenceManager {
+module.exports = class ConfigPersistenceManager {
   constructor({ configDirPath, resourcePath } = {}) {
     this.configDirPath = configDirPath;
     this.resourcePath = resourcePath;

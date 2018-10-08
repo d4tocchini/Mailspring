@@ -12,7 +12,7 @@ import SyncbackActivity from './syncback-activity';
 
 const SEND_TASK_CLASSES = [SendDraftTask];
 
-export default class ActivitySidebar extends React.Component {
+module.exports = class ActivitySidebar extends React.Component {
   static displayName = 'ActivitySidebar';
 
   static containerRequired = false;

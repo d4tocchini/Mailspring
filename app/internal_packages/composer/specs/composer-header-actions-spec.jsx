@@ -1,7 +1,7 @@
 const React = require('react');
 const ReactDOM = require('react-dom');
-const ComposerHeaderActions = require('../lib/composer-header-actions').default;
-const Fields = require('../lib/fields').default;
+const ComposerHeaderActions = require('../lib/composer-header-actions');
+const Fields = require('../lib/fields');
 const ReactTestUtils = require('react-dom/test-utils');
 const { Actions } = require('mailspring-exports');
 

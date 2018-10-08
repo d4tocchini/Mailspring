@@ -91,4 +91,4 @@ class AccountBasicSettingsForm extends React.Component {
   }
 }
 
-export default CreatePageForForm(AccountBasicSettingsForm);
+module.exports = CreatePageForForm(AccountBasicSettingsForm);

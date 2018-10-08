@@ -2,6 +2,7 @@ import { SystemStartService, WorkspaceStore, ComponentRegistry } from 'mailsprin
 import OnboardingRoot from './onboarding-root';
 
 export function activate() {
+
   WorkspaceStore.defineSheet('Main', { root: true }, { list: ['Center'] });
 
   AppEnv.themes.forceBaseTheme();

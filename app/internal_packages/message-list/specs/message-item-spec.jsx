@@ -95,7 +95,7 @@ const user_4 = new Contact({
 
 const MessageItem = proxyquire('../lib/message-item', { './message-item-body': MessageItemBody });
 
-const MessageTimestamp = require('../lib/message-timestamp').default;
+const MessageTimestamp = require('../lib/message-timestamp');
 
 xdescribe('MessageItem', function() {
   beforeEach(function() {

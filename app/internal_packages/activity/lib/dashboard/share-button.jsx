@@ -39,7 +39,7 @@ function buildShareHTML(htmlEl, styleEl) {
 `;
 }
 
-export default class ShareButton extends React.Component {
+module.exports = class ShareButton extends React.Component {
   constructor(props) {
     super(props);
     this.state = {

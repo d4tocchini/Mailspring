@@ -93,4 +93,4 @@ class SendActionsStore extends MailspringStore {
   };
 }
 
-export default new SendActionsStore();
+module.exports = new SendActionsStore();

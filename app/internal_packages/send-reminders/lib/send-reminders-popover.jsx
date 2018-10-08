@@ -56,4 +56,4 @@ SendRemindersPopover.propTypes = {
   onCancelReminder: PropTypes.func,
 };
 
-export default SendRemindersPopover;
+module.exports = SendRemindersPopover;

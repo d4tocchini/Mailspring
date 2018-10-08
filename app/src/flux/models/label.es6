@@ -1,7 +1,9 @@
-import Category from './category';
+const Category = require('./category');
 
-export default class Label extends Category {
+class Label extends Category {
   displayType() {
     return 'label';
   }
 }
+
+module.exports = Label

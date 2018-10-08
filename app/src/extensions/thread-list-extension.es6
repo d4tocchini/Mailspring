@@ -4,4 +4,4 @@ class ThreadListExtension {
   static cssClassNamesForThreadListIcon() {}
 }
 
-export default ThreadListExtension;
+module.exports = ThreadListExtension;

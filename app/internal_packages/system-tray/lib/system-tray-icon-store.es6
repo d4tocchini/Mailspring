@@ -77,4 +77,4 @@ class SystemTrayIconStore {
   };
 }
 
-export default SystemTrayIconStore;
+module.exports = SystemTrayIconStore;

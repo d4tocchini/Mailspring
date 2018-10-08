@@ -203,7 +203,7 @@ class LocationRow extends React.Component {
   }
 }
 
-export default class SidebarParticipantProfile extends React.Component {
+module.exports = class SidebarParticipantProfile extends React.Component {
   static displayName = 'SidebarParticipantProfile';
 
   static propTypes = {

@@ -18,16 +18,19 @@ import SystemTrayManager from './system-tray-manager';
 import DefaultClientHelper from '../default-client-helper';
 import MailspringProtocolHandler from './mailspring-protocol-handler';
 import ConfigPersistenceManager from './config-persistence-manager';
-import moveToApplications from './move-to-applications';
+// import moveToApplications from './move-to-applications';
 import MailsyncProcess from '../mailsync-process';
 
 let clipboard = null;
 
 // The application's singleton class.
 //
-export default class Application extends EventEmitter {
+module.exports = class Application extends EventEmitter {
   async start(options) {
     const { resourcePath, configDirPath, version, devMode, specMode, safeMode } = options;
+
+    // D4 
+    console.log('Application options',options)
 
     // Normalize to make sure drive letter case is consistent on Windows
     this.resourcePath = resourcePath;
@@ -86,7 +89,7 @@ export default class Application extends EventEmitter {
       initializeInBackground = false;
     }
 
-    await this.oneTimeMoveToApplications();
+    // await this.oneTimeMoveToApplications();
     await this.oneTimeAddToDock();
 
     this.autoUpdateManager = new AutoUpdateManager(version, config, specMode);
@@ -169,17 +172,17 @@ export default class Application extends EventEmitter {
   }
 
   async oneTimeMoveToApplications() {
-    if (process.platform !== 'darwin') {
-      return;
-    }
-    if (this.devMode || this.specMode) {
-      return;
-    }
-    if (this.config.get('askedAboutAppMove')) {
-      return;
-    }
-    this.config.set('askedAboutAppMove', true);
-    moveToApplications();
+    // if (process.platform !== 'darwin') {
+    //   return;
+    // }
+    // if (this.devMode || this.specMode) {
+    //   return;
+    // }
+    // if (this.config.get('askedAboutAppMove')) {
+    //   return;
+    // }
+    // this.config.set('askedAboutAppMove', true);
+    // moveToApplications();
   }
 
   async oneTimeAddToDock() {
@@ -363,13 +366,13 @@ export default class Application extends EventEmitter {
     });
 
     this.on('application:check-for-update', () => {
-      this.autoUpdateManager.check();
+      // this.autoUpdateManager.check();
     });
 
     this.on('application:install-update', () => {
-      this.quitting = true;
-      this.windowManager.cleanupBeforeAppQuit();
-      this.autoUpdateManager.install();
+      // this.quitting = true;
+      // this.windowManager.cleanupBeforeAppQuit();
+      // this.autoUpdateManager.install();
     });
 
     this.on('application:toggle-dev', () => {
@@ -617,11 +620,12 @@ export default class Application extends EventEmitter {
       sourceWindow.webContents.send('remote-run-results', params);
       delete this._sourceWindows[params.taskId];
     });
-
-    ipcMain.on('report-error', (event, params = {}) => {
+    
+    ipcMain.on('report-error', (event, params = '{}') => {
+      // D4 TODO: sendSync w/JSON is depfrecated https://electronjs.org/releases
       try {
-        const errorParams = JSON.parse(params.errorJSON || '{}');
-        const extra = JSON.parse(params.extra || '{}');
+        const errorParams = JSON.parse(params);
+        const extra = errorParams
         let err = new Error();
         err = Object.assign(err, errorParams);
         global.errorLogger.reportError(err, extra);
@@ -767,7 +771,7 @@ export default class Application extends EventEmitter {
     if (resourcePath !== this.resourcePath && !fs.existsSync(resourcePath)) {
       resourcePath = this.resourcePath;
     }
-
+    console.log('&&&&&&', resourcePath)
     let bootstrapScript = null;
     try {
       bootstrapScript = require.resolve(

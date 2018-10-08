@@ -1308,4 +1308,4 @@ const categorizedEmojiList = {
     'flag-zw',
   ],
 };
-export default categorizedEmojiList;
+module.exports = categorizedEmojiList;

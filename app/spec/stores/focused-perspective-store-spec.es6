@@ -3,12 +3,12 @@
  * DS102: Remove unnecessary code created because of implicit returns
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-const Folder = require('../../src/flux/models/folder').default;
-const MailboxPerspective = require('../../src/mailbox-perspective').default;
+const Folder = require('../../src/flux/models/folder');
+const MailboxPerspective = require('../../src/mailbox-perspective');
 
-const CategoryStore = require('../../src/flux/stores/category-store').default;
-const AccountStore = require('../../src/flux/stores/account-store').default;
-const FocusedPerspectiveStore = require('../../src/flux/stores/focused-perspective-store').default;
+const CategoryStore = require('../../src/flux/stores/category-store');
+const AccountStore = require('../../src/flux/stores/account-store');
+const FocusedPerspectiveStore = require('../../src/flux/stores/focused-perspective-store');
 
 describe('FocusedPerspectiveStore', function() {
   beforeEach(function() {

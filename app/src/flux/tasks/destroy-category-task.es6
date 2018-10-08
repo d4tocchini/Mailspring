@@ -1,15 +1,16 @@
 import utf7 from 'utf7';
-import Task from './task';
-import Attributes from '../attributes';
+const Task = require('./task');
 
-export default class DestroyCategoryTask extends Task {
-  static attributes = Object.assign({}, Task.attributes, {
-    path: Attributes.String({
-      modelKey: 'path',
-    }),
-  });
+const DestroyCategoryTask =
+  module.exports = Task.setup(
+  class extends Task {
 
-  label() {
-    return `Deleting ${utf7.imap.decode(this.path)}`;
+    static defineAttributes (Attribute) {
+      Attribute('String', { modelKey: 'path', })
+    }
+
+    label() {
+      return `Deleting ${utf7.imap.decode(this.path)}`;
+    }
   }
-}
+)

@@ -309,4 +309,4 @@ class PreferencesMailRules extends React.Component {
   }
 }
 
-export default PreferencesMailRules;
+module.exports = PreferencesMailRules;

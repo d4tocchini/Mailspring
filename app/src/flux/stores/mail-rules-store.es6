@@ -230,4 +230,4 @@ class MailRulesStore extends MailspringStore {
   };
 }
 
-export default new MailRulesStore();
+module.exports = new MailRulesStore();

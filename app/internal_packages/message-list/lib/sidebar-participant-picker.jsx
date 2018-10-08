@@ -3,7 +3,7 @@ import { Actions, FocusedContactsStore } from 'mailspring-exports';
 
 const SPLIT_KEY = '---splitvalue---';
 
-export default class SidebarParticipantPicker extends React.Component {
+module.exports = class SidebarParticipantPicker extends React.Component {
   static displayName = 'SidebarParticipantPicker';
 
   static containerStyles = {

@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default class ComposerEditorToolbar extends React.Component {
+module.exports = class ComposerEditorToolbar extends React.Component {
   constructor(props) {
     super(props);
     this.state = { visible: false };
@@ -14,7 +14,7 @@ export default class ComposerEditorToolbar extends React.Component {
       this.setState({ visible: true }, () => {
         if (!this._mounted) return;
         for (const el of document.querySelectorAll('.scroll-region-content')) {
-          el.addEventListener('scroll', this._onScroll);
+          el.addEventListener('scroll', this._onScroll, {passive: true});
         }
 
         const parentScrollRegion = this._el.closest('.scroll-region-content');

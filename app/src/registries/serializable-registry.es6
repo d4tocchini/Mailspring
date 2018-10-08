@@ -15,7 +15,8 @@
  *
  * Note that there is one registry per window.
  */
-export default class SerializableRegistry {
+module.exports = class SerializableRegistry {
+  
   constructor() {
     this._constructorFactories = {};
   }

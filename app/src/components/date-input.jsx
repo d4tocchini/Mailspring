@@ -94,4 +94,4 @@ class DateInput extends Component {
   }
 }
 
-export default DateInput;
+module.exports = DateInput;

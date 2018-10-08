@@ -60,7 +60,7 @@ const TablePropTypes = {
   tableDataSource: PropTypes.instanceOf(TableDataSource),
 };
 
-export function TableCell(props) {
+function TableCell(props) {
   const { className, isHeader, children, ...extraProps } = props;
   const CellTag = isHeader ? 'th' : 'td';
   return (
@@ -75,7 +75,7 @@ TableCell.propTypes = {
   className: PropTypes.string,
 };
 
-export class TableRow extends Component {
+class TableRow extends Component {
   static propTypes = {
     className: PropTypes.string,
     isHeader: PropTypes.bool,
@@ -129,7 +129,7 @@ export class TableRow extends Component {
   }
 }
 
-export default class Table extends Component {
+class Table extends Component {
   static displayName = 'Table';
 
   static propTypes = {
@@ -225,3 +225,7 @@ export default class Table extends Component {
     );
   }
 }
+
+module.exports = Table
+module.exports.TableCell = TableCell
+module.exports.TableRow = TableRow

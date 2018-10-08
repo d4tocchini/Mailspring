@@ -4,7 +4,7 @@ import { RetinaImg, ScrollRegion } from 'mailspring-component-kit';
 import categorizedEmojiList from './categorized-emoji';
 import { getEmojiImagePath } from './emoji-plugins';
 
-export default class EmojiToolbarPopover extends React.Component {
+module.exports = class EmojiToolbarPopover extends React.Component {
   static displayName = 'EmojiToolbarPopover';
 
   constructor() {

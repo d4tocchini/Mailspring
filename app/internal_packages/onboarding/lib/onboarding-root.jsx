@@ -1,5 +1,5 @@
 import React from 'react';
-import { CSSTransitionGroup } from 'react-transition-group';
+import CSSTransitionGroup from '../../../src/components/CSSTransitionGroup';
 import OnboardingStore from './onboarding-store';
 import PageTopBar from './page-top-bar';
 
@@ -27,7 +27,7 @@ const PageComponents = {
   'initial-subscription': InitialSubscriptionPage,
 };
 
-export default class OnboardingRoot extends React.Component {
+module.exports = class OnboardingRoot extends React.Component {
   static displayName = 'OnboardingRoot';
   static containerRequired = false;
 

@@ -171,4 +171,4 @@ class FeatureUsageStore extends MailspringStore {
   }
 }
 
-export default new FeatureUsageStore();
+module.exports = new FeatureUsageStore();

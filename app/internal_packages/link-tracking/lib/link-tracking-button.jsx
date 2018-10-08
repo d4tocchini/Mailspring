@@ -2,7 +2,7 @@ import { React, PropTypes, APIError, MailspringAPIRequest } from 'mailspring-exp
 import { MetadataComposerToggleButton } from 'mailspring-component-kit';
 import { PLUGIN_ID, PLUGIN_NAME } from './link-tracking-constants';
 
-export default class LinkTrackingButton extends React.Component {
+class LinkTrackingButton extends React.Component {
   static displayName = 'LinkTrackingButton';
 
   static propTypes = {
@@ -44,4 +44,5 @@ export default class LinkTrackingButton extends React.Component {
   }
 }
 
+module.exports = LinkTrackingButton
 LinkTrackingButton.containerRequired = false;

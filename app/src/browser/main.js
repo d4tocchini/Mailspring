@@ -1,5 +1,6 @@
 /* eslint dot-notation: 0 */
 /* eslint global-require: 0 */
+
 global.shellStartTime = Date.now();
 const util = require('util');
 
@@ -11,17 +12,23 @@ const app = require('electron').app;
 const path = require('path');
 const mkdirp = require('mkdirp');
 
-if (typeof process.setFdLimit === 'function') {
-  process.setFdLimit(1024);
-}
+// D4: moved to config
+// if (typeof process.setFdLimit === 'function') {
+//   process.setFdLimit(2048);
+// }
+
+const CONFIG_DIRNAME = "IIII-mail" //'Mailspring';
+const CONFIG_DIRNAME_DEV = "IIII-mail-dev" // 'Mailspring-dev';
+const CONFIG_DIRNAME_SPEC = "IIII-mail-spec";
+// const DATA_PATH = app.getPath('appData') + '-mail'
 
 const setupConfigDir = args => {
-  let dirname = 'Mailspring';
+  let dirname = CONFIG_DIRNAME;
   if (args.devMode) {
-    dirname = 'Mailspring-dev';
+    dirname = CONFIG_DIRNAME_DEV;
   }
   if (args.specMode) {
-    dirname = 'Mailspring-spec';
+    dirname = CONFIG_DIRNAME_SPEC;
   }
   let configDirPath = path.join(app.getPath('appData'), dirname);
   if (process.platform === 'linux' && process.env.SNAP) {
@@ -224,7 +231,9 @@ const handleStartupEventWithSquirrel = () => {
 };
 
 const start = () => {
+
   app.setAppUserModelId('com.squirrel.mailspring.mailspring');
+
   if (handleStartupEventWithSquirrel()) {
     return;
   }
@@ -233,7 +242,7 @@ const start = () => {
   global.errorLogger = setupErrorLogger(options);
   const configDirPath = setupConfigDir(options);
   options.configDirPath = configDirPath;
-
+  console.log(options)
   if (!options.devMode) {
     const otherInstanceRunning = app.makeSingleInstance(commandLine => {
       const otherOpts = parseCommandLine(commandLine);
@@ -267,7 +276,7 @@ const start = () => {
 
     // eslint-disable-next-line
     const Application = require(path.join(options.resourcePath, 'src', 'browser', 'application'))
-      .default;
+
     global.application = new Application();
     global.application.start(options);
 

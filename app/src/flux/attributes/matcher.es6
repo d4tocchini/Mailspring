@@ -1,4 +1,4 @@
-import LocalSearchQueryBackend from '../../services/search/search-query-backend-local';
+const LocalSearchQueryBackend = require('../../services/search/search-query-backend-local');
 
 // https://www.sqlite.org/faq.html#q14
 // That's right. Two single quotes in a row…
@@ -333,5 +333,4 @@ Matcher.And = AndCompositeMatcher;
 Matcher.Not = NotCompositeMatcher;
 Matcher.Search = SearchMatcher;
 Matcher.StructuredSearch = StructuredSearchMatcher;
-
-export default Matcher;
+module.exports = Matcher;

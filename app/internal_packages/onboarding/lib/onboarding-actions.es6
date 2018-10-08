@@ -13,4 +13,4 @@ for (const key of Object.keys(OnboardingActions)) {
   OnboardingActions[key].sync = true;
 }
 
-export default OnboardingActions;
+module.exports = OnboardingActions;

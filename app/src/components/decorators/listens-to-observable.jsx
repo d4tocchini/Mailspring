@@ -42,4 +42,4 @@ function ListensToObservable(ComposedComponent, { getObservable, getStateFromObs
   };
 }
 
-export default ListensToObservable;
+module.exports = ListensToObservable;

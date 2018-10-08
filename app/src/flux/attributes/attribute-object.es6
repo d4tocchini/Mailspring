@@ -1,12 +1,14 @@
-import Attribute from './attribute';
-import Utils from '../models/utils';
+const Attribute = require('./attribute');
+const Utils = require('../models/utils');
 
 /*
 Public: An object that can be cast to `itemClass`
 Section: Database
 */
-export default class AttributeObject extends Attribute {
-  constructor({ modelKey, jsonKey, itemClass, queryable }) {
+class AttributeObject extends Attribute {
+
+  constructor(opts) {
+    const { modelKey, jsonKey, itemClass, queryable } = opts
     super({ modelKey, jsonKey, queryable });
     this.itemClass = itemClass;
   }
@@ -24,8 +26,11 @@ export default class AttributeObject extends Attribute {
       return new Klass(val);
     }
     if (val.__cls) {
+      debugger
       return Utils.convertToModel(val);
     }
     return val;
   }
 }
+
+module.exports = AttributeObject

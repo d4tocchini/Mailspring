@@ -62,4 +62,4 @@ class PopoverStore extends MailspringStore {
   };
 }
 
-export default new PopoverStore();
+module.exports = new PopoverStore();

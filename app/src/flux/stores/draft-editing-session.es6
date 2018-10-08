@@ -174,7 +174,7 @@ that display Draft objects or allow for interactive editing of Drafts.
 
 Section: Drafts
 */
-export default class DraftEditingSession extends MailspringStore {
+module.exports = class DraftEditingSession extends MailspringStore {
   static DraftChangeSet = DraftChangeSet;
 
   constructor(headerMessageId, draft = null) {
@@ -189,7 +189,7 @@ export default class DraftEditingSession extends MailspringStore {
       onCommit: () => this.changeSetCommit(), // for specs
     });
 
-    DraftStore = DraftStore || require('./draft-store').default;
+    DraftStore = DraftStore || require('./draft-store');
     this.listenTo(DraftStore, this._onDraftChanged);
 
     if (draft) {
@@ -403,7 +403,7 @@ export default class DraftEditingSession extends MailspringStore {
     const lockedFields = this.changes.dirtyFields();
 
     let changed = false;
-    for (const [key] of Object.entries(Message.attributes)) {
+    for (const key of Message.attributeKeys) {
       if (key === 'headerMessageId') continue;
       if (nextDraft[key] === undefined) continue;
       if (this._draft[key] === nextDraft[key]) continue;

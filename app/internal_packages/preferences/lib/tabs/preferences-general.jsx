@@ -91,4 +91,4 @@ class PreferencesGeneral extends React.Component {
   }
 }
 
-export default PreferencesGeneral;
+module.exports = PreferencesGeneral;

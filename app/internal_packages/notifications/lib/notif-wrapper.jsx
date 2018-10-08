@@ -4,7 +4,7 @@ import { InjectedComponentSet } from 'mailspring-component-kit';
 
 const ROLE = 'RootSidebar:Notifications';
 
-export default class NotifWrapper extends React.Component {
+module.exports = class NotifWrapper extends React.Component {
   static displayName = 'NotifWrapper';
 
   componentDidMount() {

@@ -163,4 +163,4 @@ class Spellchecker {
   };
 }
 
-export default new Spellchecker();
+module.exports = new Spellchecker();

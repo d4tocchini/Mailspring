@@ -33,4 +33,4 @@ class MessageTimestamp extends React.Component {
   }
 }
 
-export default MessageTimestamp;
+module.exports = MessageTimestamp;

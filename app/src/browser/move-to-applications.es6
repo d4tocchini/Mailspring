@@ -1,6 +1,6 @@
 import { app, dialog } from 'electron';
 
-export default function moveToApplications() {
+module.exports = function moveToApplications() {
   if (app.isInApplicationsFolder()) {
     return true;
   }

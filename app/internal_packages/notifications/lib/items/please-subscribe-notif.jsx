@@ -1,7 +1,7 @@
 import { Actions, React, AccountStore, IdentityStore } from 'mailspring-exports';
 import { Notification } from 'mailspring-component-kit';
 
-export default class PleaseSubscribeNotification extends React.Component {
+module.exports = class PleaseSubscribeNotification extends React.Component {
   static displayName = 'PleaseSubscribeNotification';
 
   constructor() {

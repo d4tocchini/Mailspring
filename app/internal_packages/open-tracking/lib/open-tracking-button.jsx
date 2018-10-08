@@ -2,7 +2,7 @@ import { React, PropTypes, APIError, MailspringAPIRequest } from 'mailspring-exp
 import { MetadataComposerToggleButton } from 'mailspring-component-kit';
 import { PLUGIN_ID, PLUGIN_NAME } from './open-tracking-constants';
 
-export default class OpenTrackingButton extends React.Component {
+class OpenTrackingButton extends React.Component {
   static displayName = 'OpenTrackingButton';
 
   static propTypes = {
@@ -49,4 +49,5 @@ export default class OpenTrackingButton extends React.Component {
   }
 }
 
+module.exports = OpenTrackingButton
 OpenTrackingButton.containerRequired = false;

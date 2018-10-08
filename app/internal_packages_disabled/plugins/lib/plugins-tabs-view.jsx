@@ -63,4 +63,4 @@ class PluginsTabs extends React.Component {
   }
 }
 
-export default PluginsTabs;
+module.exports = PluginsTabs;

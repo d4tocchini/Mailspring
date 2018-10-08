@@ -8,7 +8,7 @@ import { Flexbox } from 'mailspring-component-kit';
 import displayedKeybindings from './keymaps/displayed-keybindings';
 import CommandItem from './keymaps/command-item';
 
-export default class PreferencesKeymaps extends React.Component {
+module.exports = class PreferencesKeymaps extends React.Component {
   static displayName = 'PreferencesKeymaps';
 
   static propTypes = {

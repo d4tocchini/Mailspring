@@ -1,7 +1,9 @@
-import Category from './category';
+const Category = require('./category');
 
-export default class Folder extends Category {
+class Folder extends Category {
   displayType() {
     return 'folder';
   }
 }
+
+module.exports = Folder

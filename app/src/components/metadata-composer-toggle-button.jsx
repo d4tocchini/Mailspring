@@ -9,7 +9,7 @@ import { RetinaImg } from 'mailspring-component-kit';
 import classnames from 'classnames';
 import _ from 'underscore';
 
-export default class MetadataComposerToggleButton extends React.Component {
+module.exports = class MetadataComposerToggleButton extends React.Component {
   static displayName = 'MetadataComposerToggleButton';
 
   static propTypes = {

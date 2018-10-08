@@ -75,4 +75,4 @@ class SelectedItemsStack extends Component {
   }
 }
 
-export default ListensToObservable(SelectedItemsStack, { getObservable, getStateFromObservable });
+module.exports = ListensToObservable(SelectedItemsStack, { getObservable, getStateFromObservable });

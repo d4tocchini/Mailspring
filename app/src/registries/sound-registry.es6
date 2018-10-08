@@ -52,4 +52,4 @@ class SoundRegistry {
   }
 }
 
-export default new SoundRegistry();
+module.exports = new SoundRegistry();

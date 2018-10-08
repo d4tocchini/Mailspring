@@ -25,6 +25,7 @@ class SystemStartServiceBase {
 class SystemStartServiceDarwin extends SystemStartServiceBase {
   checkAvailability() {
     return new Promise(resolve => {
+      // console.log(this._launcherPath())
       fs.access(this._launcherPath(), fs.R_OK | fs.W_OK, err => {
         if (err) {
           resolve(false);
@@ -198,4 +199,4 @@ if (process.platform === 'darwin') {
   SystemStartService = SystemStartServiceBase;
 }
 
-export default SystemStartService;
+module.exports = SystemStartService;

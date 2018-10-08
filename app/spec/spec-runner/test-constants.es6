@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   TEST_TIME_ZONE: 'America/Los_Angeles',
   TEST_PLUGIN_ID: 'test-plugin-id-123',
   TEST_ACCOUNT_ID: 'test-account-server-id',

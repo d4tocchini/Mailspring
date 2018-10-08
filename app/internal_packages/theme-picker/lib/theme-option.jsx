@@ -51,10 +51,10 @@ class ThemeOption extends React.Component {
     );
     let varImports = `@import "../../../static/base/ui-variables";`;
     if (fs.existsSync(`${this.props.theme.getStylesheetsPath()}/ui-variables.less`)) {
-      varImports += `@import "${themeVarPath}/ui-variables";`;
+      varImports = varImports + `@import "${themeVarPath}/ui-variables";`;
     }
     if (fs.existsSync(`${this.props.theme.getStylesheetsPath()}/theme-colors.less`)) {
-      varImports += `@import "${themeVarPath}/theme-colors";`;
+      varImports = varImports + `@import "${themeVarPath}/theme-colors";`;
     }
     const less = fs.readFileSync(lessStylesheetPath, 'utf8');
     return this.lessCache.cssForFile(lessStylesheetPath, [varImports, less].join('\n'));
@@ -106,4 +106,4 @@ class ThemeOption extends React.Component {
   }
 }
 
-export default ThemeOption;
+module.exports = ThemeOption;

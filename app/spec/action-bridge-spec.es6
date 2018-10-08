@@ -1,6 +1,6 @@
-const Actions = require('../src/flux/actions').default;
-const Message = require('../src/flux/models/message').default;
-const ActionBridge = require('../src/flux/action-bridge').default;
+const Actions = require('../src/flux/actions');
+const Message = require('../src/flux/models/message');
+const ActionBridge = require('../src/flux/action-bridge');
 
 const ipc = {
   on() {},

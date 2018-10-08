@@ -195,4 +195,4 @@ class CategoryStore extends MailspringStore {
   };
 }
 
-export default new CategoryStore();
+module.exports = new CategoryStore();

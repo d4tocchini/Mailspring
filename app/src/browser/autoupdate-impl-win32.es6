@@ -1,7 +1,7 @@
 import AutoupdateImplBase from './autoupdate-impl-base';
 import WindowsUpdater from './windows-updater';
 
-export default class AutoupdateImplWin32 extends AutoupdateImplBase {
+module.exports = class AutoupdateImplWin32 extends AutoupdateImplBase {
   supportsUpdates() {
     return WindowsUpdater.existsSync();
   }

@@ -113,4 +113,4 @@ function InflatesDraftClientId(ComposedComponent) {
   };
 }
 
-export default InflatesDraftClientId;
+module.exports = InflatesDraftClientId;

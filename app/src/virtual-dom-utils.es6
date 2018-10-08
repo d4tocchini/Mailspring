@@ -24,4 +24,4 @@ const VirtualDOMUtils = {
     return;
   },
 };
-export default VirtualDOMUtils;
+module.exports = VirtualDOMUtils;

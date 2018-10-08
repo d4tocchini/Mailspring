@@ -1,8 +1,8 @@
-import _ from 'underscore';
-import MailspringStore from 'mailspring-store';
-import AccountStore from './account-store';
-import CategoryStore from './category-store';
-import Folder from '../models/folder';
+const _ = require('underscore');
+const MailspringStore = require('mailspring-store');
+const AccountStore = require('./account-store');
+const CategoryStore = require('./category-store');
+const Folder = require('../models/folder');
 
 /**
  * FolderSyncProgressStore keeps track of the sync state per account, and will
@@ -184,4 +184,4 @@ class FolderSyncProgressStore extends MailspringStore {
   }
 }
 
-export default new FolderSyncProgressStore();
+module.exports = new FolderSyncProgressStore();

@@ -7,8 +7,8 @@ const React = require('react');
 const ReactDOM = require('react-dom');
 const ReactTestUtils = require('react-dom/test-utils');
 
-const ThreadSearchBar = require('../lib/thread-search-bar').default;
-const SearchActions = require('../lib/search-actions').default;
+const ThreadSearchBar = require('../lib/thread-search-bar');
+const SearchActions = require('../lib/search-actions');
 
 describe('ThreadSearchBar', function() {
   beforeEach(function() {

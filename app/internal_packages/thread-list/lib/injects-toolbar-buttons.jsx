@@ -52,4 +52,4 @@ function InjectsToolbarButtons(ToolbarComponent, { getObservable, extraRoles = [
   });
 }
 
-export default InjectsToolbarButtons;
+module.exports = InjectsToolbarButtons;

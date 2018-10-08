@@ -1,6 +1,6 @@
 import RealDOMParser from './real-dom-parser';
 
-export default class IFrameSearcher {
+module.exports = class IFrameSearcher {
   /**
    * An imperative renderer for iframes
    */

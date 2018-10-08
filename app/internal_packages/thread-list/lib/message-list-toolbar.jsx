@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { CSSTransitionGroup } from 'react-transition-group';
+import CSSTransitionGroup from '../../../src/components/CSSTransitionGroup';
 import { Rx, FocusedContentStore } from 'mailspring-exports';
 import ThreadListStore from './thread-list-store';
-import InjectsToolbarButtons, { ToolbarRole } from './injects-toolbar-buttons';
+import InjectsToolbarButtons from './injects-toolbar-buttons';
+const {ToolbarRole} = InjectsToolbarButtons
 
 function getObservable() {
   return Rx.Observable.combineLatest(
@@ -43,4 +44,4 @@ const toolbarProps = {
   extraRoles: [`MessageList:${ToolbarRole}`],
 };
 
-export default InjectsToolbarButtons(MessageListToolbar, toolbarProps);
+module.exports = InjectsToolbarButtons(MessageListToolbar, toolbarProps);

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { MultiselectToolbar } from 'mailspring-component-kit';
-import InjectsToolbarButtons, { ToolbarRole } from './injects-toolbar-buttons';
+import InjectsToolbarButtons from './injects-toolbar-buttons';
+const {ToolbarRole} = InjectsToolbarButtons
 
 class ThreadListToolbar extends Component {
   static displayName = 'ThreadListToolbar';
@@ -36,4 +37,4 @@ const toolbarProps = {
   extraRoles: [`ThreadList:${ToolbarRole}`],
 };
 
-export default InjectsToolbarButtons(ThreadListToolbar, toolbarProps);
+module.exports = InjectsToolbarButtons(ThreadListToolbar, toolbarProps);

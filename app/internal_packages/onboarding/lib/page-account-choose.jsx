@@ -4,7 +4,7 @@ import { RetinaImg } from 'mailspring-component-kit';
 import OnboardingActions from './onboarding-actions';
 import AccountProviders from './account-providers';
 
-export default class AccountChoosePage extends React.Component {
+module.exports = class AccountChoosePage extends React.Component {
   static displayName = 'AccountChoosePage';
 
   static propTypes = {

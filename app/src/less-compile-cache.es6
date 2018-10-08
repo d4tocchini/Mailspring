@@ -3,7 +3,7 @@ import path from 'path';
 import LessCache from 'less-cache';
 
 // {LessCache} wrapper used by {ThemeManager} to read stylesheets.
-export default class LessCompileCache {
+module.exports = class LessCompileCache {
   constructor({ configDirPath, resourcePath, importPaths = [] }) {
     this.lessSearchPaths = [
       path.join(resourcePath, 'static', 'base'),

@@ -137,4 +137,4 @@ class Package extends React.Component {
   }
 }
 
-export default Package;
+module.exports = Package;

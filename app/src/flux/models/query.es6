@@ -1,7 +1,7 @@
 /* eslint global-require: 0 */
 import Attributes from '../attributes';
-import QueryRange from './query-range';
-import Utils from './utils';
+const QueryRange = require('./query-range');
+const Utils = require('./utils');
 
 const { Matcher, AttributeJoinedData, AttributeCollection } = Attributes;
 
@@ -36,7 +36,8 @@ query.where([Thread.attributes.categories.contains('label-id')])
 
 Section: Database
 */
-export default class ModelQuery {
+const ModelQuery =
+  module.exports = class {
   // Public
   // - `class` A {Model} class to query
   // - `database` (optional) An optional reference to a {DatabaseStore} the
@@ -44,7 +45,7 @@ export default class ModelQuery {
   //
   constructor(klass, database) {
     this._klass = klass.SubclassesUseModelTable || klass;
-    this._database = database || require('./database-store').default;
+    this._database = database || require('./database-store');
     this._matchers = [];
     this._orders = [];
     this._background = false;
@@ -59,7 +60,7 @@ export default class ModelQuery {
   }
 
   clone() {
-    const q = new ModelQuery(this._klass, this._database).where(this._matchers).order(this._orders);
+    const q = new this.constructor(this._klass, this._database).where(this._matchers).order(this._orders);
     q._orders = [].concat(this._orders);
     q._includeJoinedData = [].concat(this._includeJoinedData);
     q._range = this._range.clone();
@@ -118,7 +119,7 @@ export default class ModelQuery {
       for (const key of Object.keys(matchers)) {
         const value = matchers[key];
         const attr = this._klass.attributes[key];
-        if (!attr) {
+        if (attr === undefined) {
           const msg = `Cannot create where clause \`${key}:${value}\`. ${key} is not an attribute of ${
             this._klass.name
           }`;
@@ -175,7 +176,7 @@ export default class ModelQuery {
   //
   includeAll() {
     this._assertNotFinalized();
-    for (const key of Object.keys(this._klass.attributes)) {
+    for (const key of this._klass.attributeKeys) {
       const attr = this._klass.attributes[key];
       if (attr instanceof AttributeJoinedData) {
         this.include(attr);
@@ -297,8 +298,9 @@ export default class ModelQuery {
 
     try {
       return result.map(row => {
+        
         const object = Utils.convertToModel(JSON.parse(row.data));
-        for (const attrName of Object.keys(this._klass.attributes)) {
+        for (const attrName of this._klass.attributeKeys) {
           const attr = this._klass.attributes[attrName];
           if (!attr.needsColumn() || !attr.loadFromColumn) {
             continue;
@@ -347,7 +349,7 @@ export default class ModelQuery {
       result = `\`${this._klass.name}\`.\`id\``;
     } else {
       result = `\`${this._klass.name}\`.\`data\``;
-      for (const attrName of Object.keys(this._klass.attributes)) {
+      for (const attrName of this._klass.attributeKeys) {
         const attr = this._klass.attributes[attrName];
         if (!attr.needsColumn() || !attr.loadFromColumn) {
           continue;

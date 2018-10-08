@@ -51,4 +51,4 @@ function ListensToFluxStore(ComposedComponent, { stores, getStateFromStores }) {
   };
 }
 
-export default ListensToFluxStore;
+module.exports = ListensToFluxStore;

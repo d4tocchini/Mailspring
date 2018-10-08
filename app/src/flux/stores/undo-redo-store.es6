@@ -89,4 +89,4 @@ class UndoRedoStore extends MailspringStore {
   }
 }
 
-export default new UndoRedoStore();
+module.exports = new UndoRedoStore();

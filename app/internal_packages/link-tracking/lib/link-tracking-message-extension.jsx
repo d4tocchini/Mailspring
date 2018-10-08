@@ -2,7 +2,7 @@ import { React, MessageViewExtension, Actions } from 'mailspring-exports';
 import LinkTrackingMessagePopover from './link-tracking-message-popover';
 import { PLUGIN_ID } from './link-tracking-constants';
 
-export default class LinkTrackingMessageExtension extends MessageViewExtension {
+module.exports = class LinkTrackingMessageExtension extends MessageViewExtension {
   static renderedMessageBodyIntoDocument({ document, message, iframe }) {
     const metadata = message.metadataForPluginId(PLUGIN_ID) || {};
     if ((metadata.links || []).length === 0) {

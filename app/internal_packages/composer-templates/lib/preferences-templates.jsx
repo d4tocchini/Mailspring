@@ -77,7 +77,7 @@ class TemplateEditor extends React.Component {
   }
 }
 
-export default class PreferencesTemplates extends React.Component {
+module.exports = class PreferencesTemplates extends React.Component {
   static displayName = 'PreferencesTemplates';
 
   constructor() {

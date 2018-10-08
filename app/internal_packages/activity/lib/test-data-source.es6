@@ -1,4 +1,4 @@
-export default class TestDataSource {
+module.exports = class TestDataSource {
   buildObservable() {
     return this;
   }

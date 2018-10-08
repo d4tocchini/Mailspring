@@ -1,7 +1,8 @@
 /* eslint global-require:0 */
-import Task from './task';
+const Task = require('./task');
 
-export default class DestroyModelTask extends Task {
+class DestroyModelTask extends Task {
+
   constructor({ clientId, modelName, endpoint, accountId } = {}) {
     super();
     this.clientId = clientId;
@@ -24,3 +25,5 @@ export default class DestroyModelTask extends Task {
     return require('mailspring-exports')[this.modelName];
   }
 }
+
+module.exports = DestroyModelTask

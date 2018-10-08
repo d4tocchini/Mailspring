@@ -13,7 +13,7 @@ import { PLUGIN_ID } from './send-later-constants';
 
 const { DATE_FORMAT_SHORT } = DateUtils;
 
-export default class SendLaterStatus extends Component {
+module.exports = class SendLaterStatus extends Component {
   static displayName = 'SendLaterStatus';
 
   static propTypes = {

@@ -160,4 +160,4 @@ class OnboardingStore extends MailspringStore {
   }
 }
 
-export default new OnboardingStore();
+module.exports = new OnboardingStore();

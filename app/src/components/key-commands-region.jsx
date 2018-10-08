@@ -82,7 +82,7 @@ In `my-package/keymaps/my-package.cson`:
   "command+enter": "sendMessage"
 ```
 */
-export default class KeyCommandsRegion extends React.Component {
+module.exports = class KeyCommandsRegion extends React.Component {
   static displayName = 'KeyCommandsRegion';
 
   static propTypes = {

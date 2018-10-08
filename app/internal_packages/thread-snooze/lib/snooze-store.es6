@@ -108,4 +108,4 @@ class SnoozeStore extends MailspringStore {
   };
 }
 
-export default new SnoozeStore();
+module.exports = new SnoozeStore();

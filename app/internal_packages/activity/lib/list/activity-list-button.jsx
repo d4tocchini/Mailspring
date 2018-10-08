@@ -56,4 +56,4 @@ class ActivityListButton extends React.Component {
   }
 }
 
-export default ActivityListButton;
+module.exports = ActivityListButton;

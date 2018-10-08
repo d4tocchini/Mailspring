@@ -2,7 +2,7 @@ import { shell, ipcRenderer } from 'electron';
 import { React, Account, AccountStore, Actions, KeyManager } from 'mailspring-exports';
 import { Notification } from 'mailspring-component-kit';
 
-export default class AccountErrorNotification extends React.Component {
+module.exports = class AccountErrorNotification extends React.Component {
   static displayName = 'AccountErrorNotification';
 
   constructor() {

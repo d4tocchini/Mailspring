@@ -3,9 +3,9 @@
  * DS102: Remove unnecessary code created because of implicit returns
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-const Model = require('../../src/flux/models/model').default;
-const Category = require('../../src/flux/models/category').default;
-const Attributes = require('../../src/flux/attributes').default;
+const Model = require('../../src/flux/models/model');
+const Category = require('../../src/flux/models/category');
+const Attributes = require('../../src/flux/attributes');
 
 class TestModel extends Model {
   static attributes = {

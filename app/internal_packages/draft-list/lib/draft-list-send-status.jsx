@@ -4,7 +4,7 @@ import { DateUtils } from 'mailspring-exports';
 import { Flexbox } from 'mailspring-component-kit';
 import SendingProgressBar from './sending-progress-bar';
 
-export default class DraftListSendStatus extends Component {
+module.exports = class DraftListSendStatus extends Component {
   static displayName = 'DraftListSendStatus';
 
   static propTypes = {

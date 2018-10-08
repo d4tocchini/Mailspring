@@ -6,7 +6,7 @@ stylesheet.
 
 From: https://chromium.googlesource.com/chromium/blink/+/master/Source/core/css/html.css
 */
-export default `
+module.exports = `
 @namespace "http://www.w3.org/1999/xhtml";
 html {
     display: block

@@ -37,4 +37,4 @@ class AccountOnboardingSuccess extends Component {
   }
 }
 
-export default AccountOnboardingSuccess;
+module.exports = AccountOnboardingSuccess;

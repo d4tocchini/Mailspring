@@ -132,4 +132,4 @@ class ActivityListItemContainer extends React.Component {
   }
 }
 
-export default ActivityListItemContainer;
+module.exports = ActivityListItemContainer;

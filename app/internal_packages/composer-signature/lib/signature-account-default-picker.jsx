@@ -1,7 +1,7 @@
 import { React, PropTypes, Actions } from 'mailspring-exports';
 import { MultiselectDropdown } from 'mailspring-component-kit';
 
-export default class SignatureAccountDefaultPicker extends React.Component {
+module.exports = class SignatureAccountDefaultPicker extends React.Component {
   static propTypes = {
     defaults: PropTypes.object,
     signature: PropTypes.object,

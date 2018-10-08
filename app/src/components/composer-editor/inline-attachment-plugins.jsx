@@ -66,7 +66,7 @@ const rules = [
   },
 ];
 
-export const changes = {
+const changes = {
   insert: (change, file) => {
     const canHoldInline = node => !node.isVoid && !isQuoteNode(node) && !!node.getFirstText();
 
@@ -87,9 +87,11 @@ export const changes = {
   },
 };
 
-export default [
+module.exports = [
   {
     renderNode,
     rules,
   },
 ];
+
+module.exports.changes = changes

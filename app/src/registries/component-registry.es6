@@ -223,4 +223,4 @@ class ComponentRegistry extends MailspringStore {
   }
 }
 
-export default new ComponentRegistry();
+module.exports = new ComponentRegistry();

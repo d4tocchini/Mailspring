@@ -57,82 +57,88 @@ function compileFileAtPath(compiler, filePath, extension) {
   return sourceCode;
 }
 
-const INLINE_SOURCE_MAP_REGEXP = /\/\/[#@]\s*sourceMappingURL=([^'"\n]+)\s*$/gm;
+// D4
+if (process.env.NODE_ENV !== 'production') {
 
-require('source-map-support').install({
-  handleUncaughtExceptions: false,
+  const INLINE_SOURCE_MAP_REGEXP = /\/\/[#@]\s*sourceMappingURL=([^'"\n]+)\s*$/gm;
 
-  // Most of this logic is the same as the default implementation in the
-  // source-map-support module, but we've overridden it to read the javascript
-  // code from our cache directory.
-  retrieveSourceMap: filePath => {
-    if (!cacheDirectory) {
-      return null;
-    }
+  require('source-map-support').install({
+    handleUncaughtExceptions: false,
 
-    // read the original source
-    let sourceCode = null;
-    try {
-      sourceCode = fs.readFileSync(filePath, 'utf8');
-    } catch (error) {
-      if (fs.existsSync(filePath)) {
-        console.warn('Error reading source file', error.stack);
-      }
-      return null;
-    }
-
-    // retrieve the javascript for the original source
-    const compiler = COMPILERS[path.extname(filePath)];
-    let javascriptCode = null;
-    if (compiler) {
-      try {
-        javascriptCode = readCachedJavascript(compiler.getCachePath(sourceCode, filePath));
-      } catch (error) {
-        console.warn('Error reading compiled file', error.stack);
+    // Most of this logic is the same as the default implementation in the
+    // source-map-support module, but we've overridden it to read the javascript
+    // code from our cache directory.
+    retrieveSourceMap: filePath => {
+      if (!cacheDirectory) {
         return null;
       }
-    } else {
-      javascriptCode = sourceCode;
-    }
 
-    if (javascriptCode == null) {
-      return null;
-    }
+      // read the original source
+      let sourceCode = null;
+      try {
+        sourceCode = fs.readFileSync(filePath, 'utf8');
+      } catch (error) {
+        if (fs.existsSync(filePath)) {
+          console.warn('Error reading source file', error.stack);
+        }
+        return null;
+      }
 
-    let match;
-    let lastMatch;
-    INLINE_SOURCE_MAP_REGEXP.lastIndex = 0;
-    while ((match = INLINE_SOURCE_MAP_REGEXP.exec(javascriptCode))) {
-      lastMatch = match;
-    }
-    if (lastMatch == null) {
-      return null;
-    }
+      // retrieve the javascript for the original source
+      const compiler = COMPILERS[path.extname(filePath)];
+      let javascriptCode = null;
+      if (compiler) {
+        try {
+          javascriptCode = readCachedJavascript(compiler.getCachePath(sourceCode, filePath));
+        } catch (error) {
+          console.warn('Error reading compiled file', error.stack);
+          return null;
+        }
+      } else {
+        javascriptCode = sourceCode;
+      }
 
-    const sourceMappingURL = lastMatch[1];
+      if (javascriptCode == null) {
+        return null;
+      }
 
-    // check whether this is a file path, or an inline sourcemap and load it
-    let rawData = null;
-    if (sourceMappingURL.includes(',')) {
-      rawData = sourceMappingURL.slice(sourceMappingURL.indexOf(',') + 1);
-    } else {
-      rawData = fs.readFileSync(path.resolve(path.dirname(filePath), sourceMappingURL));
-    }
+      let match;
+      let lastMatch;
+      INLINE_SOURCE_MAP_REGEXP.lastIndex = 0;
+      while ((match = INLINE_SOURCE_MAP_REGEXP.exec(javascriptCode))) {
+        lastMatch = match;
+      }
+      if (lastMatch == null) {
+        return null;
+      }
 
-    let sourceMap = null;
-    try {
-      sourceMap = JSON.parse(new Buffer(rawData, 'base64'));
-    } catch (error) {
-      console.warn('Error parsing source map', error.stack);
-      return null;
-    }
+      const sourceMappingURL = lastMatch[1];
 
-    return {
-      map: sourceMap,
-      url: null,
-    };
-  },
-});
+      // check whether this is a file path, or an inline sourcemap and load it
+      let rawData = null;
+      if (sourceMappingURL.includes(',')) {
+        rawData = sourceMappingURL.slice(sourceMappingURL.indexOf(',') + 1);
+      } else {
+        rawData = fs.readFileSync(path.resolve(path.dirname(filePath), sourceMappingURL));
+      }
+
+      let sourceMap = null;
+      try {
+        // D4
+        const buf = typeof rawData === 'string' ? Buffer.from(rawData, 'base64') : rawData
+        sourceMap = JSON.parse(buf.toString('utf8'));
+      } catch (error) {
+        console.warn('Error parsing source map', error.stack);
+        return null;
+      }
+
+      return {
+        map: sourceMap,
+        url: null,
+      };
+    },
+  });
+}
 
 Object.keys(COMPILERS).forEach(extension => {
   const compiler = COMPILERS[extension];

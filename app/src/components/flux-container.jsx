@@ -46,4 +46,4 @@ class FluxContainer extends React.Component {
   }
 }
 
-export default FluxContainer;
+module.exports = FluxContainer;

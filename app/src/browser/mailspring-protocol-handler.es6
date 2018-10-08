@@ -13,7 +13,7 @@ import path from 'path';
 //   * <config-dir>/packages
 //   * RESOURCE_PATH/node_modules
 //
-export default class MailspringProtocolHandler {
+module.exports = class MailspringProtocolHandler {
   constructor({ configDirPath, resourcePath, safeMode }) {
     this.loadPaths = [];
 

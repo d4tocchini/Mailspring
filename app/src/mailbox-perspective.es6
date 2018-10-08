@@ -10,12 +10,12 @@ import DatabaseStore from './flux/stores/database-store';
 import OutboxStore from './flux/stores/outbox-store';
 import ThreadCountsStore from './flux/stores/thread-counts-store';
 import FolderSyncProgressStore from './flux/stores/folder-sync-progress-store';
-import MutableQuerySubscription from './flux/models/mutable-query-subscription';
-import UnreadQuerySubscription from './flux/models/unread-query-subscription';
-import Thread from './flux/models/thread';
-import Category from './flux/models/category';
-import Label from './flux/models/label';
-import Folder from './flux/models/folder';
+const MutableQuerySubscription = require('./flux/models/mutable-query-subscription');
+const UnreadQuerySubscription = require('./flux/models/unread-query-subscription');
+const Thread = require('./flux/models/thread');
+const Category = require('./flux/models/category');
+const Label = require('./flux/models/label');
+const Folder = require('./flux/models/folder');
 import Actions from './flux/actions';
 
 let WorkspaceStore = null;
@@ -28,7 +28,7 @@ let FocusedPerspectiveStore = null;
 // This is a class cluster. Subclasses are not for external use!
 // https://developer.apple.com/library/ios/documentation/General/Conceptual/CocoaEncyclopedia/ClassClusters/ClassClusters.html
 
-export default class MailboxPerspective {
+class MailboxPerspective {
   // Factory Methods
   static forNothing() {
     return new EmptyMailboxPerspective();
@@ -297,7 +297,7 @@ class StarredMailboxPerspective extends MailboxPerspective {
   }
 
   actionsForReceivingThreads(threads, accountId) {
-    ChangeStarredTask = ChangeStarredTask || require('./flux/tasks/change-starred-task').default;
+    ChangeStarredTask = ChangeStarredTask || require('./flux/tasks/change-starred-task');
     const task = new ChangeStarredTask({
       accountId,
       threads,
@@ -429,9 +429,9 @@ class CategoryMailboxPerspective extends MailboxPerspective {
 
   actionsForReceivingThreads(threads, accountId) {
     FocusedPerspectiveStore =
-      FocusedPerspectiveStore || require('./flux/stores/focused-perspective-store').default;
-    ChangeLabelsTask = ChangeLabelsTask || require('./flux/tasks/change-labels-task').default;
-    ChangeFolderTask = ChangeFolderTask || require('./flux/tasks/change-folder-task').default;
+      FocusedPerspectiveStore || require('./flux/stores/focused-perspective-store')
+    ChangeLabelsTask = ChangeLabelsTask || require('./flux/tasks/change-labels-task');
+    ChangeFolderTask = ChangeFolderTask || require('./flux/tasks/change-folder-task');
 
     const current = FocusedPerspectiveStore.current();
 
@@ -516,8 +516,8 @@ class CategoryMailboxPerspective extends MailboxPerspective {
   // - if finished category === "trash" move to trash folder, keep labels intact
   //
   tasksForRemovingItems(threads, source = 'Removed from list') {
-    ChangeLabelsTask = ChangeLabelsTask || require('./flux/tasks/change-labels-task').default;
-    ChangeFolderTask = ChangeFolderTask || require('./flux/tasks/change-folder-task').default;
+    ChangeLabelsTask = ChangeLabelsTask || require('./flux/tasks/change-labels-task');
+    ChangeFolderTask = ChangeFolderTask || require('./flux/tasks/change-folder-task');
 
     // TODO this is an awful hack
     const role = this.isArchive() ? 'archive' : this.categoriesSharedRole();
@@ -569,7 +569,7 @@ class UnreadMailboxPerspective extends CategoryMailboxPerspective {
   }
 
   actionsForReceivingThreads(threads, accountId) {
-    ChangeUnreadTask = ChangeUnreadTask || require('./flux/tasks/change-unread-task').default;
+    ChangeUnreadTask = ChangeUnreadTask || require('./flux/tasks/change-unread-task');
     const tasks = super.actionsForReceivingThreads(threads, accountId);
     tasks.push(
       new ChangeUnreadTask({
@@ -582,7 +582,7 @@ class UnreadMailboxPerspective extends CategoryMailboxPerspective {
   }
 
   tasksForRemovingItems(threads, ruleset, source) {
-    ChangeUnreadTask = ChangeUnreadTask || require('./flux/tasks/change-unread-task').default;
+    ChangeUnreadTask = ChangeUnreadTask || require('./flux/tasks/change-unread-task');
 
     const tasks = super.tasksForRemovingItems(threads, ruleset, source);
     tasks.push(
@@ -591,3 +591,6 @@ class UnreadMailboxPerspective extends CategoryMailboxPerspective {
     return tasks;
   }
 }
+
+
+module.exports = MailboxPerspective

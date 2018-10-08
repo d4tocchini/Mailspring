@@ -15,7 +15,7 @@ import {
 } from 'mailspring-exports';
 import { Categories } from 'mailspring-observables';
 
-export default class MovePickerPopover extends Component {
+module.exports = class MovePickerPopover extends Component {
   static propTypes = {
     threads: PropTypes.array.isRequired,
     account: PropTypes.object.isRequired,

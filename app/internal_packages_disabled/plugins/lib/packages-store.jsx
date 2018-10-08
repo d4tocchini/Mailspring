@@ -237,4 +237,4 @@ const PackagesStore = Reflux.createStore({
   },
 });
 
-export default PackagesStore;
+module.exports = PackagesStore;

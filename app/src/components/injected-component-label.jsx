@@ -2,7 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-export default class InjectedComponentLabel extends React.Component {
+module.exports = class InjectedComponentLabel extends React.Component {
   static displayName = 'InjectedComponentLabel';
 
   static propTypes = {

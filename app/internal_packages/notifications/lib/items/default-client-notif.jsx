@@ -3,7 +3,7 @@ import { Notification } from 'mailspring-component-kit';
 
 const SETTINGS_KEY = 'mailto.prompted-about-default';
 
-export default class DefaultClientNotification extends React.Component {
+module.exports = class DefaultClientNotification extends React.Component {
   static displayName = 'DefaultClientNotification';
 
   constructor() {

@@ -13,7 +13,7 @@ import { RetinaImg } from 'mailspring-component-kit';
 import CopyButton from './copy-button';
 import { sharingURLForThread, syncThreadToWeb, unsyncThread } from './main';
 
-export default class ThreadSharingPopover extends React.Component {
+module.exports = class ThreadSharingPopover extends React.Component {
   static propTypes = {
     thread: PropTypes.object,
     accountId: PropTypes.string,

@@ -1,8 +1,8 @@
-const CSSTransitionGroup = require('react-transition-group/CSSTransitionGroup');
+import CSSTransitionGroup from './CSSTransitionGroup';
 const _ = require('underscore');
 
 const { React, PropTypes, Utils } = require('mailspring-exports');
-const InjectedComponentSet = require('./injected-component-set').default;
+const InjectedComponentSet = require('./injected-component-set');
 
 /*
 Public: MultiselectActionBar is a simple component that can be placed in a {Sheet} Toolbar.

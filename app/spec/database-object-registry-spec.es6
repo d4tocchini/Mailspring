@@ -1,18 +1,18 @@
 /* eslint quote-props: 0 */
 import _ from 'underscore';
-import Model from '../src/flux/models/model';
+const Model = require('../src/flux/models/model');
 import Attributes from '../src/flux/attributes';
-import DatabaseObjectRegistry from '../src/registries/database-object-registry';
+const DatabaseObjectRegistry = require('../src/registries/database-object-registry');
 
 class GoodTest extends Model {
-  static attributes = Object.assign({}, Model.attributes, {
-    foo: Attributes.String({
+  static defineAttributes(Attribute){
+    Attribute('String',{
       modelKey: 'foo',
       jsonKey: 'foo',
-    }),
-  });
+    })
+  }
 }
-
+Model.setup(GoodTest)
 describe('DatabaseObjectRegistry', function DatabaseObjectRegistrySpecs() {
   beforeEach(() => DatabaseObjectRegistry.unregister('GoodTest'));
 
@@ -28,7 +28,7 @@ describe('DatabaseObjectRegistry', function DatabaseObjectRegistrySpecs() {
   });
 
   it('deserializes the objects for a constructor', () => {
-    DatabaseObjectRegistry.register('GoodTest', () => GoodTest);
+    DatabaseObjectRegistry.register('GoodTest', () => GoodTest);    
     const obj = DatabaseObjectRegistry.deserialize('GoodTest', { foo: 'bar' });
     expect(obj instanceof GoodTest).toBe(true);
     expect(obj.foo).toBe('bar');
