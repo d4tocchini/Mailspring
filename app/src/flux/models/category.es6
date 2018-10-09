@@ -1,41 +1,60 @@
 /* eslint global-require: 0 */
 const utf7 = require('utf7');
 const Model = require('./model');
+const {
+  CATS_STANDARD,
+  CATS_LOCKED,
+  CATS_HIDDEN,
+  CAT_NAME_PREFIXES, 
+  CAT_NAME_MAP
+} = require('mailspring/CONFIG')
 
 // We look for a few standard categories and display them in the Mailboxes
 // portion of the left sidebar. Note that these may not all be present on
 // a particular account.
-const ToObject = arr => {
-  return arr.reduce((o, v) => {
-    o[v] = v;
-    return o;
-  }, {});
-};
 
-const StandardRoleMap = ToObject([
-  'inbox',
-  'important',
-  'snoozed',
-  'sent',
-  'drafts',
-  'all',
-  'spam',
-  'archive',
-  'trash',
-]);
+const TYPES = {
+  Standard: 'standard',
+  Locked: 'locked',
+  User: 'user',
+  Hidden: 'hidden',
+}
 
-const LockedRoleMap = ToObject(['sent', 'drafts']);
+const StandardRoles = CATS_STANDARD
+const LockedRoles = CATS_LOCKED
+const HiddenRoles = CATS_HIDDEN
 
-const HiddenRoleMap = ToObject([
-  'sent',
-  'drafts',
-  'all',
-  'archive',
-  'starred',
-  'important',
-  'snoozed',
-  '[Mailspring]',
-]);
+const StandardRoleMap = ToObject(StandardRoles);
+const LockedRoleMap = ToObject(LockedRoles);
+const HiddenRoleMap = ToObject(HiddenRoles);
+
+const cat_name_prefixes = Object.keys(CAT_NAME_PREFIXES)
+
+function categoryPathToName(str) {
+
+  // TODO:
+  for (const prefix of cat_name_prefixes) {
+    const offset = CAT_NAME_PREFIXES[prefix]
+    if (str.startsWith(prefix) && str.length > prefix.length + offset) {
+      str = str.substr(prefix.length + offset); // + delimiter
+      break
+    }
+  }
+
+  const rewrite = CAT_NAME_MAP[str]
+  return (rewrite !== undefined)
+    ? rewrite
+    : str
+}
+
+function categoryNameToHue(name) {
+  let hue = 0;
+  if (!name) { return hue; }
+  for (let i = 0; i < name.length; i=i+2) {
+    hue = hue + name.charCodeAt(i);
+  }
+  return hue * 396.0 / 512.0;
+}
 
 /**
 Private:
@@ -44,13 +63,10 @@ This abstract class has only two concrete implementations:
   - `Label`
 
 See the equivalent models for details.
-
 Folders and Labels have different semantics. The `Category` class only exists to help DRY code where they happen to behave the same
 
 ## Attributes
-
 `role`: {AttributeString} The internal role of the label or folder. Queryable.
-
 `path`: {AttributeString} The IMAP path name of the label or folder. Queryable.
 
 Section: Models
@@ -59,6 +75,7 @@ Section: Models
   class Category extends Model {
 
     static defineAttributes(Attribute) {
+
       Attribute('String', { modelKey: 'role',
         queryable: true,
       })
@@ -67,15 +84,10 @@ Section: Models
       })
       Attribute('Object', { modelKey: 'localStatus', })
 
-      this.StandardRoles = Object.keys(StandardRoleMap);
-      this.LockedRoles = Object.keys(LockedRoleMap);
-      this.HiddenRoles = Object.keys(HiddenRoleMap);
-      this.Types = {
-        Standard: 'standard',
-        Locked: 'locked',
-        User: 'user',
-        Hidden: 'hidden',
-      };
+      this.StandardRoles = StandardRoles.slice(0)
+      this.LockedRoles = LockedRoles.slice(0)
+      this.HiddenRoles = HiddenRoles.slice(0)
+      this.Types = TYPES;
 
       this.categoriesSharedRole = function(cats) {
         if (!cats || cats.length === 0) {
@@ -91,50 +103,11 @@ Section: Models
 
     get displayName() {
       const decoded = utf7.imap.decode(this.path);
-      for (const prefix of ['INBOX', '[Gmail]', '[Mailspring]']) {
-        if (decoded.startsWith(prefix) && decoded.length > prefix.length + 1) {
-          return decoded.substr(prefix.length + 1); // + delimiter
-        }
-      }
-      if (decoded.startsWith('Mailspring/') || decoded.startsWith('Mailspring.')) {
-        return decoded.substr(11);
-      }
-      if (decoded === 'INBOX') {
-        return 'Inbox';
-      }
-      return decoded;
-    }
-
-    /* Available for historical reasons, do not use. */
-    get name() {
-      return this.role;
-    }
-
-    displayType() {
-      throw new Error('Base class');
+      return categoryPathToName(decoded)
     }
 
     hue() {
-      if (!this.displayName) {
-        return 0;
-      }
-      let hue = 0;
-      for (let i = 0; i < this.displayName.length; i=i+2) {
-        hue += this.displayName.charCodeAt(i);
-      }
-      hue *= 396.0 / 512.0;
-      return hue;
-    }
-
-    isStandardCategory(forceShowImportant) {
-      let showImportant = forceShowImportant;
-      if (showImportant === undefined) {
-        showImportant = AppEnv.config.get('core.workspace.showImportant');
-      }
-      if (showImportant === true) {
-        return !!StandardRoleMap[this.role];
-      }
-      return !!StandardRoleMap[this.role] && this.role !== 'important';
+      return categoryNameToHue(this.displayName)
     }
 
     isLockedCategory() {
@@ -153,9 +126,31 @@ Section: Models
       return (
         this.role === 'all' ||
         this.role === 'archive'
-        )
+      )
       // return ['all', 'archive'].includes(this.role);
     }
+
+    isStandardCategory(forceShowImportant) {
+      let showImportant = forceShowImportant;
+      if (showImportant === undefined) {
+        showImportant = AppEnv.config.get('core.workspace.showImportant');
+      }
+      if (showImportant === true) {
+        return !!StandardRoleMap[this.role];
+      }
+      return !!StandardRoleMap[this.role] && this.role !== 'important';
+    }
+
+    /* IGNORE Available for historical reasons, do not use. */
+    get name() { return this.role; }
+    displayType() { throw new Error('Base class'); }
   }
 
   module.exports = Model.setup(Category)
+
+  function ToObject (arr) {
+    return arr.reduce((o, v) => {
+      o[v] = v;
+      return o;
+    }, {});
+  }

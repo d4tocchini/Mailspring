@@ -8,7 +8,7 @@ const MailspringAPIRequest = require('../mailspring-api-request')
 const { makeRequest, rootURLForServer } = MailspringAPIRequest
 
 // Note this key name is used when migrating to Nylas Pro accounts from old N1.
-const KEYCHAIN_NAME = 'Mailspring Account';
+const {KEYCHAIN_NAME} = require('mailspring/CONFIG')
 
 class IdentityStore extends MailspringStore {
   constructor() {
@@ -123,6 +123,7 @@ class IdentityStore extends MailspringStore {
    * https://paper.dropbox.com/doc/Analytics-ID-Unification-oVDTkakFsiBBbk9aeuiA3
    * for the full list of utm_ labels.
    */
+  // $
   async fetchSingleSignOnURL(path, { source, campaign, content } = {}) {
     if (!this._identity) {
       return Promise.reject(new Error('fetchSingleSignOnURL: no identity set.'));

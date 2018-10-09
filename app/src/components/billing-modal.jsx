@@ -4,6 +4,8 @@ import Webview from './webview';
 import Actions from '../flux/actions';
 import IdentityStore from '../flux/stores/identity-store';
 
+// $
+
 module.exports = class BillingModal extends React.Component {
   static IntrinsicWidth = 412;
   static IntrinsicHeight = 540;

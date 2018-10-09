@@ -12,6 +12,7 @@ module.exports = class ConsoleReporter {
         return log(`[${spec.getFullName()}] ${args[0]}`, ...args.slice(1));
       };
     };
+
     console.log = withContext(originalLog);
     console.warn = withContext(originalWarn);
     console.error = withContext(originalError);

@@ -17,6 +17,7 @@ module.exports = class FeatureUsedUpModal extends React.Component {
   componentDidMount() {
     this._mounted = true;
 
+    // $
     IdentityStore.fetchSingleSignOnURL('/payment?embedded=true').then(upgradeUrl => {
       if (!this._mounted) {
         return;

@@ -52,12 +52,13 @@ describe('Utils', function() {
       expect(revived).toEqual([this.testThread]);
     });
 
-    it("should re-inflate Models in places they're not explicitly declared types", function() {
+    it.only("should re-inflate Models in places they're not explicitly declared types", function() {
       const b = { id: 'ThreadsToProcess', json: [this.testThread] };
       const jsonString = JSON.stringify(b);
+
       const expectedString =
         '{"id":"ThreadsToProcess","json":[{"id":"local-1","aid":"1","metadata":[],"subject":"Test 1234","categories":[],"participants":[{"id":"local-a","aid":"1","name":"Juan","email":"juan@nylas.com","thirdPartyData":{},"__cls":"Contact"},{"id":"local-b","aid":"1","name":"Ben","email":"ben@nylas.com","thirdPartyData":{},"__cls":"Contact"}],"__cls":"Thread"}]}';
-
+      console.log(jsonString === expectedString, '--------------------\n\n', jsonString);
       expect(jsonString).toEqual(expectedString);
       const revived = JSON.parse(jsonString, Utils.modelTypesReviver);
       expect(revived).toEqual(b);

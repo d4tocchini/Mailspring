@@ -1,7 +1,9 @@
 import React from 'react';
-import { Actions, IdentityStore } from 'mailspring-exports';
 import { OpenIdentityPageButton, BillingModal, RetinaImg } from 'mailspring-component-kit';
-import { shell } from 'electron';
+const { Actions, IdentityStore } = require('mailspring-exports');
+const { shell } = require('electron');
+
+// $
 
 class RefreshButton extends React.Component {
   constructor(props) {

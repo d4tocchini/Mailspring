@@ -5,6 +5,7 @@ import classnames from 'classnames';
 import RetinaImg from './retina-img';
 import IdentityStore from '../flux/stores/identity-store';
 
+// $
 module.exports = class OpenIdentityPageButton extends React.Component {
   static propTypes = {
     path: PropTypes.string,
