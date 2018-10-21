@@ -1,15 +1,14 @@
-import _ from 'underscore';
-import Rx from 'rx-lite';
-import MailspringStore from 'mailspring-store';
-
-import Utils from '../models/utils';
-import Thread from '../models/thread';
-import Actions from '../actions';
-import Contact from '../models/contact';
-import MessageStore from './message-store';
-import AccountStore from './account-store';
-import DatabaseStore from './database-store';
-import SearchQueryParser from '../../services/search/search-query-parser';
+const _ = require('underscore');
+const Rx = require('rx-lite');
+const MailspringStore = require('mailspring-store');
+const Utils = require('../models/utils');
+const Thread = require('../models/thread');
+const Actions = require('../actions');
+const Contact = require('../models/contact');
+const MessageStore = require('./message-store');
+const AccountStore = require('./account-store');
+const DatabaseStore = require('./database-store');
+const SearchQueryParser = require('../../services/search/search-query-parser');
 
 // A store that handles the focuses collections of and individual contacts
 class FocusedContactsStore extends MailspringStore {
@@ -92,7 +91,7 @@ class FocusedContactsStore extends MailspringStore {
       });
       this._unsubFocusedContact = Rx.Observable.fromQuery(query).subscribe(match => {
         if (match) {
-          match.name = contact.name; // always show the name from the current email
+          match.name = contact.name; // always show the name = require(the current email
         }
         this._currentFocusedContact = match || contact;
         this._triggerLater();

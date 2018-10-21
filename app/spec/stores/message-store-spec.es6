@@ -227,14 +227,24 @@ describe('MessageStore', function() {
         });
       });
 
-      it('should queue a task to mark the thread as read', function() {
+      it('should queue a task to mark the thread as read', function(done) {
+        // expect(MessageStore.threadId()).toEqual(null)
+        testThread.id
+        let XXX = MessageStore._onApplyFocusChange();
+        expect(XXX).toEqual(-1)
         this.focus = testThread;
-        MessageStore._onApplyFocusChange();
+        XXX = MessageStore._onApplyFocusChange();
+        expect(MessageStore.threadId()).toEqual(testThread.id)
+        // expect(XXX).toEqual(1) ?????
         advanceClock(500);
         expect(Actions.queueTask).not.toHaveBeenCalled();
         advanceClock(500);
-        expect(Actions.queueTask).toHaveBeenCalled();
-        expect(Actions.queueTask.mostRecentCall.args[0] instanceof ChangeUnreadTask).toBe(true);
+        setTimeout(()=>{
+          expect(Actions.queueTask).toHaveBeenCalled();
+          expect(Actions.queueTask.mostRecentCall.args[0] instanceof ChangeUnreadTask).toBe(true);
+          done()
+        },600)
+
       });
 
       it('should not queue a task to mark the thread as read if the thread is no longer selected 500msec later', function() {

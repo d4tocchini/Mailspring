@@ -1,19 +1,19 @@
-import EventEmitter from 'events';
-import MailspringStore from 'mailspring-store';
-import { Conversion } from '../../components/composer-editor/composer-support';
-import RegExpUtils from '../../regexp-utils';
-
-import TaskQueue from './task-queue';
-import Message from '../models/message';
-import Utils from '../models/utils';
-import Actions from '../actions';
-import AccountStore from './account-store';
-import ContactStore from './contact-store';
-import DatabaseStore from './database-store';
-import { Composer as ComposerExtensionRegistry } from '../../registries/extension-registry';
-import QuotedHTMLTransformer from '../../services/quoted-html-transformer';
-import SyncbackDraftTask from '../tasks/syncback-draft-task';
-import DestroyDraftTask from '../tasks/destroy-draft-task';
+const EventEmitter = require('events');
+const MailspringStore = require('mailspring-store');
+const { Conversion } = require('../../components/composer-editor/composer-support');
+const RegExpUtils = require('../../regexp-utils');
+const TaskQueue = require('./task-queue');
+const Message = require('../models/message');
+const Utils = require('../models/utils');
+const Actions = require('../actions');
+const AccountStore = require('./account-store');
+const ContactStore = require('./contact-store');
+const DatabaseStore = require('./database-store');
+const extension_registry = require('../../registries/extension-registry');
+const ComposerExtensionRegistry = extension_registry.Composer
+const QuotedHTMLTransformer = require('../../services/quoted-html-transformer');
+const SyncbackDraftTask = require('../tasks/syncback-draft-task');
+const DestroyDraftTask = require('../tasks/destroy-draft-task');
 
 const { convertFromHTML, convertToHTML } = Conversion;
 const MetadataChangePrefix = 'metadata.';
@@ -23,7 +23,7 @@ let DraftStore = null;
 Public: As the user interacts with the draft, changes are accumulated in the
 DraftChangeSet associated with the store session.
 
-This class used to be more complex - now it's mostly a holdover from when
+This class used to be more complex - now it's mostly a holdover = require(when
 we implemented undo/redo manually and just functions as a pass-through.
 
 Section: Drafts
@@ -315,7 +315,7 @@ module.exports = class DraftEditingSession extends MailspringStore {
   }
 
   // This function makes sure the draft is attached to a valid account, and changes
-  // it's accountId if the from address does not match the account for the from
+  // it's accountId if the = require(address does not match the account for the from
   // address.
   //
   async ensureCorrectAccount() {
@@ -323,7 +323,7 @@ module.exports = class DraftEditingSession extends MailspringStore {
     const account = AccountStore.accountForEmail(draft.from[0].email);
     if (!account) {
       throw new Error(
-        'DraftEditingSession::ensureCorrectAccount - you can only send drafts from a configured account.'
+        'DraftEditingSession::ensureCorrectAccount - you can only send drafts = require(a configured account.'
       );
     }
 
@@ -397,7 +397,7 @@ module.exports = class DraftEditingSession extends MailspringStore {
     }
 
     // If the session has unsaved changes for a given field (eg: 'to' or 'body'),
-    // we don't accept changes from the database. All changes to the draft should
+    // we don't accept changes = require(the database. All changes to the draft should
     // be made through the editing session and we don't want to overwrite the user's
     // work under any scenario.
     const lockedFields = this.changes.dirtyFields();

@@ -1,15 +1,15 @@
-import fs from 'fs';
-import React from 'react';
-import PropTypes from 'prop-types';
-import { shell } from 'electron';
-import { ScrollRegion, ListensToFluxStore, RetinaImg } from 'mailspring-component-kit';
-import {
+const fs = require('fs');
+const React = require('react');
+const PropTypes = require('prop-types');
+const { shell } = require('electron');
+const { ScrollRegion, ListensToFluxStore, RetinaImg } = require('mailspring-component-kit');
+const {
   AccountStore,
   Message,
   DatabaseStore,
   FocusedPerspectiveStore,
   Actions,
-} from 'mailspring-exports';
+} = require('mailspring-exports');
 
 import {
   MetricContainer,
@@ -24,6 +24,8 @@ import { LINK_TRACKING_ID, OPEN_TRACKING_ID } from '../plugin-helpers';
 import { DEFAULT_TIMESPAN_ID, getTimespanStartEnd } from './timespan';
 import TimespanSelector from './timespan-selector';
 import LoadingCover from './loading-cover';
+
+const {PRODUCT_NAME} = require('mailspring/CONFIG')
 
 const CHUNK_SIZE = 500;
 const MINIMUM_THINKING_TIME = 2000;
@@ -268,7 +270,7 @@ class RootWithTimespan extends React.Component {
         AppEnv.showErrorDialog({
           title: 'Export Failed',
           message:
-            `Mailspring was unable to write to the file location you specified (${filepath}).` +
+            `${PRODUCT_NAME} was unable to write to the file location you specified (${filepath}).` +
             `Try choosing another location.\n\n${err.toString()}`,
         });
         return;

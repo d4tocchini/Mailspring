@@ -1,4 +1,4 @@
-import {
+const {
   SearchQueryExpressionVisitor,
   OrQueryExpression,
   AndQueryExpression,
@@ -7,8 +7,8 @@ import {
   StarredStatusQueryExpression,
   HasAttachmentQueryExpression,
   MatchQueryExpression,
-} from './search-query-ast';
-import { DateUtils } from 'mailspring-exports';
+} = require('./search-query-ast');
+const { DateUtils } = require('mailspring-exports');
 
 /*
  * This class visits a match-compatible subtree and condenses it into a single

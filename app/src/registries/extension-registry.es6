@@ -1,7 +1,7 @@
-import _ from 'underscore';
-import MailspringStore from 'mailspring-store';
+const _ = require('underscore');
+const MailspringStore = require('mailspring-store');
 
-export class Registry extends MailspringStore {
+class Registry extends MailspringStore {
   constructor(name) {
     super();
     this.name = name;
@@ -59,10 +59,19 @@ export class Registry extends MailspringStore {
   }
 }
 
-export const Composer = new Registry('Composer');
+const Composer = new Registry('Composer');
 
-export const MessageView = new Registry('MessageView');
+const MessageView = new Registry('MessageView');
 
-export const ThreadList = new Registry('ThreadList');
+const ThreadList = new Registry('ThreadList');
 
-export const AccountSidebar = new Registry('AccountSidebar');
+const AccountSidebar = new Registry('AccountSidebar');
+
+module.exports = {
+  Registry,
+  Composer,
+  MessageView,
+  ThreadList,
+  AccountSidebar,
+}
+

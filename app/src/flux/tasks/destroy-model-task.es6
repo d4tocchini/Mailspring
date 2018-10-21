@@ -26,4 +26,4 @@ class DestroyModelTask extends Task {
   }
 }
 
-module.exports = DestroyModelTask
+module.exports = Task.setup(DestroyModelTask)

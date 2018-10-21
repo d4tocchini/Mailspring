@@ -1,9 +1,9 @@
-import _ from 'underscore';
-import React from 'react';
-import ReactDOM from 'react-dom';
-import PropTypes from 'prop-types';
-import Actions from '../flux/actions';
-import RetinaImg from './retina-img';
+const _ = require('underscore');
+const React = require('react');
+const ReactDOM = require('react-dom');
+const PropTypes = require('prop-types');
+const Actions = require('../flux/actions');
+const RetinaImg = require('./retina-img');
 
 class Modal extends React.Component {
   static propTypes = {

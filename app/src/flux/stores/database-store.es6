@@ -1,16 +1,17 @@
 /* eslint global-require: 0 */
-import path from 'path';
-import createDebug from 'debug';
-import childProcess from 'child_process';
-import LRU from 'lru-cache';
-import Sqlite3 from 'better-sqlite3';
-import { remote, ipcRenderer } from 'electron';
-import { ExponentialBackoffScheduler } from '../../backoff-schedulers';
+const path = require('path');
+const createDebug = require('debug');
+const childProcess = require('child_process');
+const LRU = require('lru-cache');
+const Sqlite3 = require('better-sqlite3');
+const { remote } = require('electron');
+const { ExponentialBackoffScheduler } = require('../../backoff-schedulers');
+const MailspringStore = require('../../global/mailspring-store');
+const Utils = require('../models/utils');
+const Query = require('../models/query');
+const DatabaseChangeRecord = require('./database-change-record');
 
-import MailspringStore from '../../global/mailspring-store';
-import Utils from '../models/utils';
-import Query from '../models/query';
-import DatabaseChangeRecord from './database-change-record';
+const { QUERY_OFF_THREAD } = require('mailspring/CONFIG');
 
 const debug = createDebug('app:RxDB');
 const debugVerbose = createDebug('app:RxDB:all');
@@ -19,6 +20,24 @@ const DEBUG_QUERY_PLANS = AppEnv.inDevMode();
 
 const BASE_RETRY_LOCK_DELAY = 50;
 const MAX_RETRY_LOCK_DELAY = 500;
+
+const EMPTY_ARRAY = [];
+
+let __agent = null;
+let __open_queries = null;
+const __query_msg = {
+  query: '',
+  values: EMPTY_ARRAY,
+  id: '',
+  dbpath: '',
+};
+function __unhoist_open_query() {
+  __query_msg.query = '';
+  __query_msg.values = EMPTY_ARRAY;
+  __query_msg.id = __query_msg.dbpath = '';
+  __agent = null;
+  __open_queries = null;
+}
 
 function trimTo(str, size) {
   const g = window || global || {};
@@ -38,7 +57,7 @@ function handleUnrecoverableDatabaseError(
   if (!app) {
     throw new Error('handleUnrecoverableDatabaseError: `app` is not ready!');
   }
-  const ipc = ipcRenderer
+  const ipc = require('electron').ipcRenderer;
   ipc.send('command', 'application:reset-database', {
     errorMessage: err.toString(),
   });
@@ -130,6 +149,26 @@ are in your displayed set before refreshing.
 
 Section: Database
 */
+
+// D4
+function _sql_sanitize_values(values) {
+  // Undefined, True, and False are not valid SQLite datatypes:
+  // https://www.sqlite.org/datatype3.html
+  let vl = values.length;
+  while (vl) {
+    vl = vl - 1;
+    const idx = vl;
+    const val = values[idx];
+    if (val === false) {
+      values[idx] = 0;
+    } else if (val === true) {
+      values[idx] = 1;
+    } else if (val === undefined) {
+      values[idx] = null;
+    }
+  }
+}
+
 class DatabaseStore extends MailspringStore {
   static ChangeRecord = DatabaseChangeRecord;
 
@@ -141,6 +180,7 @@ class DatabaseStore extends MailspringStore {
     this._preparedStatementCache = LRU({ max: 500 });
 
     this.setupEmitter();
+
     this._emitter.setMaxListeners(100);
 
     this._databasePath = databasePath(AppEnv.getConfigDirPath(), AppEnv.inSpecMode());
@@ -161,6 +201,10 @@ class DatabaseStore extends MailspringStore {
   }
 
   _prettyConsoleLog(qa) {
+    if (process.env.NODE_ENV === 'production') {
+      return;
+    }
+
     let q = qa.replace(/%/g, '%%');
     q = `color:black |||%c ${q}`;
     q = q.replace(/`(\w+)`/g, '||| color:purple |||%c$&||| color:black |||%c');
@@ -213,28 +257,37 @@ class DatabaseStore extends MailspringStore {
   //
   // If a query is made before the database has been opened, the query will be
   // held in a queue and run / resolved when the database is ready.
-  _query(query, values = [], background = false) {
+  _query(query, values = [], background) {
+    // D4
+
     return new Promise(async (resolve, reject) => {
       if (!this._open) {
         this._waiting.push(() => this._query(query, values).then(resolve, reject));
         return;
       }
 
-      // Undefined, True, and False are not valid SQLite datatypes:
-      // https://www.sqlite.org/datatype3.html
-      values.forEach((val, idx) => {
-        if (val === false) {
-          values[idx] = 0;
-        } else if (val === true) {
-          values[idx] = 1;
-        } else if (val === undefined) {
-          values[idx] = null;
-        }
-      });
+      _sql_sanitize_values(values);
 
+      // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      // D4 TODO: this doesnt seem to b needed
+      // when in main thread view??/
+      // if (query.includes('t:')) {
+      //   return resolve(values)
+      // }
+      // !perf
       const start = Date.now();
 
+      // D4 TODO: !!!!!
+      background = QUERY_OFF_THREAD === 1 || background;
+
       if (!background) {
+        // throw new Error('!!!! QUERY')
+        //   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        //   // D4 TODO: this doesnt seem to b needed
+        if (query.includes('t:')) {
+          return resolve(values);
+        }
+
         const results = await this._executeLocally(query, values);
         const msec = Date.now() - start;
         if (msec > 100) {
@@ -281,13 +334,14 @@ class DatabaseStore extends MailspringStore {
     // unable to execute it. Handle this case silently unless it's persistent.
     while (!results) {
       try {
-        if (scheduler.currentDelay() > 0) {
+        const delay = scheduler.currentDelay();
+        if (delay > 0) {
           // Setting a timeout for 0 will still defer execution of this function
           // to the next tick of the event loop.
           // We don't want to unnecessarily defer and delay every single query,
           // so we only set the timer when we are actually backing off for a
           // retry.
-          await Promise.delay(scheduler.currentDelay());
+          await Promise.delay(delay);
         }
 
         let stmt = this._preparedStatementCache.get(query);
@@ -341,39 +395,73 @@ class DatabaseStore extends MailspringStore {
     return results;
   }
 
-  _executeInBackground(query, values) {
-    if (!this._agent) {
-      this._agentOpenQueries = {};
-      this._agent = childProcess.fork(
-        path.join(path.dirname(__filename), 'database-agent.js'),
-        [],
-        {
-          silent: true,
-        }
-      );
-      this._agent.stdout.on('data', data => console.log(data.toString()));
-      this._agent.stderr.on('data', data => console.error(data.toString()));
-      this._agent.on('close', code => {
-        debug(`Query Agent: exited with code ${code}`);
-        this._agent = null;
-      });
-      this._agent.on('error', err => {
-        console.error(`Query Agent: failed to start or receive message: ${err.toString()}`);
-        this._agent.kill('SIGTERM');
-        this._agent = null;
-      });
-      this._agent.on('message', ({ type, id, results, agentTime }) => {
-        if (type === 'results') {
-          this._agentOpenQueries[id]({ results, backgroundTime: agentTime });
-          delete this._agentOpenQueries[id];
-        }
-      });
+  _get_open_queries() {
+    return this._agentOpenQueries || (this._agentOpenQueries = {});
+  }
+
+  _get_agent() {
+    return this._agent || (this._agent = this._spawn_agent());
+  }
+
+  _on_msg_agent(msg) {
+    const { type, id, results, agentTime } = msg;
+    if (type === 'results') {
+      this._agentOpenQueries[id]({ results, backgroundTime: agentTime });
+      delete this._agentOpenQueries[id];
     }
-    return new Promise(resolve => {
-      const id = Utils.generateTempId();
-      this._agentOpenQueries[id] = resolve;
-      this._agent.send({ query, values, id, dbpath: this._databasePath });
+  }
+
+  _on_close_agent(code) {
+    debug(`Query Agent: exited with code ${code}`);
+    this._agent = null;
+  }
+
+  _on_err_agent(err) {
+    console.error(`Query Agent: failed to start or receive message: ${err.toString()}`);
+    this._agent.kill('SIGTERM');
+    this._agent = null;
+  }
+
+  _spawn_agent() {
+    let agent = childProcess.fork(path.join(__dirname, 'database-agent.js'), [], {
+      silent: true,
     });
+    agent.stdout.on('data', data => console.log(data.toString()));
+    agent.stderr.on('data', data => console.error(data.toString()));
+    agent.on('message', msg => {
+      this._on_msg_agent(msg);
+    });
+    agent.on('close', code => {
+      this._on_close_agent(code);
+      agent.removeAllListeners();
+      agent = null;
+    });
+    agent.on('error', err => {
+      this._on_err_agent(err);
+      agent.removeAllListeners();
+      agent = null;
+    });
+    return agent;
+  }
+
+  // D4: hoisting variables to fix promise closure allocs
+  _executeInBackground(query, values) {
+    __agent = this._get_agent();
+    __open_queries = this._get_open_queries();
+    const id = Utils.generateTempId();
+    const msg = __query_msg;
+    msg.query = query;
+    msg.values = values;
+    msg.id = id;
+    msg.dbpath = this._databasePath;
+    const p = new Promise(this._resolve_open_query);
+    __unhoist_open_query();
+    return p;
+  }
+
+  _resolve_open_query(resolve) {
+    __open_queries[__query_msg.id] = resolve;
+    __agent.send(__query_msg);
   }
 
   // PUBLIC METHODS #############################

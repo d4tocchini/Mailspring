@@ -1,8 +1,8 @@
-import React from 'react';
-import { OpenIdentityPageButton, BillingModal, RetinaImg } from 'mailspring-component-kit';
+const React = require('react');
+const { OpenIdentityPageButton, BillingModal, RetinaImg } = require('mailspring-component-kit');
 const { Actions, IdentityStore } = require('mailspring-exports');
 const { shell } = require('electron');
-
+const {PRODUCT_NAME} = require('mailspring/CONFIG')
 // $
 
 class RefreshButton extends React.Component {
@@ -77,17 +77,17 @@ class PreferencesIdentity extends React.Component {
       <div className="row padded">
         <div style={{ display: 'flex', alignItems: 'flex-start' }}>
           <div className="basic-explanation">
-            You are using <strong>Mailspring Basic</strong>, which is free! You can link up to four
+            You are using <strong>{PRODUCT_NAME} Basic</strong>, which is free! You can link up to four
             email accounts and try pro features like snooze, send later, read receipts and reminders
             a few times a week.{' '}
             <span className="platform-linux-only">
-              Mailspring is independent{' '}
+              {PRODUCT_NAME} is independent{' '}
               <a href="https://github.com/Foundry376/Mailspring/">open source</a> software, and
               subscription revenue allows us spend time maintaining and improving the product.
             </span>
             <br />
             <br />
-            Upgrade to <a onClick={onLearnMore}>Mailspring Pro</a> to use all these great features
+            Upgrade to <a onClick={onLearnMore}>{PRODUCT_NAME} Pro</a> to use all these great features
             permanently:
             <div className="features">
               <ul>
@@ -177,7 +177,7 @@ class PreferencesIdentity extends React.Component {
               onClick={this._onUpgrade}
               style={{ verticalAlign: 'top' }}
             >
-              <RetinaImg name="ic-upgrade.png" mode={RetinaImg.Mode.ContentIsMask} /> Get Mailspring
+              <RetinaImg name="ic-upgrade.png" mode={RetinaImg.Mode.ContentIsMask} /> Get
               Pro
             </div>
           </div>
@@ -191,14 +191,14 @@ class PreferencesIdentity extends React.Component {
 
     const unpaidNote = effectivePlanName !== planName && (
       <p>
-        {`Note: Due to issues with your most recent payment, you've been temporarily downgraded to Mailspring ${effectivePlanName}. Click 'Billing' below to correct the issue.`}
+        {`Note: Due to issues with your most recent payment, you've been temporarily downgraded to ${effectivePlanName}. Click 'Billing' below to correct the issue.`}
       </p>
     );
     return (
       <div className="row padded">
         <div>
           Thank you for using{' '}
-          <strong style={{ textTransform: 'capitalize' }}>{`Mailspring ${planDisplayName}`}</strong>{' '}
+          <strong style={{ textTransform: 'capitalize' }}>{`${PRODUCT_NAME} ${planDisplayName}`}</strong>{' '}
           and supporting independent software. Get the most out of your subscription: visit the{' '}
           <a href="https://foundry376.zendesk.com/hc/en-us/sections/115000521592-Getting-Started">
             Help Center

@@ -1,21 +1,21 @@
-import { ipcRenderer } from 'electron';
-import MailspringStore from 'mailspring-store';
-import DraftEditingSession from './draft-editing-session';
-import DraftFactory from './draft-factory';
-import DatabaseStore from './database-store';
-import SendActionsStore from './send-actions-store';
-import FocusedContentStore from './focused-content-store';
-import SyncbackDraftTask from '../tasks/syncback-draft-task';
-import SyncbackMetadataTask from '../tasks/syncback-metadata-task';
-import SendDraftTask from '../tasks/send-draft-task';
-import DestroyDraftTask from '../tasks/destroy-draft-task';
-import Thread from '../models/thread';
-import Message from '../models/message';
-import Actions from '../actions';
-import TaskQueue from './task-queue';
-import MessageBodyProcessor from './message-body-processor';
-import SoundRegistry from '../../registries/sound-registry';
-import * as ExtensionRegistry from '../../registries/extension-registry';
+const { ipcRenderer } = require('electron');
+const MailspringStore = require('mailspring-store');
+const DraftEditingSession = require('./draft-editing-session');
+const DraftFactory = require('./draft-factory');
+const DatabaseStore = require('./database-store');
+const SendActionsStore = require('./send-actions-store');
+const FocusedContentStore = require('./focused-content-store');
+const SyncbackDraftTask = require('../tasks/syncback-draft-task');
+const SyncbackMetadataTask = require('../tasks/syncback-metadata-task');
+const SendDraftTask = require('../tasks/send-draft-task');
+const DestroyDraftTask = require('../tasks/destroy-draft-task');
+const Thread = require('../models/thread');
+const Message = require('../models/message');
+const Actions = require('../actions');
+const TaskQueue = require('./task-queue');
+const MessageBodyProcessor = require('./message-body-processor');
+const SoundRegistry = require('../../registries/sound-registry');
+const ExtensionRegistry = require('../../registries/extension-registry');
 
 const { DefaultSendActionKey } = SendActionsStore;
 /*
@@ -417,9 +417,16 @@ class DraftStore extends MailspringStore {
 
     // ensureCorrectAccount / commit may assign this draft a new ID. To move forward
     // we need to have the final object with it's final ID.
-    draft = await DatabaseStore.findBy(Message, { headerMessageId, draft: true }).include(
+    // debugger
+    draft = await DatabaseStore.findBy(Message, {
+      headerMessageId,
+      draft: true
+    }).include(
       Message.attributes.body
-    );
+    )
+    //.run()
+
+
 
     // Directly update the message body cache so the user immediately sees
     // the new message text (and never old draft text or blank text) sending.

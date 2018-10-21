@@ -1,9 +1,9 @@
-import _ from 'underscore';
-import path from 'path';
-import LessCache from 'less-cache';
+const _ = require('underscore');
+const path = require('path');
+const LessCache = require('less-cache');
 
 // {LessCache} wrapper used by {ThemeManager} to read stylesheets.
-module.exports = class LessCompileCache {
+class LessCompileCache {
   constructor({ configDirPath, resourcePath, importPaths = [] }) {
     this.lessSearchPaths = [
       path.join(resourcePath, 'static', 'base'),
@@ -37,3 +37,5 @@ module.exports = class LessCompileCache {
     return this.cache.cssForFile(stylesheetPath, lessContent);
   }
 }
+
+module.exports = LessCompileCache

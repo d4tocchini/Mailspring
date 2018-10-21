@@ -1,17 +1,17 @@
-import { ComponentRegistry, ExtensionRegistry } from 'mailspring-exports';
-import { HasTutorialTip } from 'mailspring-component-kit';
-
-import LinkTrackingButton from './link-tracking-button';
-import LinkTrackingComposerExtension from './link-tracking-composer-extension';
-import LinkTrackingMessageExtension from './link-tracking-message-extension';
+const { ComponentRegistry, ExtensionRegistry } = require('mailspring-exports');
+const { HasTutorialTip } = require('mailspring-component-kit');
+const LinkTrackingButton = require('./link-tracking-button');
+const LinkTrackingComposerExtension = require('./link-tracking-composer-extension');
+const LinkTrackingMessageExtension = require('./link-tracking-message-extension');
+const {PRODUCT_NAME} = require('mailspring/CONFIG')
 
 const LinkTrackingButtonWithTutorialTip = HasTutorialTip(LinkTrackingButton, {
   title: 'Track links in this email',
   instructions:
-    'When link tracking is turned on, Mailspring will notify you when recipients click links in this email.',
+    `When link tracking is turned on, ${PRODUCT_NAME} will notify you when recipients click links in this email.`,
 });
 
-export function activate() {
+function activate() {
   ComponentRegistry.register(LinkTrackingButtonWithTutorialTip, {
     role: 'Composer:ActionButton',
   });
@@ -21,10 +21,16 @@ export function activate() {
   ExtensionRegistry.MessageView.register(LinkTrackingMessageExtension);
 }
 
-export function serialize() {}
+function serialize() {}
 
-export function deactivate() {
+function deactivate() {
   ComponentRegistry.unregister(LinkTrackingButtonWithTutorialTip);
   ExtensionRegistry.Composer.unregister(LinkTrackingComposerExtension);
   ExtensionRegistry.MessageView.unregister(LinkTrackingMessageExtension);
+}
+
+module.exports = {
+  activate,
+  serialize,
+  deactivate
 }

@@ -8,7 +8,7 @@
  *
  * @class TableDataSource
  */
-module.exports = class TableDataSource {
+class TableDataSource {
   /**
    * Takes an Object of the form:
    *
@@ -267,3 +267,5 @@ module.exports = class TableDataSource {
     return { ...this._tableData };
   }
 }
+
+module.exports = TableDataSource

@@ -43,8 +43,8 @@ function rootURLForServer(server) {
     // D4
     // $
     return {
-      development: 'http://localhost:5101',// 'https://id.getmailspring.com',//
-      staging: 'https://id-staging.getmailspring.com',// 'https://id.getmailspring.com',//
+      development: 'https://id.getmailspring.com',// 'http://localhost:5101',// 'https://id.getmailspring.com',//
+      staging: 'https://id.getmailspring.com', // 'https://id-staging.getmailspring.com',// 'https://id.getmailspring.com',//
       production: 'https://id.getmailspring.com',
     }[env];
   }

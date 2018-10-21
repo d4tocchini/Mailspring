@@ -1,10 +1,30 @@
 /* eslint global-require: 0 */
-import Attributes from '../attributes';
-const QueryRange = require('./query-range');
-const Utils = require('./utils');
-
-const { Matcher, AttributeJoinedData, AttributeCollection } = Attributes;
-
+const { Matcher, AttributeJoinedData, AttributeCollection } = require('../attributes');
+function QueryRange_() {
+  const __ = require('./query-range');
+  return (QueryRange_ = function() {
+    return __;
+  })();
+}
+function Utils_() {
+  const __ = require('./utils');
+  return (Utils_ = function() {
+    return __;
+  })();
+}
+function _roundToPage(n, pageSize) {
+  return Math.max(0, ((n / pageSize) | 0) * pageSize);
+}
+function toIds(arr) {
+  const ids = [];
+  let i = 0;
+  const l = arr.length;
+  while (i < l) {
+    ids[i] = arr[i].id;
+    i = i + 1;
+  }
+  return ids;
+}
 /*
 Public: ModelQuery exposes an ActiveRecord-style syntax for building database queries
 that return models and model counts. Model queries are returned from the factory methods
@@ -36,8 +56,8 @@ query.where([Thread.attributes.categories.contains('label-id')])
 
 Section: Database
 */
-const ModelQuery =
-  module.exports = class {
+
+class ModelQuery {
   // Public
   // - `class` A {Model} class to query
   // - `database` (optional) An optional reference to a {DatabaseStore} the
@@ -51,7 +71,7 @@ const ModelQuery =
     this._background = false;
     this._backgroundable = true;
     this._distinct = false;
-    this._range = QueryRange.infinite();
+    this._range = QueryRange_().infinite();
     this._returnOne = false;
     this._returnIds = false;
     this._includeJoinedData = [];
@@ -60,9 +80,13 @@ const ModelQuery =
   }
 
   clone() {
-    const q = new this.constructor(this._klass, this._database).where(this._matchers).order(this._orders);
-    q._orders = [].concat(this._orders);
-    q._includeJoinedData = [].concat(this._includeJoinedData);
+    const q = new this.constructor(this._klass, this._database)
+      .where(this._matchers)
+      .order(this._orders);
+    // q._orders = [].concat(this._orders);
+    q._orders = this._orders.slice(0);
+    // q._includeJoinedData = [].concat(this._includeJoinedData);
+    q._includeJoinedData = this._includeJoinedData.slice(0);
     q._range = this._range.clone();
     q._background = this._background;
     q._backgroundable = this._backgroundable;
@@ -104,36 +128,50 @@ const ModelQuery =
   //
   where(matchers) {
     this._assertNotFinalized();
-
     if (matchers instanceof Matcher) {
-      this._matchers.push(matchers);
+      this._matchers[this._matchers.length] = matchers;
     } else if (matchers instanceof Array) {
-      for (const m of matchers) {
-        if (!(m instanceof Matcher)) {
-          throw new Error('You must provide instances of `Matcher`');
-        }
-      }
-      this._matchers = this._matchers.concat(matchers);
+      this._where_array(matchers);
     } else if (matchers instanceof Object) {
-      // Support a shorthand format of {id: '123', accountId: '123'}
-      for (const key of Object.keys(matchers)) {
-        const value = matchers[key];
-        const attr = this._klass.attributes[key];
-        if (attr === undefined) {
-          const msg = `Cannot create where clause \`${key}:${value}\`. ${key} is not an attribute of ${
-            this._klass.name
-          }`;
-          throw new Error(msg);
-        }
-
-        if (value instanceof Array) {
-          this._matchers.push(attr.in(value));
-        } else {
-          this._matchers.push(attr.equal(value));
-        }
-      }
+      this._where_obj(matchers);
     }
     return this;
+  }
+  _where_array(matchers) {
+    const l = matchers.length;
+    let i = 0;
+    while (i < l) {
+      const m = matchers[i];
+      if (!(m instanceof Matcher)) {
+        throw new Error('You must provide instances of `Matcher`');
+      }
+      this._matchers[this._matchers.length] = m;
+      i = i + 1;
+    }
+  }
+  _where_obj(matchers) {
+    // Support a shorthand format of {id: '123', accountId: '123'}
+    // for (const key of Object.keys(matchers)) {
+    const keys = Object.keys(matchers);
+    const l = keys.length;
+    let i = 0;
+    while (i < l) {
+      const key = keys[i];
+      i = i + 1;
+      const value = matchers[key];
+      const attr = this._klass.attributes[key];
+      if (attr === undefined) {
+        const msg = `Cannot create where clause \`${key}:${value}\`. ${key} is not an attribute of ${
+          this._klass.name
+        }`;
+        throw new Error(msg);
+      }
+      if (value instanceof Array) {
+        this._matchers.push(attr.in(value));
+      } else {
+        this._matchers.push(attr.equal(value));
+      }
+    }
   }
 
   whereAny(matchers) {
@@ -176,7 +214,13 @@ const ModelQuery =
   //
   includeAll() {
     this._assertNotFinalized();
-    for (const key of this._klass.attributeKeys) {
+    // for (const key of this._klass.attributeKeys) {
+    const keys = this._klass.attributeKeys;
+    const l = keys.length;
+    let i = 0;
+    while (i < l) {
+      const key = keys[i];
+      i = i + 1;
       const attr = this._klass.attributes[key];
       if (attr instanceof AttributeJoinedData) {
         this.include(attr);
@@ -242,10 +286,11 @@ const ModelQuery =
   //
   // A convenience method for setting both limit and offset given a desired page size.
   //
-  page(start, end, pageSize = 50, pagePadding = 100) {
-    const roundToPage = n => Math.max(0, Math.floor(n / pageSize) * pageSize);
-    this.offset(roundToPage(start - pagePadding));
-    this.limit(roundToPage(end - start + pagePadding * 2));
+  page(start, end, pageSize, pagePadding) {
+    pageSize || (pageSize = 50);
+    pagePadding || (pagePadding = 100);
+    this.offset(_roundToPage(start - pagePadding, pageSize));
+    this.limit(_roundToPage(end - start + pagePadding * 2, pageSize));
     return this;
   }
 
@@ -288,39 +333,60 @@ const ModelQuery =
     if (!result) {
       return null;
     }
-
     if (this._count) {
       return result[0].count / 1;
     }
     if (this._returnIds) {
-      return result.map(row => row.id);
+      return toIds(result);
     }
 
     try {
-      return result.map(row => {
-        
-        const object = Utils.convertToModel(JSON.parse(row.data));
-        for (const attrName of this._klass.attributeKeys) {
-          const attr = this._klass.attributes[attrName];
-          if (!attr.needsColumn() || !attr.loadFromColumn) {
-            continue;
-          }
-          object[attr.modelKey] = attr.fromColumn(row[attr.tableColumn]);
-        }
-        for (const attr of this._includeJoinedData) {
-          let value = row[attr.tableColumn];
-          if (value === AttributeJoinedData.NullPlaceholder) {
-            value = null;
-          }
-          object[attr.modelKey] = attr.deserialize(object, value);
-        }
-        return object;
-      });
+      return this._inflateResultRows(result);
     } catch (error) {
       throw new Error(
         `Query could not parse the database result. Query: ${this.sql()}, Error: ${error.toString()}`
       );
     }
+  }
+  _inflateResultRows(result) {
+    const arr = [];
+    const l = result.length;
+    let i = 0;
+    while (i < l) {
+      arr[i] = this._inflateResultRow(result[i]);
+      i = i + 1;
+    }
+    return arr;
+  }
+  _inflateResultRow(row) {
+    const object = Utils_().convertToModel(JSON.parse(row.data));
+    // for (const attrName of this._klass.attributeKeys) {
+    const keys = this._klass.attributeKeys;
+    const l = keys.length;
+    let i = 0;
+    while (i < l) {
+      const attrName = keys[i];
+      i = i + 1;
+      const attr = this._klass.attributes[attrName];
+      if (!attr.needsColumn() || !attr.loadFromColumn) {
+        continue;
+      }
+      object[attr.modelKey] = attr.fromColumn(row[attr.tableColumn]);
+    }
+    // for (const attr of this._includeJoinedData) {
+    const attrs = this._includeJoinedData;
+    const ll = attrs.length;
+    let ii = 0;
+    while (ii < ll) {
+      const attr = attrs[ii];
+      ii = ii + 1;
+      let value = row[attr.tableColumn];
+      if (value === AttributeJoinedData.NullPlaceholder) {
+        value = null;
+      }
+      object[attr.modelKey] = attr.deserialize(object, value);
+    }
+    return object;
   }
 
   formatResult(inflated) {
@@ -331,7 +397,7 @@ const ModelQuery =
     if (this._count) {
       return inflated;
     }
-    return [].concat(inflated);
+    return inflated.slice(0);
   }
 
   // Query SQL Building
@@ -349,16 +415,35 @@ const ModelQuery =
       result = `\`${this._klass.name}\`.\`id\``;
     } else {
       result = `\`${this._klass.name}\`.\`data\``;
-      for (const attrName of this._klass.attributeKeys) {
+
+      const keys = this._klass.attributeKeys;
+      const l = keys.length;
+      let i = 0;
+      while (i < l) {
+        const attrName = keys[i];
+        i = i + 1;
         const attr = this._klass.attributes[attrName];
+        // if (attr === undefined) {
+        //   console.log(444444)
+        //   console.log(attrName)
+        //   console.log(this._klass)
+        // }
         if (!attr.needsColumn() || !attr.loadFromColumn) {
           continue;
         }
         result += `, ${attr.tableColumn} `;
       }
-      this._includeJoinedData.forEach(attr => {
+      const attrs = this._includeJoinedData;
+      const ll = attrs.length;
+      let ii = 0;
+      while (ii < ll) {
+        const attr = attrs[ii];
+        ii = ii + 1;
         result += `, ${attr.selectSQL(this._klass)} `;
-      });
+      }
+      // this._includeJoinedData.forEach(attr => {
+      //   result += `, ${attr.selectSQL(this._klass)} `;
+      // });
     }
 
     const order = this._count ? '' : this._orderClause();
@@ -437,6 +522,7 @@ const ModelQuery =
 
   _whereClause() {
     const joins = [];
+
     this._matchers.forEach(c => {
       const join = c.joinSQL(this._klass);
       if (join) {
@@ -515,20 +601,23 @@ const ModelQuery =
   }
 
   matchersFlattened() {
-    const all = [];
-    const traverse = matchers => {
-      if (!(matchers instanceof Array)) {
-        return;
-      }
-      for (const m of matchers) {
+    return this._flatten_children(this._matchers, []);
+  }
+
+  _flatten_children(matchers, all) {
+    if (matchers instanceof Array) {
+      const l = matchers.length;
+      let i = 0;
+      while (i < l) {
+        const m = matchers[i];
+        i = i + 1;
         if (m.children) {
-          traverse(m.children);
+          this._flatten_children(m.children, all);
         } else {
-          all.push(m);
+          all[all.length] = m;
         }
       }
-    };
-    traverse(this._matchers);
+    }
     return all;
   }
 
@@ -549,3 +638,5 @@ const ModelQuery =
     return this._klass.name;
   }
 }
+
+module.exports = ModelQuery;

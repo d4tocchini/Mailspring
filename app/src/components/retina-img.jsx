@@ -1,5 +1,5 @@
-import _ from 'underscore';
-import { React, PropTypes, Utils } from 'mailspring-exports';
+const _ = require('underscore');
+const { React, PropTypes, Utils } = require('mailspring-exports')
 
 const StylesImpactedByZoom = [
   'top',
@@ -114,6 +114,7 @@ class RetinaImg extends React.Component {
   };
 
   render() {
+    if (this.props === null) process.exit(0)
     const path =
       this.props.url || this._pathFor(this.props.name) || this._pathFor(this.props.fallback) || '';
     const pathIsRetina = path.indexOf('@2x') > 0;

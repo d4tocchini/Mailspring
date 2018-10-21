@@ -1,18 +1,18 @@
-import _ from 'underscore';
-import Actions from '../actions';
-import DatabaseStore from './database-store';
-import AccountStore from './account-store';
-import ContactStore from './contact-store';
-import MessageStore from './message-store';
+const _ = require('underscore');
+const Actions = require('../actions');
+const DatabaseStore = require('./database-store');
+const AccountStore = require('./account-store');
+const ContactStore = require('./contact-store');
+const MessageStore = require('./message-store');
 const FocusedPerspectiveStore = require('./focused-perspective-store');
 
 const Contact = require('../models/contact');
 const Message = require('../models/message');
 const MessageUtils = require('../models/message-utils');
 const Utils = require('../models/utils');
-import InlineStyleTransformer from '../../services/inline-style-transformer';
-import SanitizeTransformer from '../../services/sanitize-transformer';
-import DOMUtils from '../../dom-utils';
+const InlineStyleTransformer = require('../../services/inline-style-transformer');
+const SanitizeTransformer = require('../../services/sanitize-transformer');
+const DOMUtils = require('../../dom-utils');
 
 let DraftStore = null;
 

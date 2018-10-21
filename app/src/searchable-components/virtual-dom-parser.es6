@@ -1,16 +1,30 @@
-import _ from 'underscore';
-import React from 'react';
-import { VirtualDOMUtils } from 'mailspring-exports';
-
-import SearchMatch from './search-match';
-import UnifiedDOMParser from './unified-dom-parser';
+const React = require('react');
+function _() {
+  const __ = require('underscore');
+  return (_ = function() {
+    return __;
+  })();
+}
+function VirtualDOMUtils_() {
+  const { VirtualDOMUtils } = require('mailspring-exports');
+  return (VirtualDOMUtils_ = function() {
+    return VirtualDOMUtils;
+  })();
+}
+function SearchMatch_() {
+  const SearchMatch = require('./search-match');
+  return (SearchMatch_ = function() {
+    return SearchMatch;
+  })();
+}
+const UnifiedDOMParser = require('./unified-dom-parser');
 
 module.exports = class VirtualDOMParser extends UnifiedDOMParser {
   getWalker(dom) {
     const pruneFn = node => {
       return node.type === 'style';
     };
-    return VirtualDOMUtils.walk({ element: dom, pruneFn });
+    return VirtualDOMUtils_().walk({ element: dom, pruneFn });
   }
 
   isTextNode({ element }) {
@@ -30,7 +44,7 @@ module.exports = class VirtualDOMParser extends UnifiedDOMParser {
       return false;
     }
     const blockTypes = ['br', 'p', 'blockquote', 'div', 'table', 'iframe'];
-    if (_.isFunction(element.type)) {
+    if (typeof element.type === 'function') {
       return true;
     } else if (blockTypes.indexOf(element.type) >= 0) {
       return true;
@@ -39,7 +53,9 @@ module.exports = class VirtualDOMParser extends UnifiedDOMParser {
   }
 
   getRawFullString(fullString) {
-    return _.pluck(fullString, 'element').join('');
+    return _()
+      .pluck(fullString, 'element')
+      .join('');
   }
 
   removeMatchesAndNormalize(element) {
@@ -53,10 +69,11 @@ module.exports = class VirtualDOMParser extends UnifiedDOMParser {
       }
     };
 
-    if (React.isValidElement(element) || _.isArray(element)) {
+    const is_array = element instanceof Array;
+    if (React.isValidElement(element) || is_array) {
       let children;
 
-      if (_.isArray(element)) {
+      if (is_array) {
         children = element;
       } else {
         children = element.props.children;
@@ -87,7 +104,7 @@ module.exports = class VirtualDOMParser extends UnifiedDOMParser {
 
       resetAccumulator();
 
-      if (_.isArray(element)) {
+      if (is_array) {
         return newChildren;
       }
       return React.cloneElement(element, {}, newChildren);
@@ -95,7 +112,7 @@ module.exports = class VirtualDOMParser extends UnifiedDOMParser {
     return element;
   }
   _isSearchElement(element) {
-    return element.type === SearchMatch;
+    return element.type === SearchMatch_();
   }
 
   createTextNode({ rawText }) {
@@ -103,18 +120,19 @@ module.exports = class VirtualDOMParser extends UnifiedDOMParser {
   }
   createMatchNode({ matchText, regionId, isCurrentMatch, renderIndex }) {
     const className = isCurrentMatch ? 'current-match' : '';
-    return React.createElement(SearchMatch, { className, regionId, renderIndex }, matchText);
+    return React.createElement(SearchMatch_(), { className, regionId, renderIndex }, matchText);
   }
   textNodeKey(textElement) {
     return textElement.parentNode;
   }
 
   highlightSearch(element, matchNodeMap) {
-    if (React.isValidElement(element) || _.isArray(element)) {
+    const is_array = element instanceof Array;
+    if (React.isValidElement(element) || is_array) {
       let newChildren = [];
       let children;
 
-      if (_.isArray(element)) {
+      if (is_array) {
         children = element;
       } else {
         children = element.props.children;
@@ -153,11 +171,11 @@ module.exports = class VirtualDOMParser extends UnifiedDOMParser {
         }
       }
 
-      if (_.isArray(element)) {
+      if (is_array) {
         return newChildren;
       }
       return React.cloneElement(element, {}, newChildren);
     }
     return element;
   }
-}
+};

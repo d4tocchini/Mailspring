@@ -1,4 +1,4 @@
-import DOMWalkers from '../dom-walkers';
+const DOMWalkers = require('../dom-walkers');
 
 /*
  * There are semi-common cases where immediately before a blockquote, we

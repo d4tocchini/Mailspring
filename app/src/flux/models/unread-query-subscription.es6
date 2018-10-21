@@ -28,8 +28,8 @@ const buildQuery = categoryIds => {
   return query;
 };
 
-const UnreadQuerySubscription =
-  module.exports = class extends MutableQuerySubscription {
+
+class UnreadQuerySubscription extends MutableQuerySubscription {
 
   constructor(categoryIds) {
     super(buildQuery(categoryIds), { emitResultSet: true });
@@ -48,3 +48,5 @@ const UnreadQuerySubscription =
     this._unlisten();
   }
 }
+
+module.exports = UnreadQuerySubscription

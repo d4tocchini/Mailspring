@@ -4,7 +4,7 @@ The DatabaseChangeRecord contains information about what type of model changed,
 and references to the new model values. All mutations to the database produce these
 change records.
 */
-module.exports = class DatabaseChangeRecord {
+class DatabaseChangeRecord {
   constructor(opts) {
     const { type, objectClass, objects } = opts
     this.objects = objects;
@@ -20,3 +20,5 @@ module.exports = class DatabaseChangeRecord {
     };
   }
 }
+
+module.exports = DatabaseChangeRecord

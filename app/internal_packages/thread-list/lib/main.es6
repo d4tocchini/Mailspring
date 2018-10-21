@@ -1,14 +1,40 @@
-import { ComponentRegistry, WorkspaceStore } from 'mailspring-exports';
+const { ComponentRegistry, WorkspaceStore } = require('mailspring-exports');
+let ThreadList;
+let ThreadListToolbar;
+let ThreadListEmptyFolderBar;
+let MessageListToolbar;
+let SelectedItemsStack;
+let ThreadToolbarButtons;
 
-import ThreadList from './thread-list';
-import ThreadListToolbar from './thread-list-toolbar';
-import ThreadListEmptyFolderBar from './thread-list-empty-folder-bar';
-import MessageListToolbar from './message-list-toolbar';
-import SelectedItemsStack from './selected-items-stack';
+exports.activate = activate;
+exports.deactivate = NOOP;
 
-import { UpButton, DownButton, MoveButtons, FlagButtons } from './thread-toolbar-buttons';
+function NOOP() {}
 
-export function activate() {
+function activate() {
+  exports.activate = NOOP;
+  exports.deactivate = deactivate;
+  ThreadList = require('./thread-list');
+  ThreadListToolbar = require('./thread-list-toolbar');
+  ThreadListEmptyFolderBar = require('./thread-list-empty-folder-bar');
+  MessageListToolbar = require('./message-list-toolbar');
+  SelectedItemsStack = require('./selected-items-stack');
+  ThreadToolbarButtons = require('./thread-toolbar-buttons');
+  let { UpButton, DownButton, MoveButtons, FlagButtons } = ThreadToolbarButtons;
+
+  function deactivate() {
+    exports.activate = activate;
+    exports.deactivate = NOOP;
+    ComponentRegistry.unregister(ThreadList);
+    ComponentRegistry.unregister(SelectedItemsStack);
+    ComponentRegistry.unregister(ThreadListToolbar);
+    ComponentRegistry.unregister(MessageListToolbar);
+    ComponentRegistry.unregister(MoveButtons);
+    ComponentRegistry.unregister(FlagButtons);
+    ComponentRegistry.unregister(UpButton);
+    ComponentRegistry.unregister(DownButton);
+  }
+
   ComponentRegistry.register(ThreadListEmptyFolderBar, {
     location: WorkspaceStore.Location.ThreadList,
   });
@@ -49,15 +75,4 @@ export function activate() {
   ComponentRegistry.register(FlagButtons, {
     role: 'ThreadActionsToolbarButton',
   });
-}
-
-export function deactivate() {
-  ComponentRegistry.unregister(ThreadList);
-  ComponentRegistry.unregister(SelectedItemsStack);
-  ComponentRegistry.unregister(ThreadListToolbar);
-  ComponentRegistry.unregister(MessageListToolbar);
-  ComponentRegistry.unregister(MoveButtons);
-  ComponentRegistry.unregister(FlagButtons);
-  ComponentRegistry.unregister(UpButton);
-  ComponentRegistry.unregister(DownButton);
 }

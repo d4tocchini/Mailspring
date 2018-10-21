@@ -1,8 +1,8 @@
-import _str from 'underscore.string';
-import MailspringStore from 'mailspring-store';
-import Actions from '../actions';
-import SendDraftTask from '../tasks/send-draft-task';
-import * as ExtensionRegistry from '../../registries/extension-registry';
+const _str = require('underscore.string');
+const MailspringStore = require('mailspring-store');
+const Actions = require('../actions');
+const SendDraftTask = require('../tasks/send-draft-task');
+const ExtensionRegistry = require('../../registries/extension-registry');
 
 const ACTION_CONFIG_KEY = 'core.sending.defaultSendType';
 const DefaultSendActionKey = 'send';

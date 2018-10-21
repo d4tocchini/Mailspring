@@ -6,7 +6,7 @@ const Attachment = {
   RightEdge: 'RightEdge',
 };
 
-module.exports = class DropdownMenu extends React.Component {
+class DropdownMenu extends React.Component {
   static Attachment = Attachment;
 
   static propTypes = {
@@ -108,3 +108,5 @@ module.exports = class DropdownMenu extends React.Component {
     );
   }
 }
+
+module.exports = DropdownMenu

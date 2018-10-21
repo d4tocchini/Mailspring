@@ -191,6 +191,7 @@ class MessageList extends React.Component {
   };
 
   _onClickReplyArea = () => {
+    // debugger
     if (!this.state.currentThread) {
       return;
     }

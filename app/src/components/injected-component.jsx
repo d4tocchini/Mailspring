@@ -1,5 +1,4 @@
 import { React, ReactDOM, PropTypes, Utils, ComponentRegistry } from 'mailspring-exports';
-
 import InjectedComponentErrorBoundary from './injected-component-error-boundary';
 import InjectedComponentLabel from './injected-component-label';
 
@@ -22,7 +21,7 @@ If no matching component is found, the InjectedComponent renders an empty div.
 
 Section: Component Kit
  */
-module.exports = class InjectedComponent extends React.Component {
+class InjectedComponent extends React.Component {
   static displayName = 'InjectedComponent';
 
   /*
@@ -214,3 +213,5 @@ module.exports = class InjectedComponent extends React.Component {
     return element;
   }
 }
+
+module.exports = InjectedComponent

@@ -1,6 +1,6 @@
-import MailspringStore from 'mailspring-store';
-import { ExponentialBackoffScheduler } from '../../backoff-schedulers';
-import Actions from '../actions';
+const MailspringStore = require('mailspring-store');
+const { ExponentialBackoffScheduler } = require('../../backoff-schedulers');
+const Actions = require('../actions');
 
 let isOnlineModule = null;
 

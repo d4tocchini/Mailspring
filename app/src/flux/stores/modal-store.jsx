@@ -1,17 +1,17 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import MailspringStore from 'mailspring-store';
+const React = require('react');
+const ReactDOM = require('react-dom');
+const MailspringStore = require('mailspring-store');
 
 // D4
 let Modal
-// import { Modal } from 'mailspring-component-kit';
+// import { Modal } = require('mailspring-component-kit';
 function renderModal(props, child) {
   // <Modal {...props}>{child}</Modal>;
   Modal || (Modal = require('mailspring-component-kit').Modal)
   return React.createElement(Modal, props, child)
 }
 
-import Actions from '../actions';
+const Actions = require('../actions');
 
 const CONTAINER_ID = 'nylas-modal-container';
 

@@ -1,4 +1,4 @@
-import Model from './model';
+const Model = require('./model');
 
 // ProviderSyncbackRequest
   class ProviderSyncbackRequest extends Model {

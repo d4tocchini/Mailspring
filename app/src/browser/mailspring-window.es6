@@ -3,13 +3,11 @@ const path = require('path');
 const fs = require('fs');
 const url = require('url');
 const { EventEmitter } = require('events');
-
+const { PRODUCT_NAME, SUPPORT_EMAIL } = require('mailspring/CONFIG');
 let WindowIconPath = null;
 let idNum = 0;
 
-module.exports = class MailspringWindow extends EventEmitter {
-  static includeShellLoadTime = true;
-
+class MailspringWindow extends EventEmitter {
   constructor(settings = {}) {
     super();
 
@@ -39,7 +37,6 @@ module.exports = class MailspringWindow extends EventEmitter {
       autoHideMenuBar,
     } = settings);
 
-
     if (!this.windowKey) {
       this.windowKey = `${this.windowType}-${idNum}`;
       idNum += 1;
@@ -52,7 +49,7 @@ module.exports = class MailspringWindow extends EventEmitter {
 
     const browserWindowOptions = {
       show: false,
-      title: title || 'Mailspring',
+      title: title || 'Mail',
       frame,
       width,
       height,
@@ -144,8 +141,8 @@ module.exports = class MailspringWindow extends EventEmitter {
       this.emit('window:loaded');
     });
 
-    const url = this.getURL(loadSettings)
-    console.log('loadURL', url)
+    const url = this.getURL(loadSettings);
+    console.log('loadURL', url);
     this.browserWindow.loadURL(url);
     if (this.isSpec) {
       this.browserWindow.focusOnWebView();
@@ -245,11 +242,10 @@ module.exports = class MailspringWindow extends EventEmitter {
       if (!this.loaded) {
         return;
       }
-
       const chosen = dialog.showMessageBox(this.browserWindow, {
         type: 'warning',
         buttons: ['Close', 'Keep Waiting'],
-        message: 'Mailspring is not responding',
+        message: PRODUCT_NAME + ' is not responding',
         detail: 'Would you like to force close it or keep waiting?',
       });
       if (chosen === 0) {
@@ -272,11 +268,12 @@ module.exports = class MailspringWindow extends EventEmitter {
       if (this.neverClose) {
         this.browserWindow.reload();
       } else {
+        // console.log('!!!!!!!!!')
         const chosen = dialog.showMessageBox(this.browserWindow, {
           type: 'warning',
           buttons: ['Close Window', 'Reload', 'Keep It Open'],
-          message: 'Mailspring has crashed',
-          detail: 'Please report this issue to us at support@getmailspring.com.',
+          message: PRODUCT_NAME + ' has crashed',
+          detail: 'Please report this issue to us at ' + SUPPORT_EMAIL,
         });
         if (chosen === 0) {
           this.browserWindow.destroy();
@@ -415,4 +412,8 @@ module.exports = class MailspringWindow extends EventEmitter {
   toggleDevTools() {
     this.browserWindow.toggleDevTools();
   }
-};
+}
+
+MailspringWindow.includeShellLoadTime = true;
+
+module.exports = MailspringWindow;

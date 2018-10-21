@@ -1,12 +1,12 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import Webview from './webview';
-import Actions from '../flux/actions';
-import IdentityStore from '../flux/stores/identity-store';
+const React = require('react');
+const PropTypes = require('prop-types');
+const Webview = require('./webview');
+const Actions = require('../flux/actions');
+const IdentityStore = require('../flux/stores/identity-store');
 
 // $
 
-module.exports = class BillingModal extends React.Component {
+class BillingModal extends React.Component {
   static IntrinsicWidth = 412;
   static IntrinsicHeight = 540;
 
@@ -102,3 +102,5 @@ module.exports = class BillingModal extends React.Component {
     );
   }
 }
+
+module.exports = BillingModal

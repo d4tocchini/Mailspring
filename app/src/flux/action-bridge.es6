@@ -57,6 +57,7 @@ class ActionBridge {
   }
 
   onIPCMessage(event, initiatorId, name, json) {
+
     if (AppEnv.isEmptyWindow()) {
       throw new Error("Empty windows shouldn't receive IPC messages");
     }

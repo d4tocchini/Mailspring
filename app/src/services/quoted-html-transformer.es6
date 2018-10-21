@@ -1,5 +1,5 @@
-import quoteStringDetector from './quote-string-detector';
-import unwrappedSignatureDetector from './unwrapped-signature-detector';
+const quoteStringDetector = require('./quote-string-detector');
+const unwrappedSignatureDetector = require('./unwrapped-signature-detector');
 const { FIRST_ORDERED_NODE_TYPE } = XPathResult;
 
 class QuotedHTMLTransformer {

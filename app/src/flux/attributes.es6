@@ -1,12 +1,12 @@
-import Matcher from './attributes/matcher';
-import SortOrder from './attributes/sort-order';
-import AttributeNumber from './attributes/attribute-number';
-import AttributeString from './attributes/attribute-string';
-import AttributeObject from './attributes/attribute-object';
-import AttributeBoolean from './attributes/attribute-boolean';
-import AttributeDateTime from './attributes/attribute-datetime';
-import AttributeCollection from './attributes/attribute-collection';
-import AttributeJoinedData from './attributes/attribute-joined-data';
+const Matcher = require('./attributes/matcher');
+const SortOrder = require('./attributes/sort-order');
+const AttributeNumber = require('./attributes/attribute-number');
+const AttributeString = require('./attributes/attribute-string');
+const AttributeObject = require('./attributes/attribute-object');
+const AttributeBoolean = require('./attributes/attribute-boolean');
+const AttributeDateTime = require('./attributes/attribute-datetime');
+const AttributeCollection = require('./attributes/attribute-collection');
+const AttributeJoinedData = require('./attributes/attribute-joined-data');
 
 module.exports = {
   Matcher: Matcher,

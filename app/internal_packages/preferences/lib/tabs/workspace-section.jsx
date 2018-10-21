@@ -1,9 +1,10 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { DefaultClientHelper, SystemStartService } from 'mailspring-exports';
-import { shell } from 'electron';
+const React = require('react');
+const PropTypes = require('prop-types');
+const { DefaultClientHelper, SystemStartService } = require('mailspring-exports');
+const { shell } = require('electron');
+const ConfigSchemaItem = require('./config-schema-item');
 
-import ConfigSchemaItem from './config-schema-item';
+const {PRODUCT_NAME} = require('mailspring/CONFIG')
 
 class DefaultMailClientItem extends React.Component {
   constructor() {
@@ -49,7 +50,7 @@ class DefaultMailClientItem extends React.Component {
               shell.openExternal('https://foundry376.zendesk.com/hc/en-us/articles/115002281851')
             }
           >
-            Use Mailspring as default mail client
+            {`Use ${PRODUCT_NAME} as default mail client`}
           </div>
         </div>
       );
@@ -63,7 +64,7 @@ class DefaultMailClientItem extends React.Component {
           checked={this.state.defaultClient}
           onChange={this.toggleDefaultMailClient}
         />
-        <label htmlFor="default-client">Use Mailspring as default mail client</label>
+        <label htmlFor="default-client">{`Use ${PRODUCT_NAME} as default mail client`}</label>
       </div>
     );
   }
@@ -164,7 +165,7 @@ const WorkspaceSection = props => {
 
       <div className="platform-note platform-linux-only">
         &quot;Launch on system start&quot; only works in XDG-compliant desktop environments. To
-        enable the Mailspring icon in the system tray, you may need to install libappindicator.
+        enable the icon in the system tray, you may need to install libappindicator.
         (i.e., <code>sudo apt-get install libappindicator1</code>)
       </div>
     </section>

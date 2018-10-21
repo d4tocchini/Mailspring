@@ -1,8 +1,8 @@
 const Task = require('./task');
 
-const SyncbackMetadataTask =
-  module.exports = Task.setup(
-  class extends Task {
+
+
+  class SyncbackMetadataTask extends Task {
 
     static forSaving({ model, pluginId, value, undoValue }) {
       if (!pluginId) {
@@ -56,4 +56,5 @@ const SyncbackMetadataTask =
       return task;
     }
   }
-)
+
+  module.exports = Task.setup(SyncbackMetadataTask)

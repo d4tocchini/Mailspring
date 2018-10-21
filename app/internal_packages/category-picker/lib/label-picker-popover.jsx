@@ -67,7 +67,7 @@ module.exports = class LabelPickerPopover extends Component {
           category: label,
           displayName: label.displayName,
           backgroundColor: LabelColorizer.backgroundColorDark(label),
-          usage: threads.filter(t => t.categories.find(c => c.id === label.id)).length,
+          usage: threads.filter(t => t.getCategories().find(c => c.id === label.id)).length,
           numThreads: threads.length,
         };
       });

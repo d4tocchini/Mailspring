@@ -15,7 +15,7 @@ BG: I wrote this rather than using KeyCommandRegion because the region
 class is ancient and actually creates a <div> which disrupts the toolbar
 layout.
 */
-module.exports = class BindGlobalCommands extends React.Component {
+class BindGlobalCommands extends React.Component {
   componentDidMount() {
     this._shortcutDisposable = AppEnv.commands.add(document.body, this.props.commands);
   }
@@ -31,3 +31,5 @@ module.exports = class BindGlobalCommands extends React.Component {
     return this.props.children;
   }
 }
+
+module.exports = BindGlobalCommands

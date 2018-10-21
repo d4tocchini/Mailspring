@@ -5,5 +5,5 @@ class Folder extends Category {
     return 'folder';
   }
 }
-
+Folder.setupAttributes()
 module.exports = Folder

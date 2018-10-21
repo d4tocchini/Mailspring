@@ -1,6 +1,6 @@
-import { Actions, AccountStore } from 'mailspring-exports';
-import MailspringStore from 'mailspring-store';
-import _ from 'underscore';
+const { Actions, AccountStore } = require('mailspring-exports');
+const MailspringStore = require('mailspring-store');
+const _ = require('underscore');
 
 class SignatureStore extends MailspringStore {
   constructor() {

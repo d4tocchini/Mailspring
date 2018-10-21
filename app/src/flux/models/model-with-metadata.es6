@@ -4,8 +4,9 @@ const Model = require('./model');
  Cloud-persisted data that is associated with a single Nylas API object
  (like a `Thread`, `Message`, or `Account`).
  */
-const PluginMetadata =
-  Model.setupRoot( class extends Model {
+
+ // D4 ?...
+class PluginMetadata extends Model {
 
     static defineAttributes(Attribute) {
       Attribute('String', { modelKey: 'pluginId', })
@@ -26,7 +27,7 @@ const PluginMetadata =
       this.pluginId = pluginId;
     }
   }
-)
+  Model.setupRoot(PluginMetadata)
 
 /**
  Plugins can attach arbitrary JSON data to any model that subclasses
@@ -57,26 +58,38 @@ const PluginMetadata =
 
     constructor(data) {
       super(data);
-      // D4: this will never be set, b/c super calls bubble immediately
-      // this.pluginMetadata = this.pluginMetadata || [];
-      this.pluginMetadata = []
+      this.pluginMetadata = this.pluginMetadata || [];      
     }
 
     // Public accessors
 
+    // metadataForPluginId(pluginId) {
+    //   const metadata = this.metadataObjectForPluginId(pluginId);
+    //                 // D4
+    //   if (!metadata || !metadata.value) {
+    //     return null;
+    //   }
+    //   const value = JSON.parse(JSON.stringify(metadata.value));
+    //   if (value.expiration) {
+    //     value.expiration = new Date(value.expiration * 1000);
+    //   }
+    //   // if (Object.keys(value).length === 0) {
+    //   //   return null;
+    //   // }
+    //   return value;
+    // }
     metadataForPluginId(pluginId) {
       const metadata = this.metadataObjectForPluginId(pluginId);
-                    // D4
-      if (!metadata || !metadata.value) {
+      if (!metadata) {
         return null;
       }
       const value = JSON.parse(JSON.stringify(metadata.value));
       if (value.expiration) {
         value.expiration = new Date(value.expiration * 1000);
       }
-      // if (Object.keys(value).length === 0) {
-      //   return null;
-      // }
+      if (Object.keys(value).length === 0) {
+        return null;
+      }
       return value;
     }
 
@@ -112,5 +125,6 @@ const PluginMetadata =
       return this.pluginMetadata.find(metadata => metadata.pluginId === pluginId);
     }
   }
+
   module.exports = Model.setup(ModelWithMetadata)
 

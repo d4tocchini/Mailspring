@@ -1,5 +1,6 @@
-import { remote } from 'electron';
-import keytar from 'keytar';
+const { remote } = require('electron');
+const keytar = require('keytar');
+const {PRODUCT_NAME,KEYTAR_KEY_NAME} = require('mailspring/CONFIG')
 
 /**
  * A basic wrap around keytar's secure key management. Consolidates all of
@@ -11,8 +12,8 @@ import keytar from 'keytar';
  */
 class KeyManager {
   constructor() {
-    this.SERVICE_NAME = AppEnv.inDevMode() ? 'Mailspring Dev' : 'Mailspring';
-    this.KEY_NAME = 'Mailspring Keys';
+    this.SERVICE_NAME = AppEnv.inDevMode() ? PRODUCT_NAME +' Dev' : PRODUCT_NAME;
+    this.KEY_NAME = KEYTAR_KEY_NAME;
   }
 
   async deleteAccountSecrets(account) {
@@ -103,7 +104,7 @@ class KeyManager {
     remote.dialog.showMessageBox({
       type: 'error',
       buttons: ['Quit'],
-      message: `Mailspring could not store your password securely. ${more} For more information, visit http://support.getmailspring.com/hc/en-us/articles/115001875571`,
+      message: PRODUCT_NAME + ` could not store your password securely. ${more} For more information, visit http://support.getmailspring.com/hc/en-us/articles/115001875571`,
     });
 
     // tell the app to exit and rethrow the error to ensure code relying

@@ -1,6 +1,7 @@
-import { React } from 'mailspring-exports';
-import { ipcRenderer, remote, shell } from 'electron';
-import { Notification } from 'mailspring-component-kit';
+const { React } = require('mailspring-exports');
+const { ipcRenderer, remote, shell } = require('electron');
+const { Notification } = require('mailspring-component-kit');
+const {PRODUCT_NAME, CHANGELOG_URL} = require('mailspring/CONFIG')
 
 module.exports = class UpdateNotification extends React.Component {
   static displayName = 'UpdateNotification';
@@ -36,7 +37,7 @@ module.exports = class UpdateNotification extends React.Component {
   };
 
   _onViewChangelog = () => {
-    shell.openExternal('https://github.com/Foundry376/Mailspring/releases/latest');
+    shell.openExternal(CHANGELOG_URL);
   };
 
   render() {
@@ -48,7 +49,7 @@ module.exports = class UpdateNotification extends React.Component {
     return (
       <Notification
         priority="4"
-        title={`An update to Mailspring is available ${
+        title={`An update to ${PRODUCT_NAME} is available ${
           version ? `(${version.replace('Mailspring', '').trim()})` : ''
         }`}
         subtitle="View changelog"

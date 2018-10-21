@@ -1,9 +1,9 @@
-import _ from 'underscore';
-import { Categories } from 'mailspring-observables';
-import MailspringStore from 'mailspring-store';
-import AccountStore from './account-store';
-import Account from '../models/account';
-import Category from '../models/category';
+const _ = require('underscore');
+const { Categories } = require('mailspring-observables');
+const MailspringStore = require('mailspring-store');
+const AccountStore = require('./account-store');
+const Account = require('../models/account');
+const Category = require('../models/category');
 
 const asAccount = a => {
   if (!a) {

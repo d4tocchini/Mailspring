@@ -1,9 +1,11 @@
 /* eslint global-require: 0 */
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { shell, ipcRenderer } from 'electron';
-import { EditableList } from 'mailspring-component-kit';
-import { RegExpUtils, KeyManager, Account } from 'mailspring-exports';
+const React = require('react');
+const { Component } = React
+const PropTypes = require('prop-types');
+const { shell, ipcRenderer } = require('electron');
+const { EditableList } = require('mailspring-component-kit');
+const { RegExpUtils, KeyManager, Account } = require('mailspring-exports');
+const {PRODUCT_NAME} = require('mailspring/CONFIG')
 
 class AutoaddressControl extends Component {
   render() {
@@ -189,15 +191,15 @@ class PreferencesAccountDetails extends Component {
     switch (account.syncState) {
       case Account.SYNC_STATE_AUTH_FAILED:
         return this._renderErrorDetail(
-          `Mailspring can no longer authenticate with ${account.emailAddress}. The password
+          `${PRODUCT_NAME} can no longer authenticate with ${account.emailAddress}. The password
             or authentication may have changed.`,
           'Reconnect',
           this._onReconnect
         );
       case Account.SYNC_STATE_ERROR:
         return this._renderErrorDetail(
-          `Mailspring encountered errors syncing this account. Crash reports
-          have been sent to the Mailspring team and we'll work to fix these
+          `${PRODUCT_NAME} encountered errors syncing this account. Crash reports
+          have been sent to our team and we'll work to fix these
           errors in the next release.`,
           'Try Reconnecting',
           this._onReconnect

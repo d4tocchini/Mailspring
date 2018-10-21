@@ -1,5 +1,5 @@
-import MailspringStore from 'mailspring-store';
-import Actions from '../actions';
+const MailspringStore = require('mailspring-store');
+const Actions = require('../actions');
 
 class UndoRedoStore extends MailspringStore {
   constructor() {

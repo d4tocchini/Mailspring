@@ -1,5 +1,5 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+const React = require('react');
+const PropTypes = require('prop-types');
 
 const SearchMatch = props => {
   return (
@@ -12,6 +12,8 @@ const SearchMatch = props => {
     </span>
   );
 };
+
+// SearchMatch.isSearchMatch = true;
 
 SearchMatch.propTypes = {
   regionId: PropTypes.string,

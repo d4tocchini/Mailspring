@@ -1,7 +1,8 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { Actions, Utils, AttachmentStore } from 'mailspring-exports';
-import { AttachmentItem, ImageAttachmentItem } from 'mailspring-component-kit';
+const React = require('react');
+const { Component } = React;
+const PropTypes = require('prop-types');
+const { Actions, Utils, AttachmentStore } = require('mailspring-exports');
+const { AttachmentItem, ImageAttachmentItem } = require('mailspring-component-kit');
 
 class MessageAttachments extends Component {
   static displayName = 'MessageAttachments';

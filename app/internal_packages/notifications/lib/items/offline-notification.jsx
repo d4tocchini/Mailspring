@@ -1,5 +1,6 @@
-import { OnlineStatusStore, React, PropTypes, Actions } from 'mailspring-exports';
-import { Notification, ListensToFluxStore } from 'mailspring-component-kit';
+const { OnlineStatusStore, React, PropTypes, Actions } = require('mailspring-exports');
+const { Notification, ListensToFluxStore } = require('mailspring-component-kit');
+const {PRODUCT_NAME} = require('mailspring/CONFIG')
 
 function OfflineNotification({ isOnline, retryingInSeconds }) {
   if (isOnline) {
@@ -12,7 +13,7 @@ function OfflineNotification({ isOnline, retryingInSeconds }) {
   return (
     <Notification
       className="offline"
-      title="Mailspring is offline"
+      title={PRODUCT_NAME + " is offline"}
       subtitle={subtitle}
       priority="5"
       icon="volstead-offline.png"

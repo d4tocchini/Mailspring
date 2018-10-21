@@ -22,4 +22,4 @@ const Task = require('./task');
   }
 // )
 
-module.exports = EventRSVPTask
+module.exports = Task.setup(EventRSVPTask)

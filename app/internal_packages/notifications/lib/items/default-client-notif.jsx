@@ -1,9 +1,10 @@
-import { React, DefaultClientHelper } from 'mailspring-exports';
-import { Notification } from 'mailspring-component-kit';
+const { React, DefaultClientHelper } = require('mailspring-exports');
+const { Notification } = require('mailspring-component-kit');
+const {PRODUCT_NAME} = require('mailspring/CONFIG')
 
 const SETTINGS_KEY = 'mailto.prompted-about-default';
 
-module.exports = class DefaultClientNotification extends React.Component {
+class DefaultClientNotification extends React.Component {
   static displayName = 'DefaultClientNotification';
 
   constructor() {
@@ -59,7 +60,7 @@ module.exports = class DefaultClientNotification extends React.Component {
     }
     return (
       <Notification
-        title="Would you like to make Mailspring your default mail client?"
+        title={"Would you like to make this your default mail client?"}
         priority="1"
         icon="volstead-defaultclient.png"
         actions={[
@@ -76,3 +77,9 @@ module.exports = class DefaultClientNotification extends React.Component {
     );
   }
 }
+
+module.exports = DefaultClientNotification
+
+// D4
+// TODO: ????  see spec?
+DefaultClientNotification.default || (DefaultClientNotification.default = DefaultClientNotification)

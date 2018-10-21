@@ -3,7 +3,7 @@ const Matcher = require('./matcher');
 
 /*
 Public: Collection attributes provide basic support for one-to-many relationships.
-For example, Threads in Mailspring have a collection of Labels or Folders.
+For example, Threads have a collection of Labels or Folders.
 
 When Collection attributes are marked as `queryable`, the DatabaseStore
 automatically creates a join table and maintains it as you create, save,
@@ -49,24 +49,41 @@ class AttributeCollection extends Attribute {
   }
 
   toJSON(vals) {
+
+    const json = []
     if (!vals) {
-      return [];
+      return json;
     }
 
     if (!(vals instanceof Array)) {
       throw new Error(`AttributeCollection::toJSON: ${this.modelKey} is not an array.`);
     }
 
-    return vals.map(val => {
+    const l = vals.length
+    let i = 0
+    while (i<l) {
+      const val = vals[i]
       if (this.itemClass && !(val instanceof this.itemClass)) {
         throw new Error(
-          `AttributeCollection::toJSON: Value \`${val}\` in ${this.modelKey} is not an ${
+          `AttributeCollection::toJSON: Value \`${JSON.stringify(val)} : ${val.__cls}\` in ${this.modelKey} is not an ${
             this.itemClass.name
           }`
         );
       }
-      return val.toJSON !== undefined ? val.toJSON() : val;
-    });
+      json[i] = val.toJSON !== undefined ? val.toJSON() : val;
+      i = i + 1
+    }
+    return json
+    // return vals.map(val => {
+    //   if (this.itemClass && !(val instanceof this.itemClass)) {
+    //     throw new Error(
+    //       `AttributeCollection::toJSON: Value \`${val}\` in ${this.modelKey} is not an ${
+    //         this.itemClass.name
+    //       }`
+    //     );
+    //   }
+
+    // });
   }
 
   fromJSON(json) {

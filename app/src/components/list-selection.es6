@@ -1,9 +1,8 @@
-import _ from 'underscore';
+const _ = require('underscore');
+const Model = require('../flux/models/model');
+const DatabaseStore = require('../flux/stores/database-store');
 
-import Model from '../flux/models/model';
-import DatabaseStore from '../flux/stores/database-store';
-
-module.exports = class ListSelection {
+class ListSelection {
   constructor(_view, callback) {
     this._view = _view;
     if (!this._view) {
@@ -227,3 +226,5 @@ module.exports = class ListSelection {
     }
   }
 }
+
+module.exports = ListSelection

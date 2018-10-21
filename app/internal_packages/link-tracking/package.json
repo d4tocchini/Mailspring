@@ -3,6 +3,11 @@
   "main": "./lib/main",
   "version": "0.1.0",
   "serverUrl": {
+    "development": "https://link.getmailspring.com",
+    "staging": "https://link.getmailspring.com",
+    "production": "https://link.getmailspring.com"
+  },
+  "serverUrl__original": {
     "development": "http://localhost:5101",
     "staging": "https://link-staging.getmailspring.com",
     "production": "https://link.getmailspring.com"

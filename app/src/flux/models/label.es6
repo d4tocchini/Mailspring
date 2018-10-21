@@ -5,5 +5,5 @@ class Label extends Category {
     return 'label';
   }
 }
-
+Label.setupAttributes()
 module.exports = Label

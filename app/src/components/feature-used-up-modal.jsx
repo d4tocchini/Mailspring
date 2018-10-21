@@ -1,12 +1,14 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { shell } from 'electron';
-import Actions from '../flux/actions';
-import RetinaImg from './retina-img';
-import BillingModal from './billing-modal';
-import IdentityStore from '../flux/stores/identity-store';
+const React = require('react');
+const PropTypes = require('prop-types');
+const { shell } = require('electron');
+const Actions = require('../flux/actions');
+const RetinaImg = require('./retina-img');
+const BillingModal = require('./billing-modal');
+const IdentityStore = require('../flux/stores/identity-store');
 
-module.exports = class FeatureUsedUpModal extends React.Component {
+const {UPGRADE_FEATURE_URL} = require('mailspring/CONFIG')
+
+class FeatureUsedUpModal extends React.Component {
   static propTypes = {
     modalClass: PropTypes.string.isRequired,
     headerText: PropTypes.string.isRequired,
@@ -31,7 +33,7 @@ module.exports = class FeatureUsedUpModal extends React.Component {
   }
 
   onGoToFeatures = () => {
-    shell.openExternal('https://getmailspring.com/pro');
+    shell.openExternal(UPGRADE_FEATURE_URL);
   };
 
   onUpgrade = e => {
@@ -59,7 +61,7 @@ module.exports = class FeatureUsedUpModal extends React.Component {
         </div>
         <div className="feature-cta">
           <div className="pro-description">
-            <h3>Upgrade to Mailspring Pro</h3>
+            <h3>Upgrade to Pro</h3>
             <ul>
               <li>Unlimited Connected Accounts</li>
               <li>Unlimited Contact Profiles</li>
@@ -81,3 +83,5 @@ module.exports = class FeatureUsedUpModal extends React.Component {
     );
   }
 }
+
+module.exports = FeatureUsedUpModal

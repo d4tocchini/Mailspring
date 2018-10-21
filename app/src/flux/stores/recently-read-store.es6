@@ -1,8 +1,8 @@
-import MailspringStore from 'mailspring-store';
-import ChangeUnreadTask from '../tasks/change-unread-task';
-import ChangeLabelsTask from '../tasks/change-labels-task';
-import ChangeFolderTask from '../tasks/change-folder-task';
-import Actions from '../actions';
+const MailspringStore = require('mailspring-store');
+const ChangeUnreadTask = require('../tasks/change-unread-task');
+const ChangeLabelsTask = require('../tasks/change-labels-task');
+const ChangeFolderTask = require('../tasks/change-folder-task');
+const Actions = require('../actions');
 
 // The "Unread" view shows all threads which are unread. When you read a thread,
 // it doesn't disappear until you leave the view and come back. This behavior

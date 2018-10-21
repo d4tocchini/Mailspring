@@ -1,10 +1,11 @@
-import Rx from 'rx-lite';
-import React from 'react';
-import MailspringStore from 'mailspring-store';
-import { FeatureUsedUpModal } from 'mailspring-component-kit';
-import Actions from '../actions';
-import IdentityStore from './identity-store';
-import SendFeatureUsageEventTask from '../tasks/send-feature-usage-event-task';
+const Rx = require('rx-lite');
+const React = require('react');
+const MailspringStore = require('mailspring-store');
+const { FeatureUsedUpModal } = require('mailspring-component-kit');
+const Actions = require('../actions');
+const IdentityStore = require('./identity-store');
+const SendFeatureUsageEventTask = require('../tasks/send-feature-usage-event-task');
+const {PRODUCT_NAME} = require('mailspring/CONFIG')
 
 class NoProAccessError extends Error {}
 
@@ -135,7 +136,7 @@ class FeatureUsageStore extends MailspringStore {
     let rechargeText = '';
     if (!featureData.quota) {
       headerText = `Uhoh - that's a pro feature!`;
-      rechargeText = `Upgrade to Mailspring Pro to ${lexicon.usagePhrase}.`;
+      rechargeText = `Upgrade to ${PRODUCT_NAME} Pro to ${lexicon.usagePhrase}.`;
     } else {
       headerText = lexicon.usedUpHeader || "You've reached your quota";
       let time = 'later';
@@ -152,7 +153,7 @@ class FeatureUsageStore extends MailspringStore {
       }
       rechargeText = `You can ${lexicon.usagePhrase} ${
         featureData.quota
-      } emails ${time} with Mailspring Basic. Upgrade to Pro today!`;
+      } emails ${time} with ${PRODUCT_NAME} Basic. Upgrade to Pro today!`;
     }
     return { headerText, rechargeText };
   }

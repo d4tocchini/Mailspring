@@ -1,6 +1,6 @@
 /* eslint no-unused-vars: 0 */
-import { EventEmitter } from 'events';
-import ListSelection from './list-selection';
+const { EventEmitter } = require('events');
+const ListSelection = require('./list-selection');
 
 class ListDataSource {
   constructor() {

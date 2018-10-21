@@ -1,13 +1,35 @@
-import _ from 'underscore';
-import ReactDOM from 'react-dom';
-import Utils from '../flux/models/utils';
-import VirtualDOMParser from './virtual-dom-parser';
-import SearchableComponentStore from '../flux/stores/searchable-component-store';
+const ReactDOM = require('react-dom');
+function _() {
+  const __ = require('underscore');
+  return (_ = function() {
+    return __;
+  })();
+}
+function Utils_() {
+  const __ = require('../flux/models/utils');
+  return (Utils_ = function() {
+    return __;
+  })();
+}
+function VirtualDOMParser_() {
+  const __ = require('./virtual-dom-parser');
+  return (VirtualDOMParser_ = function() {
+    return __;
+  })();
+}
+function SearchableComponentStore_() {
+  const __ = require('../flux/stores/searchable-component-store');
+  return (SearchableComponentStore_ = function() {
+    return __;
+  })();
+}
 
 class SearchableComponent {
+  // TODO: remove ... args
   componentDidMount(superMethod, ...args) {
     if (superMethod) superMethod.apply(this, args);
-    this.__regionId = Utils.generateTempId();
+    this.__regionId = Utils_().generateTempId();
+    const SearchableComponentStore = SearchableComponentStore_();
     this._searchableListener = SearchableComponentStore.listen(() => {
       this._onSearchableComponentStoreChange();
     });
@@ -15,6 +37,7 @@ class SearchableComponent {
   }
 
   _onSearchableComponentStoreChange() {
+    const SearchableComponentStore = SearchableComponentStore_();
     const searchIndex = SearchableComponentStore.getCurrentRegionIndex(this.__regionId);
     const { searchTerm } = SearchableComponentStore.getCurrentSearchData();
     this.setState({
@@ -42,17 +65,17 @@ class SearchableComponent {
   componentWillUnmount(superMethod, ...args) {
     if (superMethod) superMethod.apply(this, args);
     this._searchableListener();
-    SearchableComponentStore.unregisterSearchRegion(this.__regionId);
+    SearchableComponentStore_().unregisterSearchRegion(this.__regionId);
   }
 
   componentDidUpdate(superMethod, ...args) {
     if (superMethod) superMethod.apply(this, args);
-    SearchableComponentStore.registerSearchRegion(this.__regionId, ReactDOM.findDOMNode(this));
+    SearchableComponentStore_().registerSearchRegion(this.__regionId, ReactDOM.findDOMNode(this));
   }
-
-  render(superMethod, ...args) {
+  render(superMethod) {
     if (superMethod) {
-      const vDOM = superMethod.apply(this, args);
+      const vDOM = superMethod.call(this);
+      const VirtualDOMParser = VirtualDOMParser_();
       const parser = new VirtualDOMParser(this.__regionId);
       const searchTerm = this.state.__searchTerm;
       if (parser.matchesSearch(vDOM, searchTerm)) {
@@ -73,7 +96,7 @@ class SearchableComponent {
 /**
  * Takes a React component and makes it searchable
  */
-module.exports = class SearchableComponentMaker {
+class SearchableComponentMaker {
   static extend(component) {
     const proto = SearchableComponent.prototype;
     for (const propName of Object.getOwnPropertyNames(proto)) {
@@ -82,7 +105,7 @@ module.exports = class SearchableComponentMaker {
         if (propName === 'constructor') {
           continue;
         }
-        component.prototype[propName] = _.partial(proto[propName], origMethod);
+        component.prototype[propName] = _().partial(proto[propName], origMethod);
       } else {
         component.prototype[propName] = proto[propName];
       }
@@ -94,3 +117,5 @@ module.exports = class SearchableComponentMaker {
     return contentDocument;
   }
 }
+
+module.exports = SearchableComponentMaker;

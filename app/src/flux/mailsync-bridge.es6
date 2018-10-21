@@ -19,6 +19,8 @@ const MailsyncProcess = require('../mailsync-process')
 const KeyManager = require('../key-manager')
 const Actions = require('./actions')
 
+const {PRODUCT_NAME} = require('mailspring/CONFIG')
+
 const MAX_CRASH_HISTORY = 15;
 
 const VERBOSE_UNTIL_KEY = 'core.sync.verboseUntil';
@@ -133,7 +135,7 @@ class MailsyncBridge {
 
   toggleVerboseLogging() {
     const { configDirPath } = AppEnv.getLoadSettings();
-    let message = 'Thank you for helping debug Mailspring. Mailspring will now restart.';
+    let message = `Thank you for helping debug, ${PRODUCT_NAME} will now restart.`;
     let phrase = 'disabled';
 
     if (AppEnv.config.get(VERBOSE_UNTIL_KEY)) {
@@ -143,9 +145,9 @@ class MailsyncBridge {
       phrase = 'enabled';
       message =
         `Verbose logging will be enabled for the next thirty minutes. This records ` +
-        `all network traffic to your mail providers and will be quite slow. Restart Mailspring ` +
+        `all network traffic to your mail providers and will be quite slow. Restart ${PRODUCT_NAME} ` +
         `and wait for your problem to occur, and then submit mailsync-***.log files located ` +
-        `in the directory: \n\n${configDirPath}.\n\nMailspring will now restart.`;
+        `in the directory: \n\n${configDirPath}.\n\n${PRODUCT_NAME} will now restart.`;
     }
     AppEnv.showErrorDialog({
       title: `Verbose logging is now ${phrase}`,
@@ -192,10 +194,13 @@ class MailsyncBridge {
   }
 
   sendMessageToAccount(accountId, json) {
+    // D4!!!
     if (!this._clients[accountId]) {
       const { emailAddress } = AccountStore.accountForId(accountId) || {};
+      console.warn({accountId, json, _clients:this._clients})
+      debugger
       return AppEnv.showErrorDialog({
-        title: `Mailspring is unable to sync ${emailAddress}`,
+        title: `${PRODUCT_NAME} is unable to sync ${emailAddress}`,
         message: `In order to perform actions on this mailbox, you need to resolve the sync issue. Visit Preferences > Accounts for more information.`,
       });
     }
@@ -226,7 +231,7 @@ class MailsyncBridge {
     if (!silent) {
       AppEnv.showErrorDialog({
         title: `Cleanup Started`,
-        message: `Mailspring is clearing it's cache for ${
+        message: `${PRODUCT_NAME} is clearing it's cache for ${
           account.emailAddress
         }. Depending on the size of the mailbox, this may take a few seconds or a few minutes. An alert will appear when cleanup is complete.`,
       });
@@ -240,7 +245,7 @@ class MailsyncBridge {
       if (!silent) {
         AppEnv.showErrorDialog({
           title: `Cleanup Complete`,
-          message: `Mailspring reset the local cache for ${account.emailAddress} in ${Math.ceil(
+          message: `${PRODUCT_NAME} reset the local cache for ${account.emailAddress} in ${Math.ceil(
             (Date.now() - start) / 1000
           )} seconds. Your mailbox will now begin to sync again.`,
         });
@@ -248,10 +253,11 @@ class MailsyncBridge {
     } catch (error) {
       AppEnv.showErrorDialog({
         title: `Cleanup Error`,
-        message: `Mailspring was unable to reset the local cache. ${error}`,
+        message: `${PRODUCT_NAME} was unable to reset the local cache. ${error}`,
       });
     } finally {
       delete this._clients[account.id];
+      // debugger
       process.nextTick(() => {
         this.ensureClients();
       });
@@ -273,7 +279,7 @@ class MailsyncBridge {
   async _launchClient(account, { force } = {}) {
     const client = new MailsyncProcess(this._getClientConfiguration());
     this._clients[account.id] = client; // set this synchornously so we never spawn two
-
+    // debugger
     const fullAccountJSON = (await KeyManager.insertAccountSecrets(account)).toJSON();
 
     if (force) {
@@ -324,14 +330,13 @@ class MailsyncBridge {
 
   _onQueueTask(task) {
     if (!DatabaseObjectRegistry.isInRegistry(task.constructor.name)) {
-      debugger
-      console.log(task);
+      // console.log(task);
       throw new Error(
         'You must queue a `Task` instance which is registred with the DatabaseObjectRegistry'
       );
     }
     if (!task.id) {
-      console.log(task);
+      // console.log(task);
       throw new Error(
         'Tasks must have an ID prior to being queued. Check that your Task constructor is calling `super`'
       );

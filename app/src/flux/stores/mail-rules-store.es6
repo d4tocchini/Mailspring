@@ -1,14 +1,13 @@
-import MailspringStore from 'mailspring-store';
-import _ from 'underscore';
-import Utils from '../models/utils';
-import Actions from '../actions';
-import Thread from '../models/thread';
-import Message from '../models/message';
-import DatabaseStore from '../stores/database-store';
-import CategoryStore from '../stores/category-store';
-import MailRulesProcessor from '../../mail-rules-processor';
-
-import { ConditionMode, ConditionTemplates, ActionTemplates } from '../../mail-rules-templates';
+const MailspringStore = require('mailspring-store');
+const _ = require('underscore');
+const Utils = require('../models/utils');
+const Actions = require('../actions');
+const Thread = require('../models/thread');
+const Message = require('../models/message');
+const DatabaseStore = require('../stores/database-store');
+const CategoryStore = require('../stores/category-store');
+const MailRulesProcessor = require('../../mail-rules-processor');
+const { ConditionMode, ConditionTemplates, ActionTemplates } = require('../../mail-rules-templates');
 
 const RulesJSONKey = 'MailRules-V2';
 const AutoSinceJSONKey = 'MailRules-Auto-Since';
@@ -68,7 +67,7 @@ class MailRulesStore extends MailspringStore {
 
   _onDatabaseChanged = record => {
     // If the record contains new emails, process mail rules immediately.
-    // This is necessary to avoid emails from bouncing through the inbox.
+    // This is necessary to avoid emails = require(bouncing through the inbox.
     if (record.type === 'persist' && record.objectClass === Message.name) {
       const newMessages = record.objects.filter(msg => {
         if (msg.version !== 1) return false;

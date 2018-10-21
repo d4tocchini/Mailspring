@@ -1,9 +1,9 @@
-import _ from 'underscore';
-import MailspringStore from 'mailspring-store';
-import DOMUtils from '../../dom-utils';
-import Actions from '../actions';
-import { MAX_MATCHES, CHAR_THRESHOLD } from '../../searchable-components/search-constants';
-import FocusedContentStore from './focused-content-store';
+const _ = require('underscore');
+const MailspringStore = require('mailspring-store');
+const DOMUtils = require('../../dom-utils');
+const Actions = require('../actions');
+const { MAX_MATCHES, CHAR_THRESHOLD } = require('../../searchable-components/search-constants');
+const FocusedContentStore = require('./focused-content-store');
 
 class SearchableComponentStore extends MailspringStore {
   constructor() {

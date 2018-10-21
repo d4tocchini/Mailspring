@@ -7,7 +7,16 @@ const DatabaseObjectRegistry = require('../registries/database-object-registry')
 module.exports = exports = window.$m = {};
 
 const resolveExport = requireValue => {
-  return requireValue.default || requireValue;
+  // if (!requireValue.default) {
+  //   requireValue.default = requireValue
+  // }
+  // Object.defineProperty(requireValue, '__esModule', {
+  //   enumerable:false,
+  //   configurable: false,
+  //   writable: false,
+  //   value: true
+  // })
+  return requireValue // requireValue.default || requireValue;
 };
 
 const lazyLoadWithGetter = (prop, getter) => {

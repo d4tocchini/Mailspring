@@ -4,6 +4,8 @@ import { findDOMNode } from 'react-dom';
 
 const FOCUSABLE_SELECTOR = 'input, textarea, [contenteditable], [tabIndex]';
 
+module.exports = AutoFocuses;
+
 function AutoFocuses(ComposedComponent, { onMount = true, onUpdate = true } = {}) {
   return class extends ComposedComponent {
     static displayName = ComposedComponent.displayName;
@@ -73,4 +75,4 @@ function AutoFocuses(ComposedComponent, { onMount = true, onUpdate = true } = {}
   };
 }
 
-module.exports = AutoFocuses;
+

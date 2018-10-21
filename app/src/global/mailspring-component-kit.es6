@@ -7,24 +7,31 @@ module.exports = exports = {};
 
 // Because requiring files the first time they're used hurts performance, we
 // automatically load components slowly in the background using idle cycles.
-setTimeout(() => {
-  const remaining = Object.keys(module.exports);
-  const fn = deadline => {
-    let key = null;
-    let bogus = 0; // eslint-disable-line
-    while ((key = remaining.pop())) {
-      bogus += module.exports[key] ? 1 : 0;
-      if (deadline.timeRemaining() <= 0) {
-        window.requestIdleCallback(fn, { timeout: 5000 });
-        return;
-      }
-    }
-  };
-  window.requestIdleCallback(fn, { timeout: 5000 });
-}, 500);
+// setTimeout(() => {
+//   const remaining = Object.keys(module.exports);
+//   const fn = deadline => {
+//     let key = null;
+//     let bogus = 0; // eslint-disable-line
+//     while ((key = remaining.pop())) {
+//       bogus += module.exports[key] ? 1 : 0;
+//       if (deadline.timeRemaining() <= 0) {
+//         window.requestIdleCallback(fn, { timeout: 5000 });
+//         return;
+//       }
+//     }
+//   };
+//   window.requestIdleCallback(fn, { timeout: 5000 });
+// }, 500);
 
 const resolveExport = requireValue => {
-  return requireValue.default || requireValue;
+  // if (!requireValue.default) requireValue.default = requireValue
+  // Object.defineProperty(requireValue, '__esModule', {
+  //   enumerable:false,
+  //   configurable: false,
+  //   writable: false,
+  //   value: true
+  // })
+  return requireValue //requireValue.default || requireValue;
 };
 
 const lazyLoadWithGetter = (prop, getter) => {

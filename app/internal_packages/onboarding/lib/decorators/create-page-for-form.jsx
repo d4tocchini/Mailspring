@@ -1,11 +1,11 @@
-import { shell, remote } from 'electron';
-import { RetinaImg } from 'mailspring-component-kit';
-import { React, ReactDOM, PropTypes } from 'mailspring-exports';
-
-import OnboardingActions from '../onboarding-actions';
-import { finalizeAndValidateAccount } from '../onboarding-helpers';
-import FormErrorMessage from '../form-error-message';
-import AccountProviders from '../account-providers';
+const { shell, remote } = require('electron');
+const { RetinaImg } = require('mailspring-component-kit');
+const { React, ReactDOM, PropTypes } = require('mailspring-exports');
+const OnboardingActions = require('../onboarding-actions');
+const { finalizeAndValidateAccount } = require('../onboarding-helpers');
+const FormErrorMessage = require('../form-error-message');
+const AccountProviders = require('../account-providers');
+const {PRODUCT_NAME} = require('mailspring/CONFIG')
 
 let didWarnAboutGmailIMAP = false;
 
@@ -137,7 +137,7 @@ const CreatePageForForm = FormComponent => {
           message: 'Are you sure?',
           detail:
             `This looks like a Gmail account! While it's possible to setup an App ` +
-            `Password and connect to Gmail via IMAP, Mailspring also supports Google OAuth. Go ` +
+            `Password and connect to Gmail via IMAP, ${PRODUCT_NAME} also supports Google OAuth. Go ` +
             `back and select "Gmail & Google Apps" from the provider screen.`,
         });
         if (buttonIndex === 0) {

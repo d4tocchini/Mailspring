@@ -1,4 +1,4 @@
-import {
+const {
   SearchQueryToken,
   OrQueryExpression,
   AndQueryExpression,
@@ -12,7 +12,7 @@ import {
   DateQueryExpression,
   InQueryExpression,
   HasAttachmentQueryExpression,
-} from './search-query-ast';
+} = require('./search-query-ast');
 
 const nextStringToken = text => {
   if (text[0] !== '"') {

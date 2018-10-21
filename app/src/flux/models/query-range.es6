@@ -1,11 +1,8 @@
+// const INFINITE_QueryRange = { limit: null, offset: null }
 
-const INFINITE_QueryRange = { limit: null, offset: null }
-
-const QueryRange =
-  module.exports = class {
-
+class QueryRange {
   static infinite() {
-    return new QueryRange(INFINITE_QueryRange);
+    return new QueryRange({ limit: null, offset: null });
   }
 
   static rangeWithUnion(a, b) {
@@ -50,7 +47,7 @@ const QueryRange =
   }
 
   constructor(opts) {
-    const { limit, offset, start, end } = opts
+    const { limit, offset, start, end } = opts;
 
     this.limit = limit;
     this.offset = offset;
@@ -98,3 +95,5 @@ const QueryRange =
     return `QueryRange{${this.start} - ${this.end}}`;
   }
 }
+
+module.exports = QueryRange;

@@ -1,5 +1,11 @@
-import { React, PropTypes, Actions, SendActionsStore, SoundRegistry } from 'mailspring-exports';
-import { Menu, RetinaImg, ButtonDropdown, ListensToFluxStore } from 'mailspring-component-kit';
+const {
+  React,
+  PropTypes,
+  Actions,
+  SendActionsStore,
+  SoundRegistry,
+} = require('mailspring-exports');
+const { Menu, RetinaImg, ButtonDropdown, ListensToFluxStore } = require('mailspring-component-kit');
 
 class SendActionButton extends React.Component {
   static displayName = 'SendActionButton';
@@ -34,6 +40,10 @@ class SendActionButton extends React.Component {
       if (AppEnv.config.get('core.sending.sounds')) {
         SoundRegistry.playSound('hit-send');
       }
+      // debugger
+      // console.log(Actions)
+      // console.log(Actions.sendDraft)
+      // console.log(this.props.draft.headerMessageId,sendAction.configKey)
       Actions.sendDraft(this.props.draft.headerMessageId, { actionKey: sendAction.configKey });
     }
   };
@@ -50,7 +60,10 @@ class SendActionButton extends React.Component {
     return (
       <span>
         <RetinaImg name="icon-composer-send.png" mode={RetinaImg.Mode.ContentIsMask} />
-        <span className="text">Send{plusHTML}</span>
+        <span className="text">
+          Send
+          {plusHTML}
+        </span>
         {additionalImg}
       </span>
     );
@@ -109,6 +122,7 @@ const EnhancedSendActionButton = ListensToFluxStore(SendActionButton, {
   },
 });
 
+// TODO:
 // TODO this is a hack so that the send button can still expose
 // the `primarySend` method required by the ComposerView. Ideally, this
 // decorator mechanism should expose whatever instance methods are exposed

@@ -26,7 +26,6 @@ class AttributeObject extends Attribute {
       return new Klass(val);
     }
     if (val.__cls) {
-      debugger
       return Utils.convertToModel(val);
     }
     return val;

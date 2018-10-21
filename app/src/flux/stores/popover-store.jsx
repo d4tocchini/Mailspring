@@ -1,8 +1,8 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import MailspringStore from 'mailspring-store';
-import Actions from '../actions';
-import FixedPopover from '../../components/fixed-popover';
+const React = require('react');
+const ReactDOM = require('react-dom');
+const MailspringStore = require('mailspring-store');
+const Actions = require('../actions');
+const FixedPopover = require('../../components/fixed-popover');
 
 const CONTAINER_ID = 'nylas-popover-container';
 

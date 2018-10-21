@@ -9,7 +9,7 @@ const File = require('../models/file');
 const Utils = require('../models/utils');
 const { exec } = require('child_process');
 const { remote, shell } = require('electron');
-
+const {PRODUCT_NAME} = require('mailspring/CONFIG')
 const fs = _fs.promises
 
 // D4
@@ -346,10 +346,10 @@ class AttachmentStore extends MailspringStore {
     let message = null;
     if (['EPERM', 'EMFILE', 'EACCES'].includes(error.code)) {
       message =
-        'Mailspring could not save an attachment. Check that permissions are set correctly and try restarting Mailspring if the issue persists.';
+        `${PRODUCT_NAME} could not save an attachment. Check that permissions are set correctly and try restarting the app if the issue persists.`;
     }
     if (['ENOSPC'].includes(error.code)) {
-      message = 'Mailspring could not save an attachment because you have run out of disk space.';
+      message = `${PRODUCT_NAME} could not save an attachment because you have run out of disk space.`;
     }
 
     if (message) {

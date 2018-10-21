@@ -1,13 +1,13 @@
-import MailspringStore from 'mailspring-store';
-import Actions from '../actions';
-import Message from '../models/message';
-import Thread from '../models/thread';
-import DatabaseStore from './database-store';
-import TaskFactory from '../tasks/task-factory';
+const MailspringStore = require('mailspring-store');
+const Actions = require('../actions');
+const Message = require('../models/message');
+const Thread = require('../models/thread');
+const DatabaseStore = require('./database-store');
+const TaskFactory = require('../tasks/task-factory');
 const FocusedPerspectiveStore = require('./focused-perspective-store')
-import FocusedContentStore from './focused-content-store';
-import * as ExtensionRegistry from '../../registries/extension-registry';
-import electron from 'electron';
+const FocusedContentStore = require('./focused-content-store');
+const ExtensionRegistry = require('../../registries/extension-registry');
+const electron = require('electron');
 
 const FolderNamesHiddenByDefault = ['spam', 'trash'];
 
@@ -168,12 +168,17 @@ class MessageStore extends MailspringStore {
 
   _onApplyFocusChange() {
     const focused = FocusedContentStore.focused('thread');
+
     if (focused === null) {
       this._lastMarkedAsReadThreadId = null;
+      return -1;
     }
 
+
     // if we already match the desired state, no need to trigger
-    if (this.threadId() === (focused || {}).id) return;
+    if (focused && this.threadId() === focused.id) {
+      return 0;
+    }
 
     this._thread = focused;
     this._items = [];
@@ -185,7 +190,24 @@ class MessageStore extends MailspringStore {
     this._setWindowTitle();
 
     this._fetchFromCache();
+    return 1
   }
+
+  // __onApplyFocusChange() {
+  //   const focused = FocusedContentStore.focused('thread');
+
+  //   this._thread = focused;
+  //   this._items = [];
+  //   this._itemsLoading = true;
+  //   this._showingHiddenItems = false;
+  //   this._itemsExpanded = {};
+  //   this.trigger();
+
+  //   this._setWindowTitle();
+
+  //   this._fetchFromCache();
+  //   return 1
+  // }
 
   _setWindowTitle() {
     let title = 'Mailspring' + (this._thread ? ' · ' + this._thread.subject : '');

@@ -6,7 +6,6 @@ const Category = require('./category');
 const ModelWithMetadata = require('./model-with-metadata');
 const DatabaseStore = require('../stores/database-store');
 
-
 /*
 Public: The Thread model represents an email thread.
 
@@ -36,142 +35,158 @@ Section: Models
 @class Thread
 */
 
-  class Thread extends ModelWithMetadata {
+class Thread extends ModelWithMetadata {
+  static defineAttributes(Attribute) {
+    this.sortOrderAttribute = () => {
+      return this.attributes.lastMessageReceivedTimestamp;
+    };
 
-    static defineAttributes(Attribute) {
+    this.naturalSortOrder = () => {
+      return this.sortOrderAttribute().descending();
+    };
 
-      this.sortOrderAttribute = () => {
-        return this.attributes.lastMessageReceivedTimestamp;
-      };
+    // TODO NONFUNCTIONAL
+    Attribute('String', { modelKey: 'snippet' });
+    //
 
-      this.naturalSortOrder = () => {
-        return this.sortOrderAttribute().descending();
-      };
-
-      // TODO NONFUNCTIONAL
-      Attribute('String', { modelKey: 'snippet', })
-      //
-
-      Attribute('String', { modelKey: 'subject',
-        queryable: true,
-      })
-      Attribute('Boolean', { modelKey: 'unread',
-        queryable: true,
-      })
-      Attribute('Boolean', { modelKey: 'starred',
-        queryable: true,
-      })
-      Attribute('Number', { modelKey: 'version',
-        queryable: true,
-        jsonKey: 'v',
-      })
-      Attribute('Collection', { modelKey: 'categories',
-        queryable: true,
-        joinOnField: 'id',
-        joinQueryableBy: [
-          'inAllMail',
-          'lastMessageReceivedTimestamp',
-          'lastMessageSentTimestamp',
-          'unread',
-        ],
-        itemClass: Category,
-      })
-      Attribute('Collection', { modelKey: 'folders',
-        itemClass: Folder,
-      })
-      Attribute('Collection', { modelKey: 'labels',
-        joinOnField: 'id',
-        joinQueryableBy: [
-          'inAllMail',
-          'lastMessageReceivedTimestamp',
-          'lastMessageSentTimestamp',
-          'unread',
-        ],
-        itemClass: Label,
-      })
-      Attribute('Collection', { modelKey: 'participants',
-        itemClass: Contact,
-      })
-      Attribute('Number', { modelKey: 'attachmentCount',
-      })
-      Attribute('DateTime', { modelKey: 'lastMessageReceivedTimestamp',
-        queryable: true,
-        jsonKey: 'lmrt',
-      })
-      Attribute('DateTime', { modelKey: 'lastMessageSentTimestamp',
-        queryable: true,
-        jsonKey: 'lmst',
-      })
-      Attribute('Boolean', { modelKey: 'inAllMail',
-        queryable: true,
-      })
-    }
-
-
-
-    async messages({ includeHidden } = {}) {
-      const messages = await DatabaseStore.findAll(Message)
-        .where({ threadId: this.id })
-        .include(Message.attributes.body);
-      if (!includeHidden) {
-        return messages.filter(message => !message.isHidden());
-      }
-      return messages;
-    }
-
-    get categories() {
-      return [].concat(this.folders || [], this.labels || []);
-    }
-
-    set categories(c) {
-      // noop
-    }
-
-    /**
-     * In the `clone` case, there are `categories` set, but no `folders` nor
-     * `labels`
-     *
-     * When loading data from the API, there are `folders` AND `labels` but
-     * no `categories` yet.
-     */
-    fromJSON(json) {
-      super.fromJSON(json);
-
-      if (this.participants && this.participants instanceof Array) {
-        this.participants.forEach(item => {
-          item.accountId = this.accountId;
-        });
-      }
-      return this;
-    }
-
-    sortedCategories() {
-      if (!this.categories) {
-        return [];
-      }
-      let out = [];
-      const isImportant = l => l.role === 'important';
-      const isStandardCategory = l => l.isStandardCategory();
-      const isUnhiddenStandardLabel = l =>
-        !isImportant(l) && isStandardCategory(l) && !l.isHiddenCategory();
-
-      const importantLabel = this.categories.find(isImportant);
-      if (importantLabel) {
-        out = out.concat(importantLabel);
-      }
-
-      const standardLabels = this.categories.filter(isUnhiddenStandardLabel);
-      if (standardLabels.length > 0) {
-        out = out.concat(standardLabels);
-      }
-
-      const userLabels = this.categories.filter(l => !isImportant(l) && !isStandardCategory(l));
-
-      if (userLabels.length > 0) {
-        out = out.concat(userLabels.sort((a, b) => a.displayName.localeCompare(b.displayName)));
-      }
-      return out;
-    }
+    Attribute('String', {
+      modelKey: 'subject',
+      queryable: true,
+    });
+    Attribute('Boolean', {
+      modelKey: 'unread',
+      queryable: true,
+    });
+    Attribute('Boolean', {
+      modelKey: 'starred',
+      queryable: true,
+    });
+    Attribute('Number', {
+      modelKey: 'version',
+      queryable: true,
+      jsonKey: 'v',
+    });
+    Attribute('Collection', {
+      modelKey: 'categories',
+      queryable: true,
+      joinOnField: 'id',
+      joinQueryableBy: [
+        'inAllMail',
+        'lastMessageReceivedTimestamp',
+        'lastMessageSentTimestamp',
+        'unread',
+      ],
+      itemClass: Category,
+    });
+    Attribute('Collection', {
+      modelKey: 'folders',
+      itemClass: Folder,
+    });
+    Attribute('Collection', {
+      modelKey: 'labels',
+      joinOnField: 'id',
+      joinQueryableBy: [
+        'inAllMail',
+        'lastMessageReceivedTimestamp',
+        'lastMessageSentTimestamp',
+        'unread',
+      ],
+      itemClass: Label,
+    });
+    Attribute('Collection', {
+      modelKey: 'participants',
+      itemClass: Contact,
+    });
+    Attribute('Number', {
+      modelKey: 'attachmentCount',
+    });
+    Attribute('DateTime', {
+      modelKey: 'lastMessageReceivedTimestamp',
+      queryable: true,
+      jsonKey: 'lmrt',
+    });
+    Attribute('DateTime', {
+      modelKey: 'lastMessageSentTimestamp',
+      queryable: true,
+      jsonKey: 'lmst',
+    });
+    Attribute('Boolean', {
+      modelKey: 'inAllMail',
+      queryable: true,
+    });
   }
-  module.exports = ModelWithMetadata.setup(Thread)
-  
+
+  async messages({ includeHidden } = {}) {
+    const messages = await DatabaseStore.findAll(Message)
+      .where({ threadId: this.id })
+      .include(Message.attributes.body);
+    if (!includeHidden) {
+      return messages.filter(message => !message.isHidden());
+    }
+    return messages;
+  }
+
+  // TODO: ugh... dynamic attrs makes this tough to remove
+  get categories() {
+    return this.getCategories();
+  }
+  getCategories() {
+    const categories = this.folders !== undefined ? this.folders.slice(0) : [];
+    return this.labels !== undefined ? categories.concat(this.labels) : categories;
+    // return [].concat(this.folders || [], this.labels || []);
+  }
+
+  set categories(c) {
+    // noop
+  }
+
+  /**
+   * In the `clone` case, there are `categories` set, but no `folders` nor
+   * `labels`
+   *
+   * When loading data from the API, there are `folders` AND `labels` but
+   * no `categories` yet.
+   */
+  fromJSON(json) {
+    super.fromJSON(json);
+    if (this.participants && this.participants instanceof Array) {
+      this.participants.forEach(item => {
+        item.accountId = this.accountId;
+      });
+    }
+    return this;
+  }
+
+  sortedCategories() {
+    const cats = this.getCategories();
+    if (cats.length === 0) {
+      return cats;
+    }
+    // if (!this.getCategories()) {
+    //   return [];
+    // }
+    let out = [];
+    const isImportant = l => l.role === 'important';
+    const isStandardCategory = l => l.isStandardCategory();
+    const isUnhiddenStandardLabel = l =>
+      !isImportant(l) && isStandardCategory(l) && !l.isHiddenCategory();
+
+    const importantLabel = cats.find(isImportant);
+    if (importantLabel) {
+      out = out.concat(importantLabel);
+    }
+
+    const standardLabels = cats.filter(isUnhiddenStandardLabel);
+    if (standardLabels.length > 0) {
+      out = out.concat(standardLabels);
+    }
+
+    const userLabels = cats.filter(l => !isImportant(l) && !isStandardCategory(l));
+
+    if (userLabels.length > 0) {
+      out = out.concat(userLabels.sort((a, b) => a.displayName.localeCompare(b.displayName)));
+    }
+    return out;
+  }
+}
+module.exports = ModelWithMetadata.setup(Thread);

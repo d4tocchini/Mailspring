@@ -1,15 +1,13 @@
-import React from 'react';
-import _ from 'underscore';
-
-import { Actions, AccountStore, MailRulesStore, MailRulesTemplates } from 'mailspring-exports';
-
-import {
+const React = require('react');
+const _ = require('underscore');
+const { Actions, AccountStore, MailRulesStore, MailRulesTemplates } = require('mailspring-exports');
+const {
   Flexbox,
   EditableList,
   RetinaImg,
   ScrollRegion,
   ScenarioEditor,
-} from 'mailspring-component-kit';
+} = require('mailspring-component-kit');
 
 const { ActionTemplatesForAccount, ConditionTemplatesForAccount } = MailRulesTemplates;
 
@@ -82,7 +80,7 @@ class PreferencesMailRules extends React.Component {
 
     if (this.state.rules.length === 0) {
       AppEnv.showErrorDialog(
-        "You haven't created any mail rules. To get started, define a new rule above and tell Mailspring how to process your inbox."
+        "You haven't created any mail rules. To get started, define a new rule above to customize how emails flow in and out."
       );
     }
     Actions.startReprocessingMailRules(this.state.currentAccount.id);

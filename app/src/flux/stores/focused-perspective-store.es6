@@ -1,10 +1,10 @@
-import _ from 'underscore';
-import MailspringStore from 'mailspring-store';
-import AccountStore from './account-store';
-import WorkspaceStore from './workspace-store';
-import MailboxPerspective from '../../mailbox-perspective';
-import CategoryStore from './category-store';
-import Actions from '../actions';
+const _ = require('underscore');
+const MailspringStore = require('mailspring-store');
+const AccountStore = require('./account-store');
+const WorkspaceStore = require('./workspace-store');
+const MailboxPerspective = require('../../mailbox-perspective');
+const CategoryStore = require('./category-store');
+const Actions = require('../actions');
 
 class FocusedPerspectiveStore extends MailspringStore {
   constructor() {

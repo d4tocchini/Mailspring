@@ -1,8 +1,8 @@
-import React from 'react';
-import { clipboard } from 'electron';
-import { MailspringAPIRequest } from 'mailspring-exports';
-import { RetinaImg } from 'mailspring-component-kit';
-
+const React = require('react');
+const { clipboard } = require('electron');
+const { MailspringAPIRequest } = require('mailspring-exports');
+const { RetinaImg } = require('mailspring-component-kit');
+const {PRODUCT_NAME} = require('mailspring/CONFIG')
 function buildShareHTML(htmlEl, styleEl) {
   return `
     <html lang="en">
@@ -10,7 +10,7 @@ function buildShareHTML(htmlEl, styleEl) {
     <meta charset="utf-8"> 
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="author" content="Mailspring">
-    <title>Mailspring Activity</title>
+    <title>${PRODUCT_NAME} Activity</title>
     <style type="text/css">
     body {
       font-family: sans-serif;

@@ -1,6 +1,6 @@
 import React from 'react';
 
-module.exports = class ConfigPropContainer extends React.Component {
+class ConfigPropContainer extends React.Component {
   static displayName = 'ConfigPropContainer';
 
   constructor(props) {
@@ -62,3 +62,5 @@ module.exports = class ConfigPropContainer extends React.Component {
     });
   }
 }
+
+module.exports = ConfigPropContainer

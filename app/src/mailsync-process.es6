@@ -3,23 +3,27 @@
 /*
 Warning! This file is imported from the main process as well as the renderer process
 */
-import { spawn, exec } from 'child_process';
-import { Readable } from 'stream';
-import path from 'path';
-import os from 'os';
-import { EventEmitter } from 'events';
-import fs from 'fs';
-function localized(x){return x}
+const { spawn, exec } = require('child_process');
+const { Readable } = require('stream');
+const path = require('path');
+const os = require('os');
+const { EventEmitter } = require('events');
+const fs = require('fs');
+const { PRODUCT_NAME, SUPPORT_URL } = require('mailspring/CONFIG');
+
+function localized(x) {
+  return x;
+}
 
 let Utils = null;
 
-export const LocalizedErrorStrings = {
+const LocalizedErrorStrings = {
   ErrorConnection: localized(
     'Connection Error - Unable to connect to the server / port you provided.'
   ),
   ErrorInvalidAccount: localized(
-    'This account is invalid or Mailspring could not find the Inbox or All Mail folder. %@',
-    'http://support.getmailspring.com/hc/en-us/articles/115001881912'
+    `This account is invalid or ${PRODUCT_NAME} could not find the Inbox or All Mail folder. %@`,
+    SUPPORT_URL
   ),
   ErrorTLSNotAvailable: localized('TLS Not Available'),
   ErrorParse: localized('Parsing Error'),
@@ -65,12 +69,12 @@ export const LocalizedErrorStrings = {
     'Sorry, your SMTP server does not support basic username / password authentication.'
   ),
   ErrorIdentityMissingFields: localized(
-    'Your Mailspring ID is missing required fields - you may need to reset Mailspring. %@',
-    'http://support.getmailspring.com/hc/en-us/articles/115002012491'
+    `Your ${PRODUCT_NAME} ID is missing required fields - you may need to reset Mailspring. %@`,
+    SUPPORT_URL
   ),
 };
 
-export default class MailsyncProcess extends EventEmitter {
+class MailsyncProcess extends EventEmitter {
   constructor({ configDirPath, resourcePath, verbose }) {
     super();
     this.verbose = verbose;
@@ -155,7 +159,10 @@ export default class MailsyncProcess extends EventEmitter {
         var rs = new Readable();
         rs.push(`${JSON.stringify(this.account)}\n${JSON.stringify(this.identity)}\n`);
         rs.push(null);
-        rs.pipe(this._proc.stdin, { end: false });
+        rs.pipe(
+          this._proc.stdin,
+          { end: false }
+        );
       });
     }
   }
@@ -297,7 +304,7 @@ export default class MailsyncProcess extends EventEmitter {
     if (!Utils) {
       Utils = require('mailspring-exports').Utils;
     }
-    console.log(`Sending to mailsync ${this.account.id}`, json);
+    // console.log(`Sending to mailsync ${this.account.id}`, json);
     const msg = `${JSON.stringify(json)}\n`;
     try {
       this._proc.stdin.write(msg, 'UTF8');
@@ -322,7 +329,7 @@ export default class MailsyncProcess extends EventEmitter {
           if (str.includes('running vacuum')) this._showStatusWindow('vacuum');
         },
       });
-      console.log(buffer.toString());
+      // console.log(buffer.toString());
       this._closeStatusWindow();
     } catch (err) {
       this._closeStatusWindow();
@@ -366,9 +373,10 @@ end tell
   }
 }
 
+module.exports = MailsyncProcess;
+MailsyncProcess.LocalizedErrorStrings = LocalizedErrorStrings;
 
-
-
+// D4 !!!!!!!!!!!!!!!!!!!!!!!!
 
 // /* eslint global-require: 0 */
 
@@ -713,7 +721,7 @@ end tell
 //   tell application process "Xcode"
 //     click button "Attach" of sheet 1 of window 1
 //   end tell
-  
+
 // end tell
 //     `
 //     );

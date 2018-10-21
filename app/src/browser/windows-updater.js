@@ -5,7 +5,7 @@
  * Read: https://github.com/electron-archive/grunt-electron-installer#handling-squirrel-events
  * Read: https://github.com/electron/electron/blob/master/docs/api/auto-updater.md#windows
  *
- * When Mailspring gets installed on a Windows machine it gets put in:
+ * When installed on a Windows machine it gets put in:
  * C:\Users\<USERNAME>\AppData\Local\NylasMail\app-x.x.x
  *
  * The `process.execPath` is:

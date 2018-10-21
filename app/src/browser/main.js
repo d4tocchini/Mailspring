@@ -9,6 +9,8 @@ console.inspect = function consoleInspect(val) {
 };
 
 const app = require('electron').app;
+
+console.log(app.xxx,222)
 const path = require('path');
 const mkdirp = require('mkdirp');
 
@@ -30,6 +32,9 @@ const setupConfigDir = args => {
   if (args.specMode) {
     dirname = CONFIG_DIRNAME_SPEC;
   }
+  // console.log(app.getPath('appData'))
+  console.log(app.xxx,333)
+
   let configDirPath = path.join(app.getPath('appData'), dirname);
   if (process.platform === 'linux' && process.env.SNAP) {
     // for linux snap, use the sandbox directory that is persisted between snap revisions

@@ -1,4 +1,4 @@
-import {
+const {
   ComponentRegistry,
   DatabaseStore,
   DraftStore,
@@ -6,19 +6,18 @@ import {
   SyncbackMetadataTask,
   SendActionsStore,
   Actions,
-} from 'mailspring-exports';
-import { HasTutorialTip } from 'mailspring-component-kit';
-
-import SendLaterButton from './send-later-button';
-import SendLaterStatus from './send-later-status';
-import { PLUGIN_ID } from './send-later-constants';
+} = require('mailspring-exports');
+const { HasTutorialTip } = require('mailspring-component-kit');
+const SendLaterButton = require('./send-later-button');
+const SendLaterStatus = require('./send-later-status');
+const { PLUGIN_ID } = require('./send-later-constants');
 
 let unlisten = null;
 
 const SendLaterButtonWithTip = HasTutorialTip(SendLaterButton, {
   title: 'Send on your own schedule',
   instructions:
-    'Schedule this message to send at the ideal time. Mailspring makes it easy to control the fabric of spacetime!',
+    'Schedule this message to send at the ideal time.',// Mailspring makes it easy to control the fabric of spacetime!',
 });
 
 function handleMetadataExpiration(change) {
@@ -27,6 +26,7 @@ function handleMetadataExpiration(change) {
   }
 
   change.objects.forEach(async message => {
+    // debugger
     const metadata = message.metadataForPluginId(PLUGIN_ID);
     if (!metadata || !metadata.expiration || metadata.expiration > new Date()) {
       return;

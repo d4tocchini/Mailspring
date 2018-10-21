@@ -1,5 +1,5 @@
-import ChangeMailTask from './change-mail-task';
-import Folder from '../models/folder';
+const ChangeMailTask = require('./change-mail-task');
+const Folder = require('../models/folder');
 
 // Public: Create a new task to apply labels to a message or thread.
 //

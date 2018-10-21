@@ -6,16 +6,15 @@
 // TranslateButton is a simple React component that allows you to select
 // a language from a popup menu and translates draft text into that language.
 
-import {
+const {
   React,
   ReactDOM,
   PropTypes,
   ComponentRegistry,
   QuotedHTMLTransformer,
   Actions,
-} from 'mailspring-exports';
-
-import { Menu, RetinaImg } from 'mailspring-component-kit';
+} = require('mailspring-exports');
+const { Menu, RetinaImg } = require('mailspring-component-kit');
 
 const YandexTranslationURL = 'https://translate.yandex.net/api/v1.5/tr.json/translate';
 const YandexTranslationKey =
@@ -47,7 +46,7 @@ class TranslateButton extends React.Component {
 
   shouldComponentUpdate(nextProps) {
     // Our render method doesn't use the provided `draft`, and the draft changes
-    // constantly (on every keystroke!) `shouldComponentUpdate` helps keep Mailspring fast.
+    // constantly (on every keystroke!) `shouldComponentUpdate` helps keep things fast.
     return nextProps.session !== this.props.session;
   }
 
@@ -152,7 +151,7 @@ All packages must export a basic object that has at least the following 3
 methods:
 
 1. `activate` - Actions to take once the package gets turned on.
-Pre-enabled packages get activated on Mailspring bootup. They can also be
+Pre-enabled packages get activated on  bootup. They can also be
 activated manually by a user.
 
 2. `deactivate` - Actions to take when a package gets turned off. This can

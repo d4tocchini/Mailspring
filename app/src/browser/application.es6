@@ -1,25 +1,25 @@
 /* eslint global-require: "off" */
 
-import { BrowserWindow, Menu, app, ipcMain, dialog } from 'electron';
-
-import fs from 'fs-plus';
-import url from 'url';
-import path from 'path';
-import proc from 'child_process';
-import { EventEmitter } from 'events';
-
-import WindowManager from './window-manager';
-import FileListCache from './file-list-cache';
-import ConfigMigrator from './config-migrator';
-import ApplicationMenu from './application-menu';
-import ApplicationTouchBar from './application-touch-bar';
-import AutoUpdateManager from './autoupdate-manager';
-import SystemTrayManager from './system-tray-manager';
-import DefaultClientHelper from '../default-client-helper';
-import MailspringProtocolHandler from './mailspring-protocol-handler';
-import ConfigPersistenceManager from './config-persistence-manager';
+const { BrowserWindow, Menu, app, ipcMain, dialog } = require('electron');
+const fs = require('fs-plus');
+const url = require('url');
+const path = require('path');
+const proc = require('child_process');
+const { EventEmitter } = require('events');
+const WindowManager = require('./window-manager');
+const FileListCache = require('./file-list-cache');
+const ConfigMigrator = require('./config-migrator');
+const ApplicationMenu = require('./application-menu');
+const ApplicationTouchBar = require('./application-touch-bar');
+const AutoUpdateManager = require('./autoupdate-manager');
+const SystemTrayManager = require('./system-tray-manager');
+const DefaultClientHelper = require('../default-client-helper');
+const MailspringProtocolHandler = require('./mailspring-protocol-handler');
+const ConfigPersistenceManager = require('./config-persistence-manager');
+const MailsyncProcess = require('../mailsync-process');
 // import moveToApplications from './move-to-applications';
-import MailsyncProcess from '../mailsync-process';
+
+const {PRODUCT_NAME} = require('mailspring/CONFIG')
 
 let clipboard = null;
 
@@ -30,7 +30,7 @@ module.exports = class Application extends EventEmitter {
     const { resourcePath, configDirPath, version, devMode, specMode, safeMode } = options;
 
     // D4 
-    console.log('Application options',options)
+    // console.log('Application options',options)
 
     // Normalize to make sure drive letter case is consistent on Windows
     this.resourcePath = resourcePath;
@@ -54,11 +54,11 @@ module.exports = class Application extends EventEmitter {
       let message = null;
       let buttons = ['Quit'];
       if (err.toString().includes('ENOENT')) {
-        message = `Mailspring could find the mailsync process. If you're building Mailspring from source, make sure mailsync.tar.gz has been downloaded and unpacked in your working copy.`;
+        message = PRODUCT_NAME + ` could find the mailsync process. If you're building from source, make sure mailsync.tar.gz has been downloaded and unpacked in your working copy.`;
       } else if (err.toString().includes('spawn')) {
-        message = `Mailspring could not spawn the mailsync process. ${err.toString()}`;
+        message = PRODUCT_NAME +` could not spawn the mailsync process. ${err.toString()}`;
       } else {
-        message = `We encountered a problem with your local email database. ${err.toString()}\n\nCheck that no other copies of Mailspring are running and click Rebuild to reset your local cache.`;
+        message = `We encountered a problem with your local email database. ${err.toString()}\n\nCheck that no other copies of ${PRODUCT_NAME} are running and click Rebuild to reset your local cache.`;
         buttons = ['Quit', 'Rebuild'];
       }
 
@@ -686,8 +686,8 @@ module.exports = class Application extends EventEmitter {
   // MailspringWindow - The {MailspringWindow} to send the command to.
   // args - The optional arguments to pass along.
   sendCommandToWindow = (command, MailspringWindow, ...args) => {
-    console.log('sendCommandToWindow');
-    console.log(command);
+    // console.log('sendCommandToWindow');
+    // console.log(command);
     if (this.emit(command, ...args)) {
       return;
     }
@@ -771,7 +771,7 @@ module.exports = class Application extends EventEmitter {
     if (resourcePath !== this.resourcePath && !fs.existsSync(resourcePath)) {
       resourcePath = this.resourcePath;
     }
-    console.log('&&&&&&', resourcePath)
+    // console.log('&&&&&&', resourcePath)
     let bootstrapScript = null;
     try {
       bootstrapScript = require.resolve(

@@ -1,13 +1,12 @@
 /* eslint global-require: 0 */
 /* eslint import/no-dynamic-require: 0 */
-import _ from 'underscore';
-import path from 'path';
-import { ipcRenderer, remote } from 'electron';
-import { Emitter } from 'event-kit';
-import { mapSourcePosition } from 'source-map-support';
-
-import { APIError } from './flux/errors';
-import WindowEventHandler from './window-event-handler';
+const _ = require('underscore');
+const path = require('path');
+const { ipcRenderer, remote } = require('electron');
+const { Emitter } = require('event-kit');
+const { mapSourcePosition } = require('source-map-support');
+const { APIError } = require('./flux/errors');
+const WindowEventHandler = require('./window-event-handler');
 
 function ensureInteger(f, fallback) {
   let int = f;
@@ -20,7 +19,7 @@ function ensureInteger(f, fallback) {
 // Essential: AppEnv global for dealing with packages, themes, menus, and the window.
 //
 // The singleton of this class is always available as the `AppEnv` global.
-module.exports = class AppEnvConstructor {
+class AppEnvConstructor {
   // Returns the load settings hash associated with the current window.
   static getLoadSettings() {
     if (this.loadSettings == null) {
@@ -892,3 +891,5 @@ module.exports = class AppEnvConstructor {
     };
   }
 }
+
+module.exports = AppEnvConstructor

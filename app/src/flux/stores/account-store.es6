@@ -1,11 +1,32 @@
 /* eslint global-require: 0 */
 
-const _ = require('underscore');
-const KeyManager = require('../../key-manager');
 const Actions = require('../actions');
 const MailspringStore = require('mailspring-store');
 const Account = require('../models/account');
-const Utils = require('../models/utils');
+function _() {
+  const __ = require('underscore');
+  return (_ = function() {
+    return __;
+  })();
+}
+function ipc_() {
+  const __ = require('electron').ipcRenderer;
+  return (ipc_ = function() {
+    return __;
+  })();
+}
+function KeyManager_() {
+  const __ = require('../../key-manager');
+  return (KeyManager_ = function() {
+    return __;
+  })();
+}
+function Utils_() {
+  const __ = require('../models/utils');
+  return (Utils_ = function() {
+    return __;
+  })();
+}
 
 const configAccountsKey = 'accounts';
 const configVersionKey = 'accountsVersion';
@@ -34,7 +55,7 @@ class AccountStore extends MailspringStore {
       const oldAccountIds = this._accounts.map(a => a.id);
       this._loadAccounts();
       const accountIds = this._accounts.map(a => a.id);
-      const newAccountIds = _.difference(accountIds, oldAccountIds);
+      const newAccountIds = _().difference(accountIds, oldAccountIds);
 
       if (AppEnv.isMainWindow() && newAccountIds.length > 0) {
         const newId = newAccountIds[0];
@@ -61,6 +82,7 @@ class AccountStore extends MailspringStore {
     if (typeof emails === 'string') {
       emails = [emailOrEmails];
     }
+    const Utils = Utils_();
     for (const email of emails) {
       if (myEmails.find(myEmail => Utils.emailIsEquivalent(myEmail, email))) {
         return true;
@@ -127,7 +149,7 @@ class AccountStore extends MailspringStore {
       if (!account || !account.id) {
         const err = new Error('An invalid account was added to `this._accounts`');
         AppEnv.reportError(err);
-        this._accounts = _.compact(this._accounts);
+        this._accounts = _().compact(this._accounts);
       }
     }
     this.trigger();
@@ -183,7 +205,8 @@ class AccountStore extends MailspringStore {
     // current perspective will still reference a stale accountId which will
     // cause things to break
     Actions.focusDefaultMailboxPerspectiveForAccounts(remainingAccounts);
-    _.defer(() => {
+    // _.defer(() => {
+    requestAnimationFrame(function() {
       Actions.setCollapsedSidebarItem('Inbox', true);
     });
 
@@ -192,13 +215,12 @@ class AccountStore extends MailspringStore {
 
     if (remainingAccounts.length === 0) {
       // Clear everything and logout
-      const ipc = require('electron').ipcRenderer;
-      ipc.send('command', 'application:reset-database', {});
+      ipc_().send('command', 'application:reset-database', {});
     } else {
       // Clear the cached data for the account and reset secrets once that has completed
       AppEnv.mailsyncBridge.resetCacheForAccount(account, { silent: true }).then(() => {
         console.log('Account removal complete.');
-        KeyManager.deleteAccountSecrets(account);
+        KeyManager_().deleteAccountSecrets(account);
       });
     }
   };
@@ -220,7 +242,7 @@ class AccountStore extends MailspringStore {
 
     // send the account JSON and cloud token to the KeyManager,
     // which gives us back a version with no secrets.
-    const cleanAccount = await KeyManager.extractAccountSecrets(account);
+    const cleanAccount = await KeyManager_().extractAccountSecrets(account);
 
     this._loadAccounts();
 
@@ -260,7 +282,7 @@ class AccountStore extends MailspringStore {
     items.forEach(({ accountId }) => {
       accounts[accountId] = accounts[accountId] || this.accountForId(accountId);
     });
-    return _.compact(Object.values(accounts));
+    return _().compact(Object.values(accounts));
   };
 
   accountForItems = items => {
@@ -273,6 +295,7 @@ class AccountStore extends MailspringStore {
 
   // Public: Returns the {Account} for the given email address, or null.
   accountForEmail = email => {
+    const Utils = Utils_();
     for (const account of this.accounts()) {
       if (Utils.emailIsEquivalent(email, account.emailAddress)) {
         return account;
@@ -294,7 +317,7 @@ class AccountStore extends MailspringStore {
   emailAddresses() {
     let addresses = (this.accounts() ? this.accounts() : []).map(a => a.emailAddress);
     addresses = addresses.concat((this.aliases() ? this.aliases() : []).map(a => a.email));
-    return _.unique(addresses);
+    return _().unique(addresses);
   }
 
   aliases() {

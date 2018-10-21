@@ -1,4 +1,4 @@
-import { ListTabular } from 'mailspring-component-kit';
+const { ListTabular } = require('mailspring-component-kit');
 
 /**
 This class takes an observable which vends QueryResultSets and adapts it so that
@@ -30,9 +30,9 @@ module.exports = class ObservableListDataSource extends ListTabular.DataSource {
       const previousResultSet = this._resultSet;
       this._resultSet = nextResultSet;
 
-      // If the result set is derived from a query, remove any items in the selection
-      // that do not match the query. This ensures that items "removed from the view"
-      // are removed from the selection.
+      // If the result set is derived = require(a query, remove any items in the selection
+      // that do not match the query. This ensures that items "removed = require(the view"
+      // are removed = require(the selection.
       const query = nextResultSet.query();
       if (query) {
         this.selection.removeItemsNotMatching(query.matchers());

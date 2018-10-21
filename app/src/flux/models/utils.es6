@@ -13,7 +13,8 @@ const DatabaseObjectRegistry = require('../../registries/database-object-registr
 
 let imageData = null;
 
-const Utils = module.exports =  {
+const Utils =
+module.exports =  {
 
   waitFor(latch, options = {}) {
     const timeout = options.timeout || 400;
@@ -55,11 +56,9 @@ const Utils = module.exports =  {
     if (!type) {
       return v;
     }
-
     if (DatabaseObjectRegistry.isInRegistry(type)) {
       return DatabaseObjectRegistry.deserialize(type, v);
     }
-
     return v;
   },
 
@@ -67,14 +66,15 @@ const Utils = module.exports =  {
     if (!json) {
       return null;
     }
-
     if (!json.__cls) {
+      // console.log(json)
+      // debugger
       throw new Error('convertToModel: no __cls found on object.');
     }
     if (!DatabaseObjectRegistry.isInRegistry(json.__cls)) {
       throw new Error('convertToModel: __cls is not a known class. ' + json.__cls);
     }
-    debugger
+
     return DatabaseObjectRegistry.deserialize(json.__cls, json);
   },
 

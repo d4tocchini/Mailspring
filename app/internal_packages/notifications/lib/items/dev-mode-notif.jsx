@@ -1,5 +1,6 @@
-import { React } from 'mailspring-exports';
-import { Notification } from 'mailspring-component-kit';
+const { React } = require('mailspring-exports');
+const { Notification } = require('mailspring-component-kit');
+const {PRODUCT_NAME} = require('mailspring/CONFIG')
 
 module.exports = class DevModeNotification extends React.Component {
   static displayName = 'DevModeNotification';
@@ -18,7 +19,7 @@ module.exports = class DevModeNotification extends React.Component {
       return <span />;
     }
     return (
-      <Notification priority="0" title="Mailspring is running in dev mode and may be slower!" />
+      <Notification priority="0" title={PRODUCT_NAME + " is running in dev mode and may be slower!"} />
     );
   }
 }

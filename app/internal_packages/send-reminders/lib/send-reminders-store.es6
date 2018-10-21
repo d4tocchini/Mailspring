@@ -1,18 +1,17 @@
-import {
+const {
   Actions,
   FocusedContentStore,
   SendDraftTask,
   DatabaseStore,
   Thread,
   DraftFactory,
-} from 'mailspring-exports';
-import MailspringStore from 'mailspring-store';
-
-import { PLUGIN_ID } from './send-reminders-constants';
-import {
+} = require('mailspring-exports');
+const MailspringStore = require('mailspring-store');
+const { PLUGIN_ID } = require('./send-reminders-constants');
+const {
   updateReminderMetadata,
   transferReminderMetadataFromDraftToThread,
-} from './send-reminders-utils';
+} = require('./send-reminders-utils');
 
 class SendRemindersStore extends MailspringStore {
   constructor() {
@@ -34,9 +33,9 @@ class SendRemindersStore extends MailspringStore {
 
   _sendReminderEmail = async (thread, sentHeaderMessageId) => {
     const body = `
-      <strong>Mailspring Reminder:</strong> This thread has been moved to the top of
-      your inbox by Mailspring because no one has replied to your message.</p>
-      <p>--The Mailspring Team</p>`;
+      <strong>Reminder:</strong> This thread has been moved to the top of
+      your inbox by because no one has replied to your message.</p>`
+      //<p>--The Mailspring Team</p>`;
 
     const draft = await DraftFactory.createDraftForResurfacing(thread, sentHeaderMessageId, body);
     Actions.queueTask(SendDraftTask.forSending(draft, { silent: true }));

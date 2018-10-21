@@ -1,5 +1,5 @@
-import _ from 'underscore';
-import MailspringStore from 'mailspring-store';
+const _ = require('underscore');
+const MailspringStore = require('mailspring-store');
 
 /**
 Public: The ComponentRegistry maintains an index of React components registered

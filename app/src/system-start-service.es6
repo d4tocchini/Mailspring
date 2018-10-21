@@ -1,8 +1,8 @@
-import path from 'path';
-import fs from 'fs';
-import os from 'os';
-import { exec } from 'child_process';
-import ws from 'windows-shortcuts';
+const path = require('path');
+const fs = require('fs');
+const os = require('os');
+const { exec } = require('child_process');
+const ws = require('windows-shortcuts');
 
 class SystemStartServiceBase {
   checkAvailability() {

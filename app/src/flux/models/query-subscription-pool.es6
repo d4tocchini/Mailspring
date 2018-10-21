@@ -57,7 +57,7 @@ class QuerySubscriptionPool {
 
     for (const key of Object.keys(this._subscriptions)) {
       const subscription = this._subscriptions[key];
-      console.log(key);
+      // console.log(key);
       console.group();
       for (const callback of subscription._callbacks) {
         console.log(`${callback._registrationPoint}`);

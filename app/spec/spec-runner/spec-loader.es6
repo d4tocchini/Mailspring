@@ -80,8 +80,7 @@ class N1SpecLoader {
           throw new Error(`Error requiring spec file: ${specFilePath}: ${err.toString()}`);
         }
       }
-    }
-
+    }    
     this._setSpecDirectory(specDirectory);
   }
 

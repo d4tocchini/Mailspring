@@ -81,13 +81,18 @@ describe('Model', function modelSpecs() {
 
       // Check entire trees are equivalent
       expect(clone.toJSON()).toEqual(old.toJSON());
-      process.exit(0)
-      // // Check object identity has changed
-      // expect(old.constructor.name).toEqual(clone.constructor.name);
-      // expect(old.testArray).not.toBe(clone.testArray);
-      // // Check classes
-      // expect(old.testArray[0]).not.toBe(clone.testArray[0]);
-      // expect(old.testArray[0].constructor.name).toEqual(clone.testArray[0].constructor.name);
+      // Check object identity has changed
+      expect(old.constructor.name).toEqual(clone.constructor.name);
+      expect(old.testArray).not.toBe(clone.testArray);
+      // Check classes
+      expect(old.testArray[0])
+        .not.toBe(clone.testArray[0]);
+      expect(old.testArray[0].toJSON())
+        .toEqual(clone.testArray[0].toJSON());
+      expect(old.testArray[0].constructor.name)
+        .toEqual(clone.testArray[0].constructor.name);
+      expect(old.testArray[0].constructor.name)
+        .toEqual('SubSubmodel');
     }));
 
   describe('fromJSON', () => {
@@ -241,9 +246,11 @@ describe('Model', function modelSpecs() {
       expect(this.model.attributeKeys().join(','), 'id,  accountId');
 
       expect(this.model.id + ' ' + this.model.accountId, '1234 ACD');
-
-      // spyOn(Model.attributes.accountId, 'toJSON').andCallFake(() => 'inflated value!');
-      const json = this.model.toJSON(true);
+      let json
+      json = this.model.toJSON(true);
+      expect(json.aid).toBe('ACD');
+      spyOn(Model.attributes.accountId, 'toJSON').andCallFake(() => 'inflated value!');
+      json = this.model.toJSON(true);
       expect(json instanceof Object).toBe(true);
       expect(json.aid).toBe('inflated value!');
       expect(json.id).toBe('1234');

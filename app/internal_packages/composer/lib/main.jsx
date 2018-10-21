@@ -1,15 +1,14 @@
 /* eslint react/sort-comp: 0 */
-import _ from 'underscore';
-import React from 'react';
-import {
+const React = require('react');
+const {
   Message,
   DraftStore,
   WorkspaceStore,
   ComponentRegistry,
   InflatesDraftClientId,
-} from 'mailspring-exports';
-import ComposeButton from './compose-button';
-import ComposerView from './composer-view';
+} = require('mailspring-exports');
+const ComposeButton = require('./compose-button');
+const ComposerView = require('./composer-view');
 
 const ComposerViewForDraftClientId = InflatesDraftClientId(ComposerView);
 
@@ -68,7 +67,7 @@ class ComposerWithWindowProps extends React.Component {
     // We delay so the view has time to update the restored draft. If we
     // don't delay the modal may come up in a state where the draft looks
     // like it hasn't been restored or has been lost.
-    _.delay(() => {
+    setTimeout(() => {
       AppEnv.showErrorDialog({ title: 'Error', message: msg }, { detail: detail });
     }, 100);
   }

@@ -1,7 +1,8 @@
-import { Actions, React, AccountStore, IdentityStore } from 'mailspring-exports';
-import { Notification } from 'mailspring-component-kit';
+const { Actions, React, AccountStore, IdentityStore } = require('mailspring-exports');
+const { Notification } = require('mailspring-component-kit');
 
-module.exports = class PleaseSubscribeNotification extends React.Component {
+
+class PleaseSubscribeNotification extends React.Component {
   static displayName = 'PleaseSubscribeNotification';
 
   constructor() {
@@ -28,10 +29,10 @@ module.exports = class PleaseSubscribeNotification extends React.Component {
 
     let msg = null;
     if (stripePlan === 'Basic' && accountCount > 4) {
-      msg = `You're syncing more than four accounts — please consider paying for Mailspring Pro!`;
+      msg = `You're syncing more than four accounts — please consider upgrading to Pro!`;
     }
     if (stripePlan !== stripePlanEffective) {
-      msg = `We're having trouble billing your Mailspring subscription.`;
+      msg = `We're having trouble billing your account.`;
     }
 
     return { msg };
@@ -59,3 +60,5 @@ module.exports = class PleaseSubscribeNotification extends React.Component {
     );
   }
 }
+
+module.exports = PleaseSubscribeNotification

@@ -1,9 +1,9 @@
-import MailspringStore from 'mailspring-store';
-import Contact from '../models/contact';
-import RegExpUtils from '../../regexp-utils';
-import DatabaseStore from './database-store';
-import AccountStore from './account-store';
-import ComponentRegistry from '../../registries/component-registry';
+const MailspringStore = require('mailspring-store');
+const Contact = require('../models/contact');
+const RegExpUtils = require('../../regexp-utils');
+const DatabaseStore = require('./database-store');
+const AccountStore = require('./account-store');
+const ComponentRegistry = require('../../registries/component-registry');
 
 /**
 Public: ContactStore provides convenience methods for searching contacts and

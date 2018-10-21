@@ -1,9 +1,10 @@
-import { ipcRenderer } from 'electron';
-import { Emitter } from 'event-kit';
-import path from 'path';
-import fs from 'fs-plus';
+const { ipcRenderer } = require('electron');
+const { Emitter } = require('event-kit');
+const path = require('path');
+const fs = require('fs-plus');
+const LessCompileCache = require('./less-compile-cache');
+const {PRODUCT_NAME} = require('mailspring/CONFIG')
 
-import LessCompileCache from './less-compile-cache';
 let x = LessCompileCache
 
 // D4
@@ -193,7 +194,7 @@ module.exports = class ThemeManager {
     } else if (ext === '.css') {
       return fs.readFileSync(stylesheetPath, 'utf8');
     } else {
-      throw new Error(`Mailspring does not support stylesheets with the extension: ${ext}`);
+      throw new Error(`${PRODUCT_NAME} does not support stylesheets with the extension: ${ext}`);
     }
   }
 

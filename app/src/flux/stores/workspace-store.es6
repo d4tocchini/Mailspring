@@ -107,7 +107,7 @@ class WorkspaceStore extends MailspringStore {
   };
 
   _onSetFocus = ({ collection, item }) => {
-    debugger
+    // debugger
     if (collection === 'thread') {
       if (this.layoutMode() === 'list') {
         if (item && this.topSheet() !== Sheet.Thread) {

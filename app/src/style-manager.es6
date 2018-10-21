@@ -1,6 +1,6 @@
 import { Disposable } from 'event-kit';
 
-module.exports = class StyleManager {
+class StyleManager {
   constructor() {
     this.styleElementsBySourcePath = {};
 
@@ -67,3 +67,5 @@ module.exports = class StyleManager {
     }
   }
 }
+
+module.exports = StyleManager

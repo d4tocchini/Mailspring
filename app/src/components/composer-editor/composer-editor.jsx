@@ -8,7 +8,7 @@ import { plugins, convertFromHTML, convertToHTML } from './conversion';
 import { lastUnquotedNode } from './base-block-plugins';
 import { changes as InlineAttachmentChanges } from './inline-attachment-plugins';
 
-module.exports = class ComposerEditor extends React.Component {
+class ComposerEditor extends React.Component {
   // Public API
 
   constructor(props) {
@@ -229,3 +229,5 @@ module.exports = class ComposerEditor extends React.Component {
     );
   }
 }
+
+module.exports = ComposerEditor

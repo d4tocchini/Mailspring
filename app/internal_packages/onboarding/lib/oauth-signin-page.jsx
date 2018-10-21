@@ -1,12 +1,11 @@
-import { shell, clipboard } from 'electron';
-import { React, PropTypes } from 'mailspring-exports';
-import { RetinaImg } from 'mailspring-component-kit';
-import http from 'http';
-import url from 'url';
-
-import FormErrorMessage from './form-error-message';
-import { LOCAL_SERVER_PORT } from './onboarding-helpers';
-
+const { shell, clipboard } = require('electron');
+const { React, PropTypes } = require('mailspring-exports');
+const { RetinaImg } = require('mailspring-component-kit');
+const http = require('http');
+const url = require('url');
+const FormErrorMessage = require('./form-error-message');
+const { LOCAL_SERVER_PORT } = require('./onboarding-helpers');
+const {PRODUCT_NAME} = require('mailspring/CONFIG')
 module.exports = class OAuthSignInPage extends React.Component {
   static displayName = 'OAuthSignInPage';
 
@@ -53,7 +52,7 @@ module.exports = class OAuthSignInPage extends React.Component {
       const { query } = url.parse(request.url, { querystring: true });
       if (query.code) {
         this._onReceivedCode(query.code);
-        response.writeHead(302, { Location: 'https://id.getmailspring.com/oauth/finished' });
+        // response.writeHead(302, { Location: 'https://id.getmailspring.com/oauth/finished' });
         response.end();
       } else {
         response.end('Unknown Request');
@@ -63,7 +62,7 @@ module.exports = class OAuthSignInPage extends React.Component {
       if (err) {
         AppEnv.showErrorDialog({
           title: 'Unable to Start Local Server',
-          message: `To listen for the Gmail Oauth response, Mailspring needs to start a webserver on port ${LOCAL_SERVER_PORT}. Please go back and try linking your account again. If this error persists, use the IMAP/SMTP option with a Gmail App Password.\n\n${err}`,
+          message: `To listen for the Gmail Oauth response, ${PRODUCT_NAME} needs to start a webserver on port ${LOCAL_SERVER_PORT}. Please go back and try linking your account again. If this error persists, use the IMAP/SMTP option with a Gmail App Password.\n\n${err}`,
         });
         return;
       }

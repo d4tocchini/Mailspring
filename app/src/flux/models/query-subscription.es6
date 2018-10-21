@@ -2,8 +2,8 @@ const DatabaseStore = require('../stores/database-store');
 const QueryRange = require('./query-range');
 const MutableQueryResultSet = require('./mutable-query-result-set');
 
-const QuerySubscription =
-  module.exports = class {
+
+class QuerySubscription {
 
   constructor(query, options = {}) {
     this._query = query;
@@ -304,3 +304,5 @@ const QuerySubscription =
     }
   }
 }
+
+module.exports = QuerySubscription

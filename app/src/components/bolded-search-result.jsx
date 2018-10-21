@@ -1,6 +1,6 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import Utils from '../flux/models/utils';
+const React = require('react');
+const PropTypes = require('prop-types');
+const Utils = require('../flux/models/utils');
 
 module.exports = BoldedSearchResult
 

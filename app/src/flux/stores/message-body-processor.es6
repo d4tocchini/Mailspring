@@ -1,8 +1,8 @@
-import _ from 'underscore';
-import Message from '../models/message';
-import MessageStore from './message-store';
-import DatabaseStore from './database-store';
-import SanitizeTransformer from '../../services/sanitize-transformer';
+const _ = require('underscore');
+const Message = require('../models/message');
+const MessageStore = require('./message-store');
+const DatabaseStore = require('./database-store');
+const SanitizeTransformer = require('../../services/sanitize-transformer');
 
 class MessageBodyProcessor {
   constructor() {
@@ -10,6 +10,44 @@ class MessageBodyProcessor {
     this.resetCache();
 
     this._timeouts = {};
+
+    this.updateCacheForMessage = async changedMessage => {
+      // reprocess any subscription using the new message data. Note that
+      // changedMessage may not have a loaded body if it wasn't changed. In
+      // that case, we use the previous body. Note: metadata changes, etc.
+      // can cause the body to change, even if the HTML is identical!
+      const subscriptions = this._subscriptions.filter(
+        ({ message }) => message.id === changedMessage.id
+      );
+  
+      const updatedMessage = changedMessage.clone();
+      updatedMessage.body =
+        updatedMessage.body || (subscriptions[0] && subscriptions[0].message.body);
+      if (!updatedMessage.body) {
+        return;
+      }
+  
+      const changedKey = this._key(changedMessage);
+  
+      // grab the old cached value if there is one
+      const oldCacheRecord = this._recentlyProcessedD[changedKey];
+  
+      // remove the message from the cache so retrieve() will reprocess
+      // and insert it into the cache again
+      delete this._recentlyProcessedD[changedKey];
+      this._recentlyProcessedA = this._recentlyProcessedA.filter(({ key }) => key !== changedKey);
+  
+      // run the processor
+      const output = await this.retrieve(updatedMessage);
+  
+      // only trigger if the body has really changed
+      if (!oldCacheRecord || output !== oldCacheRecord.body) {
+        for (const subscription of subscriptions) {
+          subscription.callback(output);
+          subscription.message = updatedMessage;
+        }
+      }
+    };
 
     DatabaseStore.listen(change => {
       if (change.objectClass === Message.name) {
@@ -42,44 +80,6 @@ class MessageBodyProcessor {
       this.retrieve(message).then(callback);
     });
   }
-
-  updateCacheForMessage = async changedMessage => {
-    // reprocess any subscription using the new message data. Note that
-    // changedMessage may not have a loaded body if it wasn't changed. In
-    // that case, we use the previous body. Note: metadata changes, etc.
-    // can cause the body to change, even if the HTML is identical!
-    const subscriptions = this._subscriptions.filter(
-      ({ message }) => message.id === changedMessage.id
-    );
-
-    const updatedMessage = changedMessage.clone();
-    updatedMessage.body =
-      updatedMessage.body || (subscriptions[0] && subscriptions[0].message.body);
-    if (!updatedMessage.body) {
-      return;
-    }
-
-    const changedKey = this._key(changedMessage);
-
-    // grab the old cached value if there is one
-    const oldCacheRecord = this._recentlyProcessedD[changedKey];
-
-    // remove the message from the cache so retrieve() will reprocess
-    // and insert it into the cache again
-    delete this._recentlyProcessedD[changedKey];
-    this._recentlyProcessedA = this._recentlyProcessedA.filter(({ key }) => key !== changedKey);
-
-    // run the processor
-    const output = await this.retrieve(updatedMessage);
-
-    // only trigger if the body has really changed
-    if (!oldCacheRecord || output !== oldCacheRecord.body) {
-      for (const subscription of subscriptions) {
-        subscription.callback(output);
-        subscription.message = updatedMessage;
-      }
-    }
-  };
 
   version() {
     return this._version;

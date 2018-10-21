@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 
 import ScrollRegion from './scroll-region';
-
+import Spinner from './spinner';
 
 import ListDataSource from './list-data-source';
 import ListSelection from './list-selection';
@@ -22,7 +22,7 @@ class ListColumn {
 }
 
 // D4
-
+const EMPTY_ITEMS = []
 class VPoolComponent extends Component {
 
   renderItem(item, idx, id, key, itemProps) {
@@ -52,7 +52,7 @@ class VPoolComponent extends Component {
       this._prerender_items(items)
       const res = this._render_items(items)
       this._postrender_items()
-      this.items = []
+      this.items = EMPTY_ITEMS
       return res
     }
     this._loop_items = function(items, fn_name) {
@@ -162,8 +162,6 @@ class ListTabularRows extends VPoolComponent {
   static displayName = 'ListTabularRows';
 
   static propTypes = {
-    vstart: PropTypes.number,
-    vend: PropTypes.number,
     rows: PropTypes.array,
     columns: PropTypes.array.isRequired,
     draggable: PropTypes.bool,
@@ -174,6 +172,10 @@ class ListTabularRows extends VPoolComponent {
     onDoubleClick: PropTypes.func,
     onDragStart: PropTypes.func,
     onDragEnd: PropTypes.func,
+    _vrange_start: PropTypes.number,
+    _vrange_end: PropTypes.number,
+    _pre_buffer: PropTypes.number,
+    _post_buffer: PropTypes.number,
   };
 
   constructor(a,b,c) {
@@ -183,6 +185,13 @@ class ListTabularRows extends VPoolComponent {
   // shouldComponentUpdate(nextProps, nextState) {
   //   return !Utils.isEqualReact(nextProps, this.props) || !Utils.isEqualReact(nextState, this.state);
   // }
+
+  _assign_row_key(id, idx, n) {
+    const map = this.rowkeymap
+    return map.has(id)
+      ? map.get(id)
+      : map.set(id, )
+  }
 
   // D4
   renderItem(item, idx, id, key, itemProps) {
@@ -206,25 +215,34 @@ class ListTabularRows extends VPoolComponent {
     let rendered
     const prev_child_props = this._id2props.get(id)
     this._id2props.set(id, child_props)
-    const in_render_cache = this._id2render.has(id)
-    const in_visible_range = this.props.vstart < idx && idx < this.props.vend
+
     if (
-      in_render_cache === false ||
-      (in_visible_range === true
-      && ListTabularItem.propsDiff(child_props, prev_child_props)
-      )
-    ){
+        prev_child_props === undefined
+        || (
+          (this.props._vrange_start + this.props._pre_buffer - 1 < (idx)
+          && this.props._vrange_end - this.props._post_buffer + 1 > (idx)
+          )
+          // && (
+          //   this.props._RANGE_DID_CHANGE === false
+          //   || ListTabularItem.propsDiff(child_props, prev_child_props)
+          // )
+        )
+      ) {
         this._id2render.set(id,
           rendered = React.createElement(ListTabularItem, child_props)
         )
+        // console.log(idx,true)
     }
     else {
-      return this._id2render.get(id)
+      rendered = this._id2render.get(id) || null
+      // console.log(idx,false)
     }
+    return rendered
 
   }
 
   render() {
+
     const { rows, innerStyles, draggable, onDragStart, onDragEnd } = this.props;
     return (
       <div
@@ -235,7 +253,6 @@ class ListTabularRows extends VPoolComponent {
         draggable={draggable}
       >
         {this.renderItems(rows)}
-
       </div>
     );
   }
@@ -290,18 +307,19 @@ class ListTabular extends Component {
 
     // D4
     this._RANGE_DID_CHANGE = false
-    this._pre_buffer = 16
-    this._post_buffer = 16
-    this._vstart = -9999999
-    this._vend = 9999999
+    this._pre_buffer = 12
+    this._post_buffer = 12
     this._is_updating_range = false
-    this._prev_range_start = -this._pre_buffer
-    this._prev_range_end = -this._post_buffer
-    this._coerce_range_update = () => {
+
+    this._vrange_start =
       this._prev_range_start = -this._pre_buffer
-      this._prev_range_end = -this._post_buffer
-      this._vstart = -9999999
-      this._vend = 9999999
+    this._vrange_end =
+      this._prev_range_end = 9999999
+    this._coerce_range_update = () => {
+      this._vrange_start =
+        this._prev_range_start = -this._pre_buffer
+      this._vrange_end =
+        this._prev_range_end = 9999999
     }
     this._updateRangeState = () => {
       if (this._is_updating_range === false) {
@@ -321,17 +339,10 @@ class ListTabular extends Component {
 
       // Expand the start/end so that you can advance the keyboard cursor fast and
       // we have items to move to and then scroll to.
-      const d = rangeEnd - rangeStart
-      this._pre_buffer = d + (d >> 1)
-      this._post_buffer = d << 1
-
-      this._vstart = rangeStart - 1
-      this._vend = rangeEnd +  1
-
-      rangeStart = Math.max(0, rangeStart - this._pre_buffer );
-      rangeEnd = Math.min(rangeEnd + this._post_buffer , this.state.count + 1);
-
-
+      this._vrange_start = rangeStart - this._pre_buffer
+      rangeStart = Math.max(0, this._vrange_start);
+      this._vrange_end = rangeEnd + this._post_buffer
+      rangeEnd = Math.min(this._vrange_end, this.state.count + 1);
 
       const rangeStart_delta = Math.abs(rangeStart - this._prev_range_start) //this.state.renderedRangeStart)
       const rangeEnd_delta = Math.abs(rangeEnd - this._prev_range_end) //this.state.renderedRangeEnd)
@@ -340,14 +351,13 @@ class ListTabular extends Component {
       const shouldUpdate =
           (rangeStart_delta > 0) || //(this._pre_buffer >> 1)) ||
           (rangeEnd_delta > 0 )
-          || true
 
         // ) ||
         // (
         //   (rangeEnd === this.state.renderedRangeEnd) &&
         //   (rangeStart === this.state.renderedRangeStart)
         // );
-        
+
       if (shouldUpdate === true ) {
         this._RANGE_DID_CHANGE = true
 
@@ -546,7 +556,8 @@ class ListTabular extends Component {
       if (animatingCount > 8 || animatingCount === Object.keys(this.state.items).length) {
         animatingOut = {};
       }
-    }    
+    }
+
     return {
       items,
       animatingOut,
@@ -577,12 +588,9 @@ class ListTabular extends Component {
     const rows = this.getRowsToRender();
     const innerStyles = { height: count * itemHeight };
 
-    const visible = (!loaded && empty)|0
-
     return (
       <div className={`list-container list-tabular ${className}`}>
         <ScrollRegion
-          key="scroll-region"
           ref={cm => {
             this._scrollRegion = cm;
           }}
@@ -591,9 +599,11 @@ class ListTabular extends Component {
           scrollTooltipComponent={scrollTooltipComponent}
         >
           <ListTabularRows
-            key="list-rows"
-            vstart={this._vstart}
-            vend={this._vend}
+            _RANGE_DID_CHANGE={this._RANGE_DID_CHANGE}
+            _vrange_start={this._vrange_start}
+            _vrange_end={this._vrange_end}
+            _pre_buffer={this._pre_buffer}
+            _post_buffer={this._post_buffer}
             rows={rows}
             columns={columns}
             draggable={draggable}
@@ -605,65 +615,13 @@ class ListTabular extends Component {
             onDragStart={onDragStart}
             onDoubleClick={onDoubleClick}
           />
-          <div
-            key="footer"
-            className="footer">
-            {footer}
-          </div>
+          <div className="footer">{footer}</div>
         </ScrollRegion>
-        {renderSpinner(visible)}
-        {renderEmptyComponent(visible, EmptyComponent)}
+        <Spinner visible={!loaded && empty} />
+        <EmptyComponent visible={loaded && empty} />
       </div>
     );
   }
 }
-
-function renderSpinner(vis) {
-  const Spinner = require('./spinner');
-  let _spinners = [
-    (
-      <Spinner
-        key="spinner"
-        visible={false} />
-    ),
-    (
-      <Spinner
-        key="spinner"
-        visible={true} />
-    )
-  ]
-  renderSpinner = function (vis) {
-    return _spinners[vis]
-  }
-  return renderSpinner(vis)
-}
-
-const EmptyComponentRenderers = new WeakMap()
-
-function renderEmptyComponent(vis, EmptyComponent) {
-  return EmptyComponentRenderers.has(EmptyComponent)
-    ? EmptyComponentRenderers.get(EmptyComponent)(vis)
-    : (function (vis) {
-      let _empties = [
-        (
-          <EmptyComponent
-              key="empty"
-              visible={false} />
-        ),
-        (
-          <EmptyComponent
-              key="empty"
-              visible={false} />
-        )
-      ]
-      const renderer = function (vis) {
-        return _empties[vis]
-      }
-      EmptyComponentRenderers.set(EmptyComponent, renderer)
-      return renderer(vis)
-    })(vis)
-}
-
-
 
 module.exports = ListTabular;

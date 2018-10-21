@@ -1,9 +1,7 @@
-import utf7 from 'utf7';
+const utf7 = require('utf7');
 const Task = require('./task');
 
-const DestroyCategoryTask =
-  module.exports = Task.setup(
-  class extends Task {
+class DestroyCategoryTask extends Task {
 
     static defineAttributes (Attribute) {
       Attribute('String', { modelKey: 'path', })
@@ -13,4 +11,5 @@ const DestroyCategoryTask =
       return `Deleting ${utf7.imap.decode(this.path)}`;
     }
   }
-)
+
+module.exports = Task.setup(DestroyCategoryTask)

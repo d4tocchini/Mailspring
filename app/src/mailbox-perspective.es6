@@ -1,22 +1,21 @@
 /* eslint global-require: 0 */
 /* eslint no-use-before-define: 0 */
-import _ from 'underscore';
-
-import Utils from './flux/models/utils';
-import TaskFactory from './flux/tasks/task-factory';
-import AccountStore from './flux/stores/account-store';
-import CategoryStore from './flux/stores/category-store';
-import DatabaseStore from './flux/stores/database-store';
-import OutboxStore from './flux/stores/outbox-store';
-import ThreadCountsStore from './flux/stores/thread-counts-store';
-import FolderSyncProgressStore from './flux/stores/folder-sync-progress-store';
+const _ = require('underscore');
+const Utils = require('./flux/models/utils');
+const TaskFactory = require('./flux/tasks/task-factory');
+const AccountStore = require('./flux/stores/account-store');
+const CategoryStore = require('./flux/stores/category-store');
+const DatabaseStore = require('./flux/stores/database-store');
+const OutboxStore = require('./flux/stores/outbox-store');
+const ThreadCountsStore = require('./flux/stores/thread-counts-store');
+const FolderSyncProgressStore = require('./flux/stores/folder-sync-progress-store');
 const MutableQuerySubscription = require('./flux/models/mutable-query-subscription');
 const UnreadQuerySubscription = require('./flux/models/unread-query-subscription');
 const Thread = require('./flux/models/thread');
 const Category = require('./flux/models/category');
 const Label = require('./flux/models/label');
 const Folder = require('./flux/models/folder');
-import Actions from './flux/actions';
+const Actions = require('./flux/actions');
 
 let WorkspaceStore = null;
 let ChangeStarredTask = null;

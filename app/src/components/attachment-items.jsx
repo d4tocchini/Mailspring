@@ -1,13 +1,25 @@
-import fs from 'fs';
-import path from 'path';
-import classnames from 'classnames';
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import ReactDOM from 'react-dom';
-import { pickHTMLProps } from 'pick-react-known-prop';
-import RetinaImg from './retina-img';
-import Flexbox from './flexbox';
-import Spinner from './spinner';
+
+
+const React = require('react');
+const { Component } = React;
+const fs = require('fs');
+const path = require('path');
+const classnames = require('classnames');
+const PropTypes = require('prop-types');
+const ReactDOM = require('react-dom');
+const { pickHTMLProps } = require('pick-react-known-prop');
+const RetinaImg = require('./retina-img');
+const Flexbox = require('./flexbox');
+const Spinner = require('./spinner');
+
+// TODO:
+// debugger
+// console.log(10101010101)
+// console.log({
+//   RetinaImg,
+//   Flexbox,
+//   Spinner
+// })
 
 const propTypes = {
   className: PropTypes.string,
@@ -87,21 +99,16 @@ function AttachmentActionIcon(props) {
     </div>
   );
 }
-AttachmentActionIcon.propTypes = {
-  removeIcon: PropTypes.string,
-  downloadIcon: PropTypes.string,
-  retinaImgMode: PropTypes.string,
-  ...propTypes,
-};
+AttachmentActionIcon.propTypes = Object.assign({},
+  propTypes,
+  {
+    removeIcon: PropTypes.string,
+    downloadIcon: PropTypes.string,
+    retinaImgMode: PropTypes.string,
+  }
+)
 
-export class AttachmentItem extends Component {
-  static displayName = 'AttachmentItem';
-
-  static containerRequired = false;
-
-  static propTypes = propTypes;
-
-  static defaultProps = defaultProps;
+class AttachmentItem extends Component {
 
   _canPreview() {
     const { filePath, previewable } = this.props;
@@ -237,18 +244,12 @@ export class AttachmentItem extends Component {
     );
   }
 }
+AttachmentItem.displayName = 'AttachmentItem';
+AttachmentItem.containerRequired = false;
+AttachmentItem.propTypes = propTypes;
+AttachmentItem.defaultProps = defaultProps;
 
-export class ImageAttachmentItem extends Component {
-  static displayName = 'ImageAttachmentItem';
-
-  static propTypes = {
-    imgProps: PropTypes.object,
-    ...propTypes,
-  };
-
-  static defaultProps = defaultProps;
-
-  static containerRequired = false;
+class ImageAttachmentItem extends Component {
 
   _onOpenAttachment = () => {
     const { onOpenAttachment } = this.props;
@@ -309,3 +310,22 @@ export class ImageAttachmentItem extends Component {
     );
   }
 }
+
+ImageAttachmentItem.displayName = 'ImageAttachmentItem';
+ImageAttachmentItem.propTypes = Object.assign({},
+    propTypes,
+    {
+    imgProps: PropTypes.object,
+    }
+)
+
+ImageAttachmentItem.defaultProps = defaultProps;
+ImageAttachmentItem.containerRequired = false;
+
+module.exports = {
+  AttachmentItem,
+  ImageAttachmentItem
+}
+// export AttachmentItem
+// export ImageAttachmentItem
+

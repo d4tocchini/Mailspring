@@ -1,7 +1,7 @@
-import { React, PropTypes, FocusedContentStore, Actions } from 'mailspring-exports';
-import { FluxContainer } from 'mailspring-component-kit';
+const { React, PropTypes, FocusedContentStore, Actions } = require('mailspring-exports');
+const { FluxContainer } = require('mailspring-component-kit');
 
-module.exports = class FocusContainer extends React.Component {
+class FocusContainer extends React.Component {
   static displayName = 'FocusContainer';
   static propTypes = {
     children: PropTypes.element,
@@ -33,3 +33,5 @@ module.exports = class FocusContainer extends React.Component {
     );
   }
 }
+
+module.exports = FocusContainer

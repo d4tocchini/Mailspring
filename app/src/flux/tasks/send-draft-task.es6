@@ -7,6 +7,7 @@ const Actions = require('../actions');
 const SoundRegistry = require('../../registries/sound-registry');
 const ComposerExtensionRegistry = require('../../registries/extension-registry').Composer;
 const { LocalizedErrorStrings } = require('../../mailsync-process');
+const {PRODUCT_NAME} = require('mailspring/CONFIG')
 
 function applyExtensionTransforms(draft, recipient) {
   const extensions = ComposerExtensionRegistry.extensions();
@@ -79,7 +80,7 @@ function applyExtensionTransforms(draft, recipient) {
       return this.silent ? null : 'Sending message';
     }
 
-    willBeQueued() {
+    willBeQueued() {    debugger
       const account = AccountStore.accountForEmail(this.draft.from[0].email);
 
       if (!this.draft.from[0]) {
@@ -96,6 +97,7 @@ function applyExtensionTransforms(draft, recipient) {
     }
 
     onSuccess() {
+      // debugger
       Actions.draftDeliverySucceeded({
         headerMessageId: this.draft.headerMessageId,
         accountId: this.draft.accountId,
@@ -123,12 +125,12 @@ function applyExtensionTransforms(draft, recipient) {
         errorMessage =
           'Your `Sent Mail` folder could not be automatically detected. Visit Preferences > Folders to choose a Sent folder and then try again.';
         errorDetail =
-          'In order to send mail through Mailspring, your email account must have a Sent Mail folder. You can specify a Sent folder manually by visiting Preferences > Folders and choosing a folder name from the dropdown menu.';
+          `In order to send mail through, your email account must have a Sent Mail folder. You can specify a Sent folder manually by visiting Preferences > Folders and choosing a folder name from the dropdown menu.`;
       } else if (key === 'no-trash-folder') {
         errorMessage =
           'Your `Trash` folder could not be automatically detected. Visit Preferences > Folders to choose a Trash folder and then try again.';
         errorDetail =
-          'In order to send mail through Mailspring, your email account must have a Trash folder. You can specify a Trash folder manually by visiting Preferences > Folders and choosing a folder name from the dropdown menu.';
+          'In order to send mail through, your email account must have a Trash folder. You can specify a Trash folder manually by visiting Preferences > Folders and choosing a folder name from the dropdown menu.';
       } else if (key === 'send-partially-failed') {
         const [smtpError, emails] = debuginfo.split(':::');
         errorMessage =
@@ -137,7 +139,7 @@ function applyExtensionTransforms(draft, recipient) {
           LocalizedErrorStrings[smtpError]
         }`;
       } else if (key === 'send-failed') {
-        errorMessage = `Sorry, Mailspring was unable to deliver this message: ${
+        errorMessage = `Sorry, ${PRODUCT_NAME} was unable to deliver this message: ${
           LocalizedErrorStrings[debuginfo]
         }`;
       } else {

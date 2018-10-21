@@ -1,5 +1,6 @@
-import { RetinaImg } from 'mailspring-component-kit';
-import { React } from 'mailspring-exports';
+const { RetinaImg } = require('mailspring-component-kit');
+const { React } = require('mailspring-exports');
+const {PRODUCT_NAME} = require('mailspring/CONFIG')
 
 module.exports = class InitialPreferencesPage extends React.Component {
   static displayName = 'InitialPreferencesPage';
@@ -11,7 +12,7 @@ module.exports = class InitialPreferencesPage extends React.Component {
   render() {
     return (
       <div className="page opaque initial-subscription" style={{ width: 900, height: 620 }}>
-        <h1 style={{ paddingTop: 100 }}>Go further with Mailspring Pro</h1>
+        <h1 style={{ paddingTop: 100 }}>Go further with Pro</h1>
         <div
           style={{
             display: 'flex',
@@ -31,12 +32,12 @@ module.exports = class InitialPreferencesPage extends React.Component {
           </div>
           <div className="basic-explanation">
             <p>
-              You are using <strong>Mailspring Basic</strong>, which is free! You can link up to
+              You are using <strong>{PRODUCT_NAME + ' Basic'}</strong>, which is free! You can link up to
               four email accounts and try pro features like send later, read receipts and reminders
               a few times a week.
             </p>
             <p>
-              If you enjoy Mailspring, upgrade to Mailspring Pro from{' '}
+              If you enjoy {PRODUCT_NAME}, upgrade to Pro from{' '}
               <strong>Preferences > Subscription</strong> to enable all these great features
               permanently:
             </p>

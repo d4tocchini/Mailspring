@@ -1,4 +1,7 @@
-const _ = require('underscore');
+let __;
+function _() {
+  return __ || (__ = require('underscore'));
+}
 const React = require('react');
 const ReactDOM = require('react-dom');
 const classnames = require('classnames');
@@ -149,7 +152,9 @@ class ThreadList extends React.Component {
           ? 'unstar'
           : task instanceof ChangeFolderTask
             ? task.folder.name
-            : task instanceof ChangeLabelsTask ? 'archive' : 'remove';
+            : task instanceof ChangeLabelsTask
+              ? 'archive'
+              : 'remove';
 
       return `swipe-${name}`;
     };
@@ -200,6 +205,7 @@ class ThreadList extends React.Component {
 
     const dataSource = ThreadListStore.dataSource();
     if (itemThreadId && dataSource.selection.ids().includes(itemThreadId)) {
+      const _ = _();
       return {
         threadIds: dataSource.selection.ids(),
         accountIds: _.uniq(_.pluck(dataSource.selection.items(), 'accountId')),

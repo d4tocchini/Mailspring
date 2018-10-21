@@ -1,12 +1,12 @@
 /* eslint global-require: 0*/
 
-import { DraftStore, Actions, QuotedHTMLTransformer, RegExpUtils } from 'mailspring-exports';
+const { DraftStore, Actions, QuotedHTMLTransformer, RegExpUtils } = require('mailspring-exports');
 const { remote } = require('electron');
 const MailspringStore = require('mailspring-store')
 const path = require('path');
 const fs = require('fs');
-
-import TemplateActions from './template-actions';
+const TemplateActions = require('./template-actions');
+const {PRODUCT_NAME} = require('mailspring/CONFIG')
 
 // Support accented characters in template names
 // https://regex101.com/r/nD3eY8/1
@@ -77,7 +77,7 @@ class TemplateStore extends MailspringStore {
       if (err) {
         AppEnv.showErrorDialog({
           title: 'Cannot scan templates directory',
-          message: `Mailspring was unable to read the contents of your templates directory (${
+          message: `${PRODUCT_NAME} was unable to read the contents of your templates directory (${
             this._templatesDir
           }). You may want to delete this folder or ensure filesystem permissions are set correctly.`,
         });

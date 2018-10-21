@@ -1,13 +1,13 @@
-import {
+const {
   React,
   PropTypes,
   MailspringAPIRequest,
   APIError,
   FeatureUsageStore,
-} from 'mailspring-exports';
-import { RetinaImg } from 'mailspring-component-kit';
-import classnames from 'classnames';
-import _ from 'underscore';
+} = require('mailspring-exports');
+const { RetinaImg } = require('mailspring-component-kit');
+const classnames = require('classnames');
+const _ = require('underscore');
 
 module.exports = class MetadataComposerToggleButton extends React.Component {
   static displayName = 'MetadataComposerToggleButton';

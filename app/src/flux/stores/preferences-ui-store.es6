@@ -1,9 +1,9 @@
-import { ipcRenderer } from 'electron';
-import _ from 'underscore';
-import MailspringStore from 'mailspring-store';
-import WorkspaceStore from './workspace-store';
+const { ipcRenderer } = require('electron');
+const _ = require('underscore');
+const MailspringStore = require('mailspring-store');
+const WorkspaceStore = require('./workspace-store');
 const FocusedPerspectiveStore = require('./focused-perspective-store');
-import Actions from '../actions';
+const Actions = require('../actions');
 
 const MAIN_TAB_ITEM_ID = 'General';
 

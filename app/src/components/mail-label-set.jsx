@@ -1,17 +1,17 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import FocusedPerspectiveStore from '../flux/stores/focused-perspective-store';
-import CategoryStore from '../flux/stores/category-store';
-import MessageStore from '../flux/stores/message-store';
-import AccountStore from '../flux/stores/account-store';
-import { MailLabel } from './mail-label';
-import Actions from '../flux/actions';
+const React = require('react');
+const PropTypes = require('prop-types');
+const InjectedComponentSet = require('./injected-component-set');
+const FocusedPerspectiveStore = require('../flux/stores/focused-perspective-store');
+const CategoryStore = require('../flux/stores/category-store');
+const MessageStore = require('../flux/stores/message-store');
+const AccountStore = require('../flux/stores/account-store');
+const { MailLabel } = require('./mail-label');
+const Actions = require('../flux/actions');
 const ChangeLabelsTask = require('../flux/tasks/change-labels-task');
-import InjectedComponentSet from './injected-component-set';
 
 const LabelComponentCache = {};
 
-module.exports = class MailLabelSet extends React.Component {
+class MailLabelSet extends React.Component {
   static displayName = 'MailLabelSet';
 
   static propTypes = {
@@ -78,3 +78,5 @@ module.exports = class MailLabelSet extends React.Component {
     );
   }
 }
+
+module.exports = MailLabelSet

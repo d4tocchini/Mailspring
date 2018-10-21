@@ -74,7 +74,7 @@ module.exports = class ThreadSharingPopover extends React.Component {
     } catch (error) {
       AppEnv.reportError(error);
       AppEnv.showErrorDialog(
-        `Sorry, we were unable to contact the Mailspring servers to share this thread.\n\n${
+        `Sorry, we were unable to contact our servers to share this thread.\n\n${
           error.message
         }`
       );
@@ -106,7 +106,7 @@ module.exports = class ThreadSharingPopover extends React.Component {
               />
               Syncing...
               <div className="meta">
-                Mailspring is syncing this thread and it's attachments to the cloud. For long
+                Currently syncing this thread and it's attachments to the cloud. For long
                 threads, this may take a moment.
               </div>
             </label>

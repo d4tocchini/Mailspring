@@ -15,7 +15,7 @@
  *
  * Note that there is one registry per window.
  */
-module.exports = class SerializableRegistry {
+class SerializableRegistry {
   
   constructor() {
     this._constructorFactories = {};
@@ -39,10 +39,10 @@ module.exports = class SerializableRegistry {
 
   deserialize(name, dataJSON) {
     let data = dataJSON;
+
     if (typeof data === 'string') {
       data = JSON.parse(dataJSON);
     }
-
     const constructor = this.get(name);
 
     if (typeof constructor !== 'function') {
@@ -50,8 +50,8 @@ module.exports = class SerializableRegistry {
 Your constructor factory must return a class constructor.`);
     }
 
-    const object = new constructor();
-    object.fromJSON(data);
+    const object = new constructor(data);
+    // object.fromJSON(data);
 
     return object;
   }
@@ -64,3 +64,4 @@ Your constructor factory must return a class constructor.`);
     delete this._constructorFactories[name];
   }
 }
+module.exports = SerializableRegistry

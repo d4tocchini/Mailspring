@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'underscore';
 
-module.exports = class DropZone extends React.Component {
+class DropZone extends React.Component {
   static propTypes = {
     shouldAcceptDrop: PropTypes.func.isRequired,
     onDrop: PropTypes.func.isRequired,
@@ -75,3 +75,5 @@ module.exports = class DropZone extends React.Component {
     );
   }
 }
+
+module.exports = DropZone

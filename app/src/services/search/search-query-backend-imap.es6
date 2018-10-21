@@ -1,5 +1,8 @@
-import _ from 'underscore';
-import { AndQueryExpression, SearchQueryExpressionVisitor } from './search-query-ast';
+let __;
+function _() {
+  return __ || (__ = require('underscore'));
+}
+const { AndQueryExpression, SearchQueryExpressionVisitor } = require('./search-query-ast');
 
 const TOP = 'top';
 
@@ -23,7 +26,7 @@ class IMAPSearchQueryFolderFinderVisitor extends SearchQueryExpressionVisitor {
       this._result = lhs;
       return;
     }
-    this._result = _.intersection(lhs, rhs);
+    this._result = _().intersection(lhs, rhs);
   }
 
   visitOr(node) {
@@ -33,7 +36,7 @@ class IMAPSearchQueryFolderFinderVisitor extends SearchQueryExpressionVisitor {
       this._result = TOP;
       return;
     }
-    this._result = _.union(lhs, rhs);
+    this._result = _().union(lhs, rhs);
   }
 
   visitIn(node) {
@@ -177,4 +180,4 @@ module.exports = class IMAPSearchQueryBackend {
   compile(ast, folder) {
     return new IMAPSearchQueryExpressionVisitor(folder).visit(ast);
   }
-}
+};

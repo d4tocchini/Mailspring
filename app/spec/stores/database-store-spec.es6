@@ -8,7 +8,7 @@ const testMatchers = { id: 'b' };
 
 describe('DatabaseStore', function DatabaseStoreSpecs() {
   beforeEach(() => {
-    TestModel.configureBasic();
+    // TestModel.configureBasic();
     spyOn(ModelQuery.prototype, 'where').andCallThrough();
 
     this.performed = [];

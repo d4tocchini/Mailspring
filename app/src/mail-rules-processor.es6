@@ -1,20 +1,17 @@
-import _ from 'underscore';
-
-import Actions from './flux/actions';
+const _ = require('underscore');
+const Actions = require('./flux/actions');
 const Task = require('./flux/tasks/task');
 const Thread = require('./flux/models/thread');
 const Folder = require('./flux/models/folder');
 const Label = require('./flux/models/label');
-import CategoryStore from './flux/stores/category-store';
-import DatabaseStore from './flux/stores/database-store';
-import TaskQueue from './flux/stores/task-queue';
-
-import { ConditionMode, ConditionTemplates } from './mail-rules-templates';
-
-import ChangeUnreadTask from './flux/tasks/change-unread-task';
-import ChangeFolderTask from './flux/tasks/change-folder-task';
-import ChangeStarredTask from './flux/tasks/change-starred-task';
-import ChangeLabelsTask from './flux/tasks/change-labels-task';
+const CategoryStore = require('./flux/stores/category-store');
+const DatabaseStore = require('./flux/stores/database-store');
+const TaskQueue = require('./flux/stores/task-queue');
+const { ConditionMode, ConditionTemplates } = require('./mail-rules-templates');
+const ChangeUnreadTask = require('./flux/tasks/change-unread-task');
+const ChangeFolderTask = require('./flux/tasks/change-folder-task');
+const ChangeStarredTask = require('./flux/tasks/change-starred-task');
+const ChangeLabelsTask = require('./flux/tasks/change-labels-task');
 let MailRulesStore = null;
 
 /**

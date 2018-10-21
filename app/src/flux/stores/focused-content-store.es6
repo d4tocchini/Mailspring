@@ -109,7 +109,7 @@ class FocusedContentStore extends MailspringStore {
   };
 
   _onFocus = ({ collection, item, usingClick }) => {
-    debugger
+    // debugger
     if (item && !(item instanceof Model)) {
       throw new Error('focus() requires a Model or null');
     }

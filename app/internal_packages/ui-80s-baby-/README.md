@@ -24,7 +24,7 @@ Made to match [Bracket's 80's Baby theme](https://github.com/Brackets-Themes/80s
 Then, unzip `80sBaby-master.zip`.
 
 ### Step 2: Install
-Open the toolbar and select `Mailspring > Install Theme...`
+Open the toolbar and select {APP_NAME}` > Install Theme...`
 
 
 ### Step 3: Activate

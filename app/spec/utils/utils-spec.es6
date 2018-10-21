@@ -43,16 +43,26 @@ describe('Utils', function() {
     });
 
     it('should serialize and de-serialize models correctly', function() {
+
       const expectedString =
         '[{"id":"local-1","aid":"1","metadata":[],"subject":"Test 1234","categories":[],"participants":[{"id":"local-a","aid":"1","name":"Juan","email":"juan@nylas.com","thirdPartyData":{},"__cls":"Contact"},{"id":"local-b","aid":"1","name":"Ben","email":"ben@nylas.com","thirdPartyData":{},"__cls":"Contact"}],"__cls":"Thread"}]';
 
       const jsonString = JSON.stringify([this.testThread]);
       expect(jsonString).toEqual(expectedString);
+
       const revived = JSON.parse(jsonString, Utils.modelTypesReviver);
-      expect(revived).toEqual([this.testThread]);
+      [ { pluginMetadata : [  ], id : 'local-1', accountId : '1', subject : 'Test 1234', participants : [
+        { thirdPartyData : {  }, id : 'local-a', accountId : '1', name : 'Juan', email : 'juan@nylas.com'},
+        { thirdPartyData : {  }, id : 'local-b', accountId : '1', name : 'Ben', email : 'ben@nylas.com' } ] } ]
+      [ { id : 'local-1', accountId : '1', pluginMetadata : [  ], snippet : undefined, subject : 'Test1234', unread : undefined, starred : undefined, version : undefined, folders : undefined, labels : undefined, participants : [
+        { id : 'local-a', accountId : '1', name : 'Juan', email : 'juan@nylas.com', refs : undefined, thirdPartyData : {  }, title : undefined, phone : undefined, company : undefined, searchIndexId : undefined },
+        { id : 'local-b', accountId : '1', name : 'Ben', email : 'ben@nylas.com', refs : undefined, thirdPartyData : {  }, title : undefined, phone : undefined, company : undefined, searchIndexId : undefined } ], attachmentCount : undefined, lastMessageReceivedTimestamp : undefined, lastMessageSentTimestamp : undefined, inAllMail : undefined } ]
+      expect(revived)
+        .toEqual([this.testThread]);
+
     });
 
-    it.only("should re-inflate Models in places they're not explicitly declared types", function() {
+    it("should re-inflate Models in places they're not explicitly declared types", function() {
       const b = { id: 'ThreadsToProcess', json: [this.testThread] };
       const jsonString = JSON.stringify(b);
 
